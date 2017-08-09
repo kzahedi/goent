@@ -1,7 +1,6 @@
 package goent
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -81,7 +80,7 @@ func MutualInformation2(pxy [][]float64) float64 {
 
 // CMI calculates the conditional mutual information with the given lnFunc function
 // CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
-func CMI(pxyz [][][]float64, log lnFunc) float64 {
+func CMI(pxyz [][][]float64, ln lnFunc) float64 {
 
 	xDim := len(pxyz)
 	yDim := len(pxyz[0])
@@ -122,18 +121,12 @@ func CMI(pxyz [][][]float64, log lnFunc) float64 {
 		}
 	}
 
-	// fmt.Println(pxyz)
-	// fmt.Println(px_c_z)
-	// fmt.Println(py_c_z)
-	// fmt.Println(pxy_c_z)
-
 	r := 0.0
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
 				if pxyz[x][y][z] > 0.0 && pxy_c_z[x][y][z] > 0.0 && px_c_z[x][z] > 0.0 && py_c_z[y][z] > 0.0 {
-					fmt.Println(r)
-					r += pxyz[x][y][z] * (log(pxy_c_z[x][y][z]) - log(px_c_z[x][z]*py_c_z[y][z]))
+					r += pxyz[x][y][z] * (ln(pxy_c_z[x][y][z]) - ln(px_c_z[x][z]*py_c_z[y][z]))
 				}
 			}
 		}

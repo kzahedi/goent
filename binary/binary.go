@@ -54,9 +54,10 @@ func bin(a int) float64 {
 	return 1.0
 }
 
-func pw2_c_w1_a1(w2, w1, a1 int, phi, psi float64) float64 {
-	z := math.Exp(phi*bin(w2)*bin(w1) + psi*bin(w2)*bin(a1))
-	n := math.Exp(phi*-1*bin(w1)+psi*-1*bin(a1)) + math.Exp(phi*1*bin(w1)+psi*1*bin(a1))
+func pw2_c_w1_a1(w2, w1, a1 int, phi, psi, chi float64) float64 {
+	z := math.Exp(phi*bin(w2)*bin(w1) + psi*bin(w2)*bin(a1) + chi*bin(w2)*bin(w1)*bin(a1))
+	n := math.Exp(-phi*bin(w1)-psi*bin(a1)-chi*bin(w1)*bin(a1)) +
+		math.Exp(phi*bin(w1)+psi*bin(a1)+chi*bin(w1)*bin(a1))
 	return z / n
 }
 
@@ -78,7 +79,8 @@ func pw1(w1 int, tau float64) float64 {
 	return z / n
 }
 
-func calculate_MC_W(mu, phi, psi, zeta, tau float64) float64 {
+func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64) float64 {
+
 	pw2w1a1 := make([][][]float64, 2)
 	for w2 := 0; w2 < 2; w2++ {
 		pw2w1a1[w2] = make([][]float64, 2)
@@ -92,7 +94,7 @@ func calculate_MC_W(mu, phi, psi, zeta, tau float64) float64 {
 			for a1 := 0; a1 < 2; a1++ {
 				for s1 := 0; s1 < 2; s1++ {
 					pw2w1a1[w2][w1][a1] =
-						pw2_c_w1_a1(w2, w1, a1, phi, psi) *
+						pw2_c_w1_a1(w2, w1, a1, phi, psi, chi) *
 							pa1_c_s1(a1, s1, mu) *
 							ps1_c_w1(s1, w1, zeta) *
 							pw1(w1, tau)
@@ -101,18 +103,44 @@ func calculate_MC_W(mu, phi, psi, zeta, tau float64) float64 {
 		}
 	}
 
-	// fmt.Println(pw2w1a1)
-
 	return goent.MC_W(pw2w1a1)
+}
+
+func calculate_MC_A(mu, phi, psi, chi, zeta, tau float64) float64 {
+
+	pw2a1w1 := make([][][]float64, 2)
+	for w2 := 0; w2 < 2; w2++ {
+		pw2a1w1[w2] = make([][]float64, 2)
+		for a1 := 0; a1 < 2; a1++ {
+			pw2a1w1[w2][a1] = make([]float64, 2)
+		}
+	}
+
+	for w2 := 0; w2 < 2; w2++ {
+		for w1 := 0; w1 < 2; w1++ {
+			for a1 := 0; a1 < 2; a1++ {
+				for s1 := 0; s1 < 2; s1++ {
+					pw2a1w1[w2][a1][w1] =
+						pw2_c_w1_a1(w2, w1, a1, phi, psi, chi) *
+							pa1_c_s1(a1, s1, mu) *
+							ps1_c_w1(s1, w1, zeta) *
+							pw1(w1, tau)
+				}
+			}
+		}
+	}
+
+	return goent.MC_A(pw2a1w1)
 }
 
 func main() {
 
-	muStr := flag.String("mu", "0", "mu values. can take list (1,2,3) to range with delta (0:0.1:1.0)")
-	phiStr := flag.String("phi", "0:0.1:5", "phi values. can take list (1,2,3) to range with delta (0:0.1:1.0)")
-	psiStr := flag.String("psi", "0:0.1:5", "phi values. can take list (1,2,3) to range with delta (0:0.1:1.0)")
-	zetaStr := flag.String("zeta", "0:0.1:5", "phi values. can take list (1,2,3) to range with delta (0:0.1:1.0)")
-	tauStr := flag.String("tau", "0", "phi values. can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	muStr := flag.String("mu", "0", "mu values (s -> a). can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	phiStr := flag.String("phi", "0:0.1:5", "phi values (w -> w'). can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	psiStr := flag.String("psi", "0:0.1:5", "psi values (a -> w'). can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	chiStr := flag.String("chi", "0:0.1:5", "chi values (a,w -> w'). can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	zetaStr := flag.String("zeta", "0:0.1:5", "zeta values (w -> s). can take list (1,2,3) to range with delta (0:0.1:1.0)")
+	tauStr := flag.String("tau", "0", "tau values (p(w)). can take list (1,2,3) to range with delta (0:0.1:1.0)")
 	mc := flag.String("mc", "MC_W", "quantification to use: MC_W (soon: MC_A, MC_MI, MC_SY, MC_SY_NIS, MC_SY_GIS, MC_SY_SCGIS)")
 	verbose := flag.Bool("v", false, "verbose")
 	output := flag.String("o", "out.csv", "output file. default out.csv")
@@ -122,6 +150,7 @@ func main() {
 	mu := getvalues(*muStr)
 	phi := getvalues(*phiStr)
 	psi := getvalues(*psiStr)
+	chi := getvalues(*chiStr)
 	zeta := getvalues(*zetaStr)
 	tau := getvalues(*tauStr)
 
@@ -132,6 +161,8 @@ func main() {
 		fmt.Println("phi:", phi)
 		fmt.Println("psi:", *psiStr)
 		fmt.Println("psi:", psi)
+		fmt.Println("chi:", *chiStr)
+		fmt.Println("chi:", chi)
 		fmt.Println("zeta:", *zetaStr)
 		fmt.Println("zeta:", zeta)
 		fmt.Println("tau:", *tauStr)
@@ -156,20 +187,25 @@ func main() {
 	for _, vmu := range mu {
 		for _, vphi := range phi {
 			for _, vpsi := range psi {
-				for _, vzeta := range zeta {
-					for _, vtau := range tau {
-						switch *mc {
-						case "MC_W":
-							r = calculate_MC_W(vmu, vphi, vpsi, vzeta, vtau)
-							// fmt.Println(r)
-							s = []string{f2s(vmu), f2s(vphi), f2s(vpsi), f2s(vzeta), f2s(vtau), f2s(r)}
-							err = writer.Write(s)
-							check(err)
+				for _, vchi := range chi {
+					for _, vzeta := range zeta {
+						for _, vtau := range tau {
+							switch *mc {
+							case "MC_W":
+								r = calculate_MC_W(vmu, vphi, vpsi, vchi, vzeta, vtau)
+								s = []string{f2s(vmu), f2s(vphi), f2s(vpsi), f2s(vzeta), f2s(vtau), f2s(r)}
+								err = writer.Write(s)
+								check(err)
+							case "MC_A":
+								r = calculate_MC_A(vmu, vphi, vpsi, vchi, vzeta, vtau)
+								s = []string{f2s(vmu), f2s(vphi), f2s(vpsi), f2s(vzeta), f2s(vtau), f2s(r)}
+								err = writer.Write(s)
+								check(err)
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-
 }
