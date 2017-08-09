@@ -12,6 +12,20 @@ import (
 	"github.com/kzahedi/goent"
 )
 
+func check3DProbabilityDistribution(p [][][]float64) {
+	sum := 0.0
+	for x := 0; x < len(p); x++ {
+		for y := 0; y < len(p[x]); y++ {
+			for z := 0; z < len(p[x][y]); z++ {
+				sum += p[x][y][z]
+			}
+		}
+	}
+	if math.Abs(sum-1.0) > 0.0000001 {
+		panic(fmt.Sprintf("Does not sum up to one %f", sum))
+	}
+}
+
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -56,26 +70,26 @@ func bin(a int) float64 {
 
 func pw2_c_w1_a1(w2, w1, a1 int, phi, psi, chi float64) float64 {
 	z := math.Exp(phi*bin(w2)*bin(w1) + psi*bin(w2)*bin(a1) + chi*bin(w2)*bin(w1)*bin(a1))
-	n := math.Exp(-phi*bin(w1)-psi*bin(a1)-chi*bin(w1)*bin(a1)) +
-		math.Exp(phi*bin(w1)+psi*bin(a1)+chi*bin(w1)*bin(a1))
+	n := math.Exp(phi*bin(0)*bin(w1)+psi*bin(0)*bin(a1)+chi*bin(0)*bin(w1)*bin(a1)) +
+		math.Exp(phi*bin(1)*bin(w1)+psi*bin(1)*bin(a1)+chi*bin(1)*bin(w1)*bin(a1))
 	return z / n
 }
 
 func pa1_c_s1(a1, s1 int, mu float64) float64 {
 	z := math.Exp(mu * bin(a1) * bin(s1))
-	n := math.Exp(mu*bin(s1)) + math.Exp(-mu*bin(s1))
+	n := math.Exp(mu*bin(0)*bin(s1)) + math.Exp(mu*bin(1)*bin(s1))
 	return z / n
 }
 
 func ps1_c_w1(s1, w1 int, zeta float64) float64 {
 	z := math.Exp(zeta * bin(w1) * bin(s1))
-	n := math.Exp(zeta*bin(w1)) + math.Exp(-zeta*bin(w1))
+	n := math.Exp(zeta*bin(0)*bin(w1)) + math.Exp(zeta*bin(1)*bin(w1))
 	return z / n
 }
 
 func pw1(w1 int, tau float64) float64 {
 	z := math.Exp(tau * bin(w1))
-	n := math.Exp(tau) + math.Exp(-tau)
+	n := math.Exp(tau*bin(0)) + math.Exp(tau*bin(1))
 	return z / n
 }
 
@@ -93,7 +107,7 @@ func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64) float64 {
 		for w1 := 0; w1 < 2; w1++ {
 			for a1 := 0; a1 < 2; a1++ {
 				for s1 := 0; s1 < 2; s1++ {
-					pw2w1a1[w2][w1][a1] =
+					pw2w1a1[w2][w1][a1] +=
 						pw2_c_w1_a1(w2, w1, a1, phi, psi, chi) *
 							pa1_c_s1(a1, s1, mu) *
 							ps1_c_w1(s1, w1, zeta) *
@@ -102,6 +116,8 @@ func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64) float64 {
 			}
 		}
 	}
+
+	// check3DProbabilityDistribution(pw2w1a1)
 
 	return goent.MC_W(pw2w1a1)
 }
