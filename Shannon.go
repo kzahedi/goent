@@ -1,6 +1,7 @@
 package goent
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -116,16 +117,22 @@ func CMI(pxyz [][][]float64, log lnFunc) float64 {
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				pxy_c_z[x][y][z] /= pz[z]
+				pxy_c_z[x][y][z] = pxyz[x][y][z] / pz[z]
 			}
 		}
 	}
+
+	// fmt.Println(pxyz)
+	// fmt.Println(px_c_z)
+	// fmt.Println(py_c_z)
+	// fmt.Println(pxy_c_z)
 
 	r := 0.0
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
 				if pxyz[x][y][z] > 0.0 && pxy_c_z[x][y][z] > 0.0 && px_c_z[x][z] > 0.0 && py_c_z[y][z] > 0.0 {
+					fmt.Println(r)
 					r += pxyz[x][y][z] * (log(pxy_c_z[x][y][z]) - log(px_c_z[x][z]*py_c_z[y][z]))
 				}
 			}
