@@ -1,5 +1,6 @@
 package goent
 
+// Create2D creates a 2-dimensional slice
 func Create2D(xDim, yDim int) [][]float64 {
 	r := make([][]float64, xDim)
 	for x := 0; x < xDim; x++ {
@@ -8,6 +9,7 @@ func Create2D(xDim, yDim int) [][]float64 {
 	return r
 }
 
+// Create3D creates a 3-dimensional slice
 func Create3D(xDim, yDim, zDim int) [][][]float64 {
 	r := make([][][]float64, xDim)
 	for x := 0; x < xDim; x++ {
