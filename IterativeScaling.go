@@ -70,8 +70,8 @@ func (data *IterativeScaling) CreateAlphabet() {
 		data.Alphabet[i] = make([]int, data.Nr_of_variables, data.Nr_of_variables)
 	}
 
-	nrsi := int(data.Nr_of_states)
-	nrvi := int(data.Nr_of_variables)
+	nrsi := data.Nr_of_states
+	nrvi := data.Nr_of_variables
 	nrsf := float64(data.Nr_of_states)
 
 	for i := 0; i < n; i++ {
@@ -94,7 +94,7 @@ func (data *IterativeScaling) CreateAlphabet() {
 // p_est^(n+1)(x) =  p_est^(n)(x) * p_target(x_a) / p_est(x_a)
 func (data *IterativeScaling) Iterate() {
 	data.Current_feature_index++
-	data.Current_feature_index = int(data.Current_feature_index) % int(len(data.Features))
+	data.Current_feature_index = data.Current_feature_index % len(data.Features)
 	p_copy := make([]float64, len(data.P_estimate), len(data.P_estimate))
 	copy(p_copy, data.P_estimate) // for step with calculation with Kullback-Leibler
 	f := data.Features[data.Keys[data.Current_feature_index]]

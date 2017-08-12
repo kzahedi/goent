@@ -11,30 +11,27 @@ import (
 // alphabet         [][]int
 
 func TestIterativeScalingAND(t *testing.T) {
-	data := goent.IterativeScaling{}
+	split := goent.IterativeScaling{}
 
-	data.Nr_of_variables = 3
-	data.Nr_of_states = 2
+	split.Nr_of_variables = 3
+	split.Nr_of_states = 2
 
-	data.P_target = make([]float64, 8, 8)
-	data.P_target[0] = 0.5
-	data.P_target[4] = 0.25
-	data.P_target[6] = 0.25
+	split.P_target = make([]float64, 8, 8)
+	split.P_target[0] = 0.5
+	split.P_target[4] = 0.25
+	split.P_target[6] = 0.25
 
-	data.Features = make(map[string][]int)
-	data.Features["X,Z"] = []int{0, 2}
-	data.Features["Y,Z"] = []int{1, 2}
-	data.Features["X,Y"] = []int{0, 1}
+	split.Features = make(map[string][]int)
+	split.Features["X,Z"] = []int{0, 2}
+	split.Features["Y,Z"] = []int{1, 2}
+	split.Features["X,Y"] = []int{0, 1}
 
-	data.Nr_of_iterations = 10
-	data.Error_treshold = 0.0
-
-	data.Init()
+	split.Init()
 	for i := 0; i < 100; i++ {
-		data.Iterate()
+		split.Iterate()
 	}
 
-	r := stat.KullbackLeibler(data.P_target, data.P_estimate)
+	r := stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
 
 	if r > 0.0001 {
 		t.Errorf("AND should be 0 but it is ", r)
@@ -42,31 +39,28 @@ func TestIterativeScalingAND(t *testing.T) {
 }
 
 func TestIterativeScalingXOR(t *testing.T) {
-	data := goent.IterativeScaling{}
+	split := goent.IterativeScaling{}
 
-	data.Nr_of_variables = 3
-	data.Nr_of_states = 2
+	split.Nr_of_variables = 3
+	split.Nr_of_states = 2
 
-	data.P_target = make([]float64, 8, 8)
-	data.P_target[0] = 0.25
-	data.P_target[3] = 0.25
-	data.P_target[5] = 0.25
-	data.P_target[7] = 0.25
+	split.P_target = make([]float64, 8, 8)
+	split.P_target[0] = 0.25
+	split.P_target[3] = 0.25
+	split.P_target[5] = 0.25
+	split.P_target[6] = 0.25
 
-	data.Features = make(map[string][]int)
-	data.Features["X,Z"] = []int{0, 2}
-	data.Features["Y,Z"] = []int{1, 2}
-	// data.Features["X,Y"] = []int{0, 1}
+	split.Features = make(map[string][]int)
+	split.Features["X,Z"] = []int{0, 2}
+	split.Features["Y,Z"] = []int{1, 2}
+	// split.Features["X,Y"] = []int{0, 1}
 
-	data.Nr_of_iterations = 10
-	data.Error_treshold = 0.0
-
-	data.Init()
+	split.Init()
 	for i := 0; i < 1000; i++ {
-		data.Iterate()
+		split.Iterate()
 	}
 
-	r := stat.KullbackLeibler(data.P_target, data.P_estimate)
+	r := stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
 
 	if math.Abs(r-1.0) > 0.00001 {
 		t.Errorf("XOR should be 1 but it is ", r)
