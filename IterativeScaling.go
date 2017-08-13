@@ -14,7 +14,7 @@ type IterativeScaling struct {
 	Nr_of_iterations      int
 	Error_treshold        float64
 	Alphabet              [][]int
-	Nr_of_states          int
+	Nr_of_states          []int
 	Nr_of_variables       int
 	Current_feature_index int
 	Current_iteration     int
@@ -32,7 +32,7 @@ func NewIterativeScaling() *IterativeScaling {
 		Features:              nil,
 		Last_KL_step:          -1.0,
 		Nr_of_iterations:      0,
-		Nr_of_states:          0,
+		Nr_of_states:          nil,
 		Nr_of_variables:       0,
 		P_estimate:            nil,
 		P_target:              nil,
@@ -57,27 +57,29 @@ func (data *IterativeScaling) Init() {
 	for i, _ := range data.P_target {
 		data.P_estimate[i] = 1.0 / float64(len(data.P_target))
 	}
-	data.CreateAlphabet()
 }
 
 // CreateAlphabet creates the alphabet given Nr_of_states and Nr_of_variables
 func (data *IterativeScaling) CreateAlphabet() {
 
-	n := int(math.Pow(float64(data.Nr_of_states), float64(data.Nr_of_variables)))
+	n := 1
+	for i := 0; i < data.Nr_of_variables; i++ {
+		n = n * data.Nr_of_states[i]
+	}
 	data.Alphabet = make([][]int, n, n)
 
 	for i := 0; i < n; i++ {
 		data.Alphabet[i] = make([]int, data.Nr_of_variables, data.Nr_of_variables)
 	}
 
-	nrsi := data.Nr_of_states
 	nrvi := data.Nr_of_variables
-	nrsf := float64(data.Nr_of_states)
+	nrsf := 0.0
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < nrvi; j++ {
+			nrsf = float64(data.Nr_of_states[j])
 			b := int(math.Pow(nrsf, float64(j)))
-			w := int((i / b) % nrsi)
+			w := int((i / b) % data.Nr_of_states[j])
 			data.Alphabet[i][nrvi-j-1] = w
 		}
 	}
@@ -99,19 +101,22 @@ func (data *IterativeScaling) Iterate() {
 	copy(p_copy, data.P_estimate) // for step with calculation with Kullback-Leibler
 	f := data.Features[data.Keys[data.Current_feature_index]]
 
+	a := 0.0
+	b := 0.0
+	var indices []int
 	for i, _ := range data.P_estimate {
-		a := calculate_marginal(data.P_target, f, &data.Alphabet, i)
-		b := calculate_marginal(data.P_estimate, f, &data.Alphabet, i)
+		indices = Get_alphabet_indices(i, f, &data.Alphabet)
+		b = calculate_marginal(data.P_estimate, indices)
 		if b > 0 {
+			a = calculate_marginal(data.P_target, indices)
 			data.P_estimate[i] = data.P_estimate[i] * a / b
 		}
 	}
 	data.Last_KL_step = stat.KullbackLeibler(p_copy, data.P_estimate)
 }
 
-func calculate_marginal(p []float64, feature []int, alphabet *[][]int, index int) float64 {
+func calculate_marginal(p []float64, indices []int) float64 {
 	sum := 0.0
-	indices := Get_alphabet_indices(index, feature, alphabet)
 	if len(indices) > 0 {
 		for _, v := range indices {
 			sum += p[v]
@@ -138,4 +143,14 @@ func Check_feature_alphabet(feature, values, alphabet []int) bool {
 		}
 	}
 	return true
+}
+
+func (data *IterativeScaling) CalculateMarginalProbability(feature []int) float64 {
+	var indices []int
+	sum := 0.0
+	for i, _ := range data.P_estimate {
+		indices = Get_alphabet_indices(i, feature, &data.Alphabet)
+		sum += calculate_marginal(data.P_estimate, indices)
+	}
+	return sum
 }

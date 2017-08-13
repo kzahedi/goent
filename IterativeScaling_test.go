@@ -14,7 +14,10 @@ func TestIterativeScalingAND(t *testing.T) {
 	split := goent.IterativeScaling{}
 
 	split.Nr_of_variables = 3
-	split.Nr_of_states = 2
+	split.Nr_of_states = make([]int, 3, 3)
+	split.Nr_of_states[0] = 2
+	split.Nr_of_states[1] = 2
+	split.Nr_of_states[2] = 2
 
 	split.P_target = make([]float64, 8, 8)
 	split.P_target[0] = 0.5
@@ -26,6 +29,39 @@ func TestIterativeScalingAND(t *testing.T) {
 	split.Features["Y,Z"] = []int{1, 2}
 	split.Features["X,Y"] = []int{0, 1}
 
+	split.CreateAlphabet()
+	split.Init()
+	for i := 0; i < 100; i++ {
+		split.Iterate()
+	}
+
+	r := stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
+
+	if r > 0.0001 {
+		t.Errorf("AND should be 0 but it is ", r)
+	}
+}
+
+func TestIterativeScalingOR(t *testing.T) {
+	split := goent.IterativeScaling{}
+
+	split.Nr_of_variables = 3
+	split.Nr_of_states = make([]int, 3, 3)
+	split.Nr_of_states[0] = 2
+	split.Nr_of_states[1] = 2
+	split.Nr_of_states[2] = 2
+
+	split.P_target = make([]float64, 8, 8)
+	split.P_target[0] = 0.25
+	split.P_target[4] = 0.25
+	split.P_target[6] = 0.5
+
+	split.Features = make(map[string][]int)
+	split.Features["X,Z"] = []int{0, 2}
+	split.Features["Y,Z"] = []int{1, 2}
+	split.Features["X,Y"] = []int{0, 1}
+
+	split.CreateAlphabet()
 	split.Init()
 	for i := 0; i < 100; i++ {
 		split.Iterate()
@@ -42,7 +78,10 @@ func TestIterativeScalingXOR(t *testing.T) {
 	split := goent.IterativeScaling{}
 
 	split.Nr_of_variables = 3
-	split.Nr_of_states = 2
+	split.Nr_of_states = make([]int, 3, 3)
+	split.Nr_of_states[0] = 2
+	split.Nr_of_states[1] = 2
+	split.Nr_of_states[2] = 2
 
 	split.P_target = make([]float64, 8, 8)
 	split.P_target[0] = 0.25
@@ -55,8 +94,9 @@ func TestIterativeScalingXOR(t *testing.T) {
 	split.Features["Y,Z"] = []int{1, 2}
 	// split.Features["X,Y"] = []int{0, 1}
 
+	split.CreateAlphabet()
 	split.Init()
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100; i++ {
 		split.Iterate()
 	}
 
