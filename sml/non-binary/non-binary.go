@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/csv"
 	"flag"
 	"fmt"
 	"math"
@@ -16,6 +15,7 @@ import (
 )
 
 var mutex sync.Mutex
+var mc_sy_iterations int
 
 type Indicator struct {
 	a      int
@@ -238,14 +238,15 @@ func generate_s1w1_indicators(zeta float64, bins int) []Indicator {
 	return r
 }
 
-func write(writer *csv.Writer, phi, psi, chi, mu, zeta, tau, r float64) {
+func write(writer *os.File, phi, psi, chi, mu, zeta, tau, r float64) {
 	mutex.Lock()
 	defer mutex.Unlock()
-	s := []string{f2s(phi), f2s(psi), f2s(chi), f2s(mu), f2s(zeta), f2s(tau), f2s(r)}
-	check(writer.Write(s))
+	s := fmt.Sprintf("%f,%f,%f,%f,%f,%f,%f\n", phi, psi, chi, mu, zeta, tau, r)
+	writer.WriteString(s)
+	writer.Sync()
 }
 
-func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.Writer) {
+func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64, bins int, writer *os.File) {
 
 	pw2w1a1 := goent.Create3D(2, 2, 2)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -270,11 +271,9 @@ func calculate_MC_W(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.
 
 	r := goent.MC_W(pw2w1a1)
 	write(writer, phi, psi, chi, mu, zeta, tau, r)
-	// s := []string{f2s(phi), f2s(psi), f2s(chi), f2s(mu), f2s(zeta), f2s(tau), f2s(r)}
-	// check(writer.Write(s))
 }
 
-func calculate_MC_MI(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.Writer) {
+func calculate_MC_MI(mu, phi, psi, chi, zeta, tau float64, bins int, writer *os.File) {
 
 	pw2w1 := goent.Create2D(2, 2)
 	pa1s1 := goent.Create2D(2, 2)
@@ -307,7 +306,7 @@ func calculate_MC_MI(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv
 	// check(writer.Write(s))
 }
 
-func calculate_MC_A(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.Writer) {
+func calculate_MC_A(mu, phi, psi, chi, zeta, tau float64, bins int, writer *os.File) {
 
 	pw2w1a1 := goent.Create3D(2, 2, 2)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -337,7 +336,7 @@ func calculate_MC_A(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.
 	write(writer, phi, psi, chi, mu, zeta, tau, r)
 }
 
-func calculate_MC_SY(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv.Writer, iterations int) {
+func calculate_MC_SY(mu, phi, psi, chi, zeta, tau float64, bins int, writer *os.File) {
 
 	pw2w1a1 := goent.Create3D(2, 2, 2)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -360,14 +359,13 @@ func calculate_MC_SY(mu, phi, psi, chi, zeta, tau float64, bins int, writer *csv
 		}
 	}
 
-	r := goent.MC_SY(pw2w1a1, iterations)
+	r := goent.MC_SY(pw2w1a1, mc_sy_iterations)
 	// s := []string{f2s(phi), f2s(psi), f2s(chi), f2s(mu), f2s(zeta), f2s(tau), f2s(r)}
 	// check(writer.Write(s))
 	write(writer, phi, psi, chi, mu, zeta, tau, r)
 }
 
 func main() {
-	runtime.GOMAXPROCS(4)
 
 	muStr := flag.String("mu", "0", "s -> a. can take list (1,2,3) or range with delta (0:0.1:1.0)")
 	phiStr := flag.String("phi", "0:0.01:5", "w -> w'. Can take list (1,2,3) or range with delta (0:0.1:1.0)")
@@ -379,9 +377,18 @@ func main() {
 	verbose := flag.Bool("v", false, "verbose")
 	bins := flag.Int("b", 2, "Bins")
 	syci := flag.Int("syci", 500, "MC_SY convergence iterations")
+	cpus := flag.Int("cpus", 0, "Nr. of CPUs")
 	output := flag.String("o", "out.csv", "output file. Default: out.csv")
 
+	mc_sy_iterations = *syci
+
 	flag.Parse()
+
+	if *cpus > 0 {
+		runtime.GOMAXPROCS(*cpus)
+	} else {
+		runtime.GOMAXPROCS(runtime.NumCPU())
+	}
 
 	mu := getvalues(*muStr)
 	phi := getvalues(*phiStr)
@@ -412,13 +419,25 @@ func main() {
 	check(err)
 	defer f.Close()
 
-	writer := csv.NewWriter(f)
-	defer writer.Flush()
+	// s := []string{"phi", "psi", "chi", "mu", "zeta", "tau", "MC"}
+	f.WriteString(fmt.Sprintf("# phi, psi, chi, mu, zeta, tau, %s\n", *mc))
 
-	s := []string{"phi", "psi", "chi", "mu", "zeta", "tau", "MC"}
-	check(writer.Write(s))
+	var wg sync.WaitGroup
 
-	// var wg sync.WaitGroup
+	var mcFunc func(float64, float64, float64, float64, float64, float64, int, *os.File)
+
+	switch *mc {
+	case "MC_W":
+		mcFunc = calculate_MC_W
+	case "MC_A":
+		mcFunc = calculate_MC_A
+	case "MC_MI":
+		mcFunc = calculate_MC_MI
+	case "MC_SY":
+		mcFunc = calculate_MC_SY
+	default:
+		panic(fmt.Sprintf("Unknown quantification given %s", *mc))
+	}
 
 	bar := pb.StartNew(len(mu) * len(phi) * len(psi) * len(chi) * len(zeta) * len(tau))
 	for _, vmu := range mu {
@@ -427,41 +446,19 @@ func main() {
 				for _, vchi := range chi {
 					for _, vzeta := range zeta {
 						for _, vtau := range tau {
-							bar.Increment()
-							switch *mc {
-							case "MC_W":
-								// wg.Add(1)
-								go func() {
-									calculate_MC_W(vmu, vphi, vpsi, vchi, vzeta, vtau, *bins, writer)
-									// wg.Done()
-								}()
-							case "MC_A":
-								// wg.Add(1)
-								go func() {
-									calculate_MC_A(vmu, vphi, vpsi, vchi, vzeta, vtau, *bins, writer)
-									// wg.Done()
-								}()
-							case "MC_MI":
-								// wg.Add(1)
-								go func() {
-									calculate_MC_MI(vmu, vphi, vpsi, vchi, vzeta, vtau, *bins, writer)
-									// wg.Done()
-								}()
-							case "MC_SY":
-								// wg.Add(1)
-								go func() {
-									calculate_MC_SY(vmu, vphi, vpsi, vchi, vzeta, vtau, *bins, writer, *syci)
-									// wg.Done()
-								}()
-							default:
-								panic(fmt.Sprintf("Unknown quantification given %s", *mc))
-							}
+							wg.Add(1)
+							go func(vvphi, vvpsi, vvchi, vvmu, vvzeta, vvtau float64, bbins int, ff *os.File) {
+								// fmt.Println(fmt.Sprintf("calling mcFunc with %f,%f,%f,%f,%f,%f", vvphi, vvpsi, vvchi, vvmu, vvzeta, vvtau))
+								mcFunc(vvphi, vvpsi, vvchi, vvmu, vvzeta, vvtau, bbins, ff)
+								wg.Done()
+								bar.Increment()
+							}(vmu, vphi, vpsi, vchi, vzeta, vtau, *bins, f)
 						}
 					}
 				}
 			}
 		}
 	}
-	// wg.Wait()
+	wg.Wait()
 	bar.FinishPrint("Finished")
 }
