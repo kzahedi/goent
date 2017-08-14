@@ -62,6 +62,10 @@ func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
 	split.Features["W,A"] = []int{0, 1}
 
 	split.Init()
+	// bar := uiprogress.AddBar(iterations).AppendCompleted().PrependElapsed()
+	// bar.PrependFunc(func(b *uiprogress.Bar) string {
+	// return fmt.Sprintf("%s (%d/%d)", *mc, b.Current(), count)
+	// })
 	for i := 0; i < iterations; i++ {
 		split.Iterate()
 	}

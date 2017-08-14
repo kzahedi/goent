@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math"
 	"os"
 	"runtime"
+	"runtime/pprof"
 	"strconv"
 	"strings"
 	"sync"
@@ -16,6 +18,8 @@ import (
 
 var mutex sync.Mutex
 var mc_sy_iterations int
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+var memprofile = flag.String("memprofile", "", "write mem profile to file")
 
 type Indicator struct {
 	a      int
@@ -384,6 +388,15 @@ func main() {
 
 	flag.Parse()
 
+	if *cpuprofile != "" {
+		fc, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(fc)
+		defer pprof.StopCPUProfile()
+	}
+
 	if *cpus > 0 {
 		runtime.GOMAXPROCS(*cpus)
 	} else {
@@ -440,6 +453,12 @@ func main() {
 	}
 
 	bar := pb.StartNew(len(mu) * len(phi) * len(psi) * len(chi) * len(zeta) * len(tau))
+
+	// uiprogress.Start()            // start rendering
+	// bar := uiprogress.AddBar(len(mu) * len(phi) * len(psi) * len(chi) * len(zeta) * len(tau)))
+	// bar.AppendCompleted()
+	// bar.PrependElapsed()
+
 	for _, vmu := range mu {
 		for _, vphi := range phi {
 			for _, vpsi := range psi {
@@ -461,4 +480,14 @@ func main() {
 	}
 	wg.Wait()
 	bar.FinishPrint("Finished")
+	if *memprofile != "" {
+		fm, err := os.Create(*memprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.WriteHeapProfile(fm)
+		fm.Close()
+		return
+	}
+
 }
