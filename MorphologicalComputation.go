@@ -19,12 +19,51 @@ func MC_W(pw2w1a1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2w1a1)
 }
 
-// MC_W quantifies morphological computation as the information that is contained in
-// W about W' that is not contained in A. For more details, please read
+// MC_A quantifies morphological computation as the information that is contained in
+// A about W' that is not contained in W. For more details, please read
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 // http://www.mdpi.com/1099-4300/15/5/1887 (open access)
 func MC_A(pw2a1w1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2a1w1)
+}
+
+// MC_CW quantifies morphological computation as the causal information flow from
+// W to W' that does pass through A
+// MC_CW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
+func MC_CW(pw2w1, pw2a1 [][]float64) float64 {
+	return MutualInformation2(pw2w1) - MutualInformation2(pw2a1)
+}
+
+// MC_WA = I(W;{W,A}) - I(W';A)
+func MC_WA(pw2w1a1 [][][]float64) float64 {
+	w2Dim := len(pw2w1a1)
+	w1Dim := len(pw2w1a1[0])
+	a1Dim := len(pw2w1a1[0][0])
+	pw2a1 := Create2D(w2Dim, a1Dim)
+	for w2 := 0; w2 < w2Dim; w2++ {
+		for w1 := 0; w1 < w1Dim; w1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				pw2a1[w2][a1] += pw2w1a1[w2][w1][a1]
+			}
+		}
+	}
+	return ConditionalMutualInformation2(pw2w1a1) - MutualInformation2(pw2a1)
+}
+
+// MC_WS = I(W;{W,S}) - I(W';S)
+func MC_WS(pw2w1s1 [][][]float64) float64 {
+	w2Dim := len(pw2w1s1)
+	w1Dim := len(pw2w1s1[0])
+	s1Dim := len(pw2w1s1[0][0])
+	pw2s1 := Create2D(w2Dim, s1Dim)
+	for w2 := 0; w2 < w2Dim; w2++ {
+		for w1 := 0; w1 < w1Dim; w1++ {
+			for s1 := 0; s1 < s1Dim; s1++ {
+				pw2s1[w2][s1] += pw2w1s1[w2][w1][s1]
+			}
+		}
+	}
+	return ConditionalMutualInformation2(pw2w1s1) - MutualInformation2(pw2s1)
 }
 
 // MC_W quantifies morphological computation as the information that is contained in
@@ -103,5 +142,4 @@ func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
 	}
 
 	return stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
-
 }
