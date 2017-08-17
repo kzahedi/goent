@@ -22,15 +22,14 @@ var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 var memprofile = flag.String("memprofile", "", "write mem profile to file")
 
 type McParameter struct {
-	phi    float64
-	psi    float64
-	chi    float64
-	mu     float64
-	zeta   float64
-	tau    float64
-	mc     float64
-	bins   int
-	writer *os.File
+	phi  float64
+	psi  float64
+	chi  float64
+	mu   float64
+	zeta float64
+	tau  float64
+	mc   float64
+	bins int
 }
 
 type Indicator struct {
@@ -209,8 +208,6 @@ func generate_w2w1a1_indicators(chi float64, bins int) []Indicator {
 			}
 		}
 	}
-	// fmt.Println("w2w1a1")
-	// fmt.Println(r)
 	return r
 }
 
@@ -254,15 +251,7 @@ func generate_s1w1_indicators(zeta float64, bins int) []Indicator {
 	return r
 }
 
-func write(mcp McParameter) {
-	mutex.Lock()
-	defer mutex.Unlock()
-	s := fmt.Sprintf("%f,%f,%f,%f,%f,%f,%f\n", mcp.phi, mcp.psi, mcp.chi, mcp.mu, mcp.zeta, mcp.tau, mcp.mc)
-	mcp.writer.WriteString(s)
-	mcp.writer.Sync()
-}
-
-func calculate_MC_CW(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_CW(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1 := goent.Create2D(bins, bins)
 	pw2a1 := goent.Create2D(bins, bins)
@@ -290,11 +279,10 @@ func calculate_MC_CW(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.
 	}
 
 	r := goent.MC_CW(pw2w1, pw2a1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_WS(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_WS(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1s1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -318,11 +306,10 @@ func calculate_MC_WS(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.
 	}
 
 	r := goent.MC_WS(pw2w1s1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_WA(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_WA(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1a1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -346,11 +333,10 @@ func calculate_MC_WA(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.
 	}
 
 	r := goent.MC_WA(pw2w1a1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_W(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_W(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1a1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -374,11 +360,37 @@ func calculate_MC_W(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.F
 	}
 
 	r := goent.MC_W(pw2w1a1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_MI(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_Wp(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
+
+	pw2w1a1 := goent.Create3D(bins, bins, bins)
+	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
+	w2w1i := generate_w2w1_indicators(phi, bins)
+	w2a1i := generate_w2a1_indicators(psi, bins)
+	a1s1i := generate_a1s1_indicators(mu, bins)
+	s1w1i := generate_s1w1_indicators(zeta, bins)
+
+	for w2 := 0; w2 < bins; w2++ {
+		for w1 := 0; w1 < bins; w1++ {
+			for a1 := 0; a1 < bins; a1++ {
+				for s1 := 0; s1 < bins; s1++ {
+					pw2w1a1[w2][w1][a1] +=
+						pw2_c_w1_a1(w2, w1, a1, bins, phi, psi, chi, w2w1a1i, w2w1i, w2a1i) *
+							pa1_c_s1(a1, s1, bins, mu, a1s1i) *
+							ps1_c_w1(s1, w1, bins, zeta, s1w1i) *
+							pw1(w1, bins, tau)
+				}
+			}
+		}
+	}
+
+	r := goent.MC_Wp(pw2w1a1, mc_sy_iterations)
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
+}
+
+func calculate_MC_MI(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1 := goent.Create2D(bins, bins)
 	pa1s1 := goent.Create2D(bins, bins)
@@ -406,11 +418,10 @@ func calculate_MC_MI(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.
 	}
 
 	r := goent.MC_MI(pw2w1, pa1s1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_A(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_A(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2a1w1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -434,11 +445,10 @@ func calculate_MC_A(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.F
 	}
 
 	r := goent.MC_A(pw2a1w1)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_SY(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_SY(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1a1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -462,11 +472,10 @@ func calculate_MC_SY(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.
 	}
 
 	r := goent.MC_SY(pw2w1a1, mc_sy_iterations)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
-func calculate_MC_SY_NID(phi, psi, chi, mu, zeta, tau float64, bins int, writer *os.File) McParameter {
+func calculate_MC_SY_NID(phi, psi, chi, mu, zeta, tau float64, bins int) McParameter {
 
 	pw2w1a1 := goent.Create3D(bins, bins, bins)
 	w2w1a1i := generate_w2w1a1_indicators(chi, bins)
@@ -490,8 +499,7 @@ func calculate_MC_SY_NID(phi, psi, chi, mu, zeta, tau float64, bins int, writer 
 	}
 
 	r := goent.MC_SY_NID(pw2w1a1, mc_sy_iterations)
-	// write(writer, phi, psi, chi, mu, zeta, tau, r)
-	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, writer: writer, bins: bins}
+	return McParameter{phi: phi, psi: psi, chi: chi, mu: mu, zeta: zeta, mc: r, bins: bins}
 }
 
 func main() {
@@ -502,10 +510,9 @@ func main() {
 	chiStr := flag.String("chi", "0:0.1:5", "a,w -> w'. Can take list (1,2,3) or range with delta (0:0.1:1.0)")
 	zetaStr := flag.String("zeta", "0", "w -> s. Can take list (1,2,3) or range with delta (0:0.1:1.0)")
 	tauStr := flag.String("tau", "0", "p(w). Can take list (1,2,3) or range with delta (0:0.1:1.0)")
-	mc := flag.String("mc", "MC_W", "available quantifications are: MC_W, MC_A, MC_MI, MC_SY, MC_SY_NID, MC_CW, MC_WA, MC_WS")
-	verbose := flag.Bool("v", false, "verbose")
+	mc := flag.String("mc", "MC_W", "available quantifications are: MC_W, MC_A, MC_MI, MC_SY, MC_SY_NID, MC_CW, MC_WA, MC_WS, MC_Wp")
 	bins := flag.Int("b", 2, "Bins")
-	syci := flag.Int("syci", 500, "MC_SY convergence iterations")
+	syci := flag.Int("syci", 1000, "MC_SY convergence iterations")
 	cpus := flag.Int("cpus", 0, "Nr. of CPUs")
 	output := flag.String("o", "out.csv", "output file. Default: out.csv")
 
@@ -536,32 +543,40 @@ func main() {
 	zeta := getvalues(*zetaStr)
 	tau := getvalues(*tauStr)
 
-	if *verbose == true {
-		fmt.Println("mu:", *muStr)
-		fmt.Println("mu:", mu)
-		fmt.Println("phi:", *phiStr)
-		fmt.Println("phi:", phi)
-		fmt.Println("psi:", *psiStr)
-		fmt.Println("psi:", psi)
-		fmt.Println("chi:", *chiStr)
-		fmt.Println("chi:", chi)
-		fmt.Println("zeta:", *zetaStr)
-		fmt.Println("zeta:", zeta)
-		fmt.Println("tau:", *tauStr)
-		fmt.Println("tau:", tau)
-		fmt.Println("mc:", *mc)
-		fmt.Println("bins:", *bins)
-		fmt.Println("out:", *output)
-	}
-
 	f, err := os.Create(*output)
 	check(err)
 	defer f.Close()
 
-	// s := []string{"phi", "psi", "chi", "mu", "zeta", "tau", "MC"}
-	f.WriteString(fmt.Sprintf("# phi, psi, chi, mu, zeta, tau, %s\n", *mc))
+	f.WriteString(fmt.Sprintf("# phi  (w -> w'):   %s\n", *phiStr))
+	f.WriteString(fmt.Sprintf("# psi  (a -> w'):   %s\n", *psiStr))
+	f.WriteString(fmt.Sprintf("# chi  (w,a -> w'): %s\n", *chiStr))
+	f.WriteString(fmt.Sprintf("# mu   (s -> a):    %s\n", *muStr))
+	f.WriteString(fmt.Sprintf("# zeta (w -> a):    %s\n", *zetaStr))
+	f.WriteString(fmt.Sprintf("# tau  (p(w):       %s (unused)\n", *tauStr))
+	f.WriteString(fmt.Sprintf("# mc:							 %s\n", *mc))
+	f.WriteString(fmt.Sprintf("# bins:						 %i\n", *bins))
+	f.WriteString("#")
+	if len(phi) > 1 {
+		f.WriteString(" phi,")
+	}
+	if len(psi) > 1 {
+		f.WriteString(" psi,")
+	}
+	if len(chi) > 1 {
+		f.WriteString(" chi,")
+	}
+	if len(mu) > 1 {
+		f.WriteString(" mu,")
+	}
+	if len(zeta) > 1 {
+		f.WriteString(" zeta,")
+	}
+	if len(tau) > 1 {
+		f.WriteString(" tau,")
+	}
+	f.WriteString(fmt.Sprintf(" %s\n", *mc))
 
-	var mcFunc func(float64, float64, float64, float64, float64, float64, int, *os.File) McParameter
+	var mcFunc func(float64, float64, float64, float64, float64, float64, int) McParameter
 
 	switch *mc {
 	case "MC_W":
@@ -580,17 +595,19 @@ func main() {
 		mcFunc = calculate_MC_SY
 	case "MC_SY_NID":
 		mcFunc = calculate_MC_SY_NID
+	case "MC_Wp":
+		mcFunc = calculate_MC_Wp
 	default:
 		panic(fmt.Sprintf("Unknown quantification given %s", *mc))
 	}
 
-	fmt.Println(fmt.Sprintf("Using %d cpus", *cpus))
+	fmt.Println(fmt.Sprintf("Using %d cpus on %s with %d bins", *cpus, *mc, *bins))
 
 	iterations := len(mu) * len(phi) * len(psi) * len(chi) * len(zeta) * len(tau)
 	bar := pb.StartNew(iterations)
 
-	send := make(chan McParameter, iterations)
-	ans := make(chan McParameter, iterations)
+	send := make(chan McParameter, *cpus*2)
+	ans := make(chan McParameter, *cpus*2)
 
 	// start workers
 	var wg sync.WaitGroup
@@ -600,7 +617,7 @@ func main() {
 		go func(send <-chan McParameter, ans chan<- McParameter) {
 			defer wg.Done()
 			for p := range send {
-				ans <- mcFunc(p.phi, p.psi, p.chi, p.mu, p.zeta, p.tau, p.bins, p.writer)
+				ans <- mcFunc(p.phi, p.psi, p.chi, p.mu, p.zeta, p.tau, p.bins)
 			}
 		}(send, ans)
 	}
@@ -613,7 +630,7 @@ func main() {
 					for _, vchi := range chi {
 						for _, vzeta := range zeta {
 							for _, vtau := range tau {
-								send <- McParameter{phi: vphi, psi: vpsi, chi: vchi, mu: vmu, zeta: vzeta, tau: vtau, bins: *bins, writer: f, mc: 0.0}
+								send <- McParameter{phi: vphi, psi: vpsi, chi: vchi, mu: vmu, zeta: vzeta, tau: vtau, bins: *bins, mc: 0.0}
 							}
 						}
 					}
@@ -625,9 +642,31 @@ func main() {
 		close(ans)
 	}(send)
 
+	s := ""
 	for r := range ans {
 		bar.Increment()
-		write(r)
+		s = ""
+		if len(phi) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.phi)
+		}
+		if len(psi) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.psi)
+		}
+		if len(chi) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.chi)
+		}
+		if len(mu) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.mu)
+		}
+		if len(zeta) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.zeta)
+		}
+		if len(tau) > 1 {
+			s = fmt.Sprintf("%s%.2f,", s, r.tau)
+		}
+		s = fmt.Sprintf("%s%f\n", s, r.mc)
+		f.WriteString(s)
+		// f.Sync()
 	}
 
 	bar.FinishPrint("Finished")

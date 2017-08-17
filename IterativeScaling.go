@@ -4,7 +4,7 @@ import (
 	"math"
 	"sort"
 
-	stat "gonum.org/v1/gonum/stat"
+	"gonum.org/v1/gonum/stat"
 )
 
 type IterativeScaling struct {

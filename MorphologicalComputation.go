@@ -143,3 +143,8 @@ func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
 
 	return stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
 }
+
+// MC_Wp [...]
+func MC_Wp(pw2w1a1 [][][]float64, iterations int) float64 {
+	return MC_W(pw2w1a1) - MC_SY(pw2w1a1, iterations)
+}
