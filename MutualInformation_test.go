@@ -24,7 +24,7 @@ func TestMutualInformation(t *testing.T) {
 		{0.0, 0.0, 1.0 / 4.0, 0.0},
 		{0.0, 0.0, 0.0, 1.0 / 4.0}}
 
-	if r := goent.MutualInformation2(p2); r != 0.5 {
+	if r := goent.MutualInformation2(p2); r != 2.0 {
 		t.Errorf("Mutual information of deterministic distribution must be 0.5 but it is ", r)
 	}
 

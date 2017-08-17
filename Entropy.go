@@ -11,7 +11,7 @@ import (
 func H(p []float64, log lnFunc) float64 {
 	var r float64
 	for _, px := range p {
-		if px != 0 {
+		if px > 0 {
 			r -= px * log(px)
 		}
 	}

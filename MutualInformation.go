@@ -27,9 +27,11 @@ func MI(pxy [][]float64, log lnFunc) float64 {
 	mi := 0.0
 
 	for x := 0; x < xDim; x++ {
-		for y := 0; y < yDim; y++ {
-			if px[x] > 0.0 && py[y] > 0.0 && pxy[x][y] > 0.0 {
-				mi = pxy[x][y] * (log(pxy[x][y]) - log(px[x]*py[y]))
+		if px[x] > 0.0 {
+			for y := 0; y < yDim; y++ {
+				if py[y] > 0.0 && pxy[x][y] > 0.0 {
+					mi += pxy[x][y] * (log(pxy[x][y]) - log(px[x]*py[y]))
+				}
 			}
 		}
 	}
