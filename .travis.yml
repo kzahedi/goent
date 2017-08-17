@@ -1,2 +1,8 @@
 language: go
+go:
+  - 1.8.x
+  - master
 
+install:
+  - go get gonum.org/v1/gonum/...
+  - go get -u -t gopkg.in/cheggaaa/pb.v1
