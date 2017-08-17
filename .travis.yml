@@ -3,5 +3,5 @@ go:
   - 1.8.x
 
 install:
-  - go get gonum.org/v1/gonum/...
+  - go get gonum.org/v1/gonum/stat
   - go get -u -t gopkg.in/cheggaaa/pb.v1
