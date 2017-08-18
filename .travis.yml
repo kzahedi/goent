@@ -5,3 +5,6 @@ go:
 install:
   - go get gonum.org/v1/gonum/stat
   - go get -u -t gopkg.in/cheggaaa/pb.v1
+
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
