@@ -105,7 +105,7 @@ func (data *IterativeScaling) Iterate() {
 	b := 0.0
 	var indices []int
 	for i, _ := range data.P_estimate {
-		indices = Get_alphabet_indices(i, f, &data.Alphabet)
+		indices = get_alphabet_indices(i, f, &data.Alphabet)
 		b = calculate_marginal(data.P_estimate, indices)
 		if b > 0 {
 			a = calculate_marginal(data.P_target, indices)
@@ -125,18 +125,18 @@ func calculate_marginal(p []float64, indices []int) float64 {
 	return sum
 }
 
-func Get_alphabet_indices(index int, feature []int, alphabet *[][]int) []int {
+func get_alphabet_indices(index int, feature []int, alphabet *[][]int) []int {
 	a := (*alphabet)[index]
 	var indices []int
 	for i, v := range *alphabet {
-		if Check_feature_alphabet(feature, a, v) == true {
+		if check_feature_alphabet(feature, a, v) == true {
 			indices = append(indices, i)
 		}
 	}
 	return indices
 }
 
-func Check_feature_alphabet(feature, values, alphabet []int) bool {
+func check_feature_alphabet(feature, values, alphabet []int) bool {
 	for _, v := range feature {
 		if values[v] != alphabet[v] {
 			return false
@@ -149,7 +149,7 @@ func (data *IterativeScaling) CalculateMarginalProbability(feature []int) float6
 	var indices []int
 	sum := 0.0
 	for i, _ := range data.P_estimate {
-		indices = Get_alphabet_indices(i, feature, &data.Alphabet)
+		indices = get_alphabet_indices(i, feature, &data.Alphabet)
 		sum += calculate_marginal(data.P_estimate, indices)
 	}
 	return sum
