@@ -3,11 +3,15 @@
 
 GO Implementation of Entropy Measures
 
-Shannon:
+Discrete state space
 - Mutual Information
 - Conditional Mutual Information
 - Entropy
-- Conditional Entropy
+    - Shannon
+    - Maximum Likelihood with Bias Correction
+    - Horvitz-Thompson 
+    - Chao-Shen
+    - Conditional Entropy
 
 Morphological Computation Measures:
 - MC_W
@@ -30,3 +34,5 @@ References:
 - K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 - T. M. Cover and J. A. Thomas. Elements of Information Theory, Volume 2nd. Wiley, Hoboken, New Jersey, USA, 2006.
 - I. Csiszar. i-divergence geometry of probability distributions and minimization problems. Ann. Probab., 3(1):146–158, 02 1975.
+- A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s index of diversity when there are unseen species in sample. Environmental and Ecological Statistics, 10(4):429–443, 2003.
+

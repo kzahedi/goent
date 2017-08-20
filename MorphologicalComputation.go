@@ -82,17 +82,17 @@ func MC_MI(pw2w1 [][]float64, pa1s1 [][]float64) float64 {
 func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
 	split := IterativeScaling{}
 
-	split.Nr_of_variables = 3
+	split.NrOfVariables = 3
 	w2Dim := len(pw2w1a1)
 	w1Dim := len(pw2w1a1[0])
 	a1Dim := len(pw2w1a1[0][0])
-	split.Nr_of_states = []int{w2Dim, w1Dim, a1Dim}
+	split.NrOfStates = []int{w2Dim, w1Dim, a1Dim}
 
 	split.CreateAlphabet()
 
-	split.P_target = make([]float64, w2Dim*w1Dim*a1Dim, w2Dim*w1Dim*a1Dim)
+	split.PTarget = make([]float64, w2Dim*w1Dim*a1Dim, w2Dim*w1Dim*a1Dim)
 	for i, a := range split.Alphabet {
-		split.P_target[i] = pw2w1a1[a[0]][a[1]][a[2]]
+		split.PTarget[i] = pw2w1a1[a[0]][a[1]][a[2]]
 	}
 
 	split.Features = make(map[string][]int)
@@ -109,7 +109,7 @@ func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
 		split.Iterate()
 	}
 
-	return stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
+	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
 // MC_SY_NID quantifies morphological computation as the synergistic
@@ -119,17 +119,17 @@ func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
 func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
 	split := IterativeScaling{}
 
-	split.Nr_of_variables = 3
+	split.NrOfVariables = 3
 	w2Dim := len(pw2w1a1)
 	w1Dim := len(pw2w1a1[0])
 	a1Dim := len(pw2w1a1[0][0])
-	split.Nr_of_states = []int{w2Dim, w1Dim, a1Dim}
+	split.NrOfStates = []int{w2Dim, w1Dim, a1Dim}
 
 	split.CreateAlphabet()
 
-	split.P_target = make([]float64, w2Dim*w1Dim*a1Dim, w2Dim*w1Dim*a1Dim)
+	split.PTarget = make([]float64, w2Dim*w1Dim*a1Dim, w2Dim*w1Dim*a1Dim)
 	for i, a := range split.Alphabet {
-		split.P_target[i] = pw2w1a1[a[0]][a[1]][a[2]]
+		split.PTarget[i] = pw2w1a1[a[0]][a[1]][a[2]]
 	}
 
 	split.Features = make(map[string][]int)
@@ -141,7 +141,7 @@ func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
 		split.Iterate()
 	}
 
-	return stat.KullbackLeibler(split.P_target, split.P_estimate) / math.Log(2)
+	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
 // MC_Wp [...]

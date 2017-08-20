@@ -1,7 +1,5 @@
 package goent
 
-import "fmt"
-
 // Emperical1D is an empirical estimator for a one-dimensional
 // probability distribution
 func Emperical1D(d []int64) []float64 {
@@ -53,8 +51,6 @@ func Emperical2D(d [][]int64) [][]float64 {
 		p[d[r][0]][d[r][1]] += 1.0
 	}
 
-	fmt.Println(p)
-
 	l := float64(len(d))
 	for r := 0; r < int(max[0]); r++ {
 		for c := 0; c < int(max[1]); c++ {
@@ -90,13 +86,9 @@ func Emperical3D(d [][]int64) [][][]float64 {
 		}
 	}
 
-	fmt.Println(p)
-
 	for r := 0; r < rows; r++ {
 		p[d[r][0]][d[r][1]][d[r][2]] += 1.0
 	}
-
-	fmt.Println(p)
 
 	l := float64(len(d))
 	for a := 0; a < int(max[0]); a++ {

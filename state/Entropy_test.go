@@ -1,4 +1,4 @@
-package goent_test
+package state_test
 
 import (
 	"math"

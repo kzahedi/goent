@@ -1,6 +1,6 @@
 package goent
 
-type lnFunc func(float64) float64
+type LnFunc func(float64) float64
 
 // Create2D creates a 2-dimensional slice
 func Create2D(xDim, yDim int) [][]float64 {
