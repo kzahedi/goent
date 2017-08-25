@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/kzahedi/goent/discrete"
-	"github.com/kzahedi/goent/state"
+	"github.com/kzahedi/goent/discrete/state"
 )
 
 func TestMutualInformation(t *testing.T) {

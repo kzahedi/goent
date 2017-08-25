@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/kzahedi/goent/discrete"
+	"github.com/kzahedi/goent/discrete/state"
 )
 
 func TestConditionalMutualInformation(t *testing.T) {
@@ -19,7 +20,7 @@ func TestConditionalMutualInformation(t *testing.T) {
 			data[i][2] = rand.Int63n(100)
 		}
 
-		r := discrete.ConditionalMutualInformation(data)
+		r := state.ConditionalMutualInformation(data)
 		p := discrete.Emperical3D(data)
 		mi := discrete.ConditionalMutualInformation(p)
 
