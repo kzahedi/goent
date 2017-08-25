@@ -1,4 +1,4 @@
-package goent
+package discrete
 
 // Emperical1D is an empirical estimator for a one-dimensional
 // probability distribution
@@ -10,7 +10,7 @@ func Emperical1D(d []int64) []float64 {
 		}
 	}
 
-	max += 1
+	max++
 
 	p := make([]float64, max, max)
 
@@ -19,7 +19,7 @@ func Emperical1D(d []int64) []float64 {
 	}
 
 	l := float64(len(d))
-	for i, _ := range p {
+	for i := range p {
 		p[i] /= l
 	}
 
@@ -39,8 +39,8 @@ func Emperical2D(d [][]int64) [][]float64 {
 		}
 	}
 
-	max[0] += 1
-	max[1] += 1
+	max[0]++
+	max[1]++
 
 	p := make([][]float64, max[0], max[0])
 	for m := 0; m < int(max[0]); m++ {
@@ -74,9 +74,9 @@ func Emperical3D(d [][]int64) [][][]float64 {
 		}
 	}
 
-	max[0] += 1
-	max[1] += 1
-	max[2] += 1
+	max[0]++
+	max[1]++
+	max[2]++
 
 	p := make([][][]float64, max[0], max[0])
 	for m := 0; m < int(max[0]); m++ {

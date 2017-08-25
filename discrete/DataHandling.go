@@ -1,4 +1,4 @@
-package goent
+package discrete
 
 import "math"
 

@@ -1,6 +1,7 @@
-package goent_test
+package state_test
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"testing"
@@ -13,13 +14,13 @@ func TestEntropy(t *testing.T) {
 	p1 := []float64{0.5, 0.5, 0.5, 0.5}
 
 	if r := goent.Entropy2(p1); r != 2.0 {
-		t.Errorf("Entropy of four state uniform distribution should be 2.0 but it is ", r)
+		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 2.0 but it is %f", r))
 	}
 
 	p2 := []float64{1.0, 0.0, 0.0, 0.0}
 
 	if r := goent.Entropy2(p2); r != 0.0 {
-		t.Errorf("Entropy of deterministic distribution should be 0.0 but it is ", r)
+		t.Errorf(fmt.Sprintf("Entropy of deterministic distribution should be 0.0 but it is %f", r))
 	}
 }
 

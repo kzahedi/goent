@@ -1,16 +1,16 @@
-package goent_test
+package discrete_test
 
 import (
 	"math"
 	"testing"
 
-	"github.com/kzahedi/goent"
+	"github.com/kzahedi/goent/discrete"
 )
 
 func TestEmperical1D(t *testing.T) {
 	t.Log("Testing Emperical1D")
 	d := []int64{0, 0, 1, 1, 2, 2, 3, 3}
-	p := goent.Emperical1D(d)
+	p := discrete.Emperical1D(d)
 
 	if len(p) != 4 {
 		t.Errorf("Emperical1D should return a slice of length 4 and not %d", len(p))
@@ -32,7 +32,7 @@ func TestEmperical2D(t *testing.T) {
 		{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4},
 		{3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}}
 
-	p := goent.Emperical2D(d)
+	p := discrete.Emperical2D(d)
 
 	if len(p) != 4 {
 		t.Errorf("Emperical2D number of rows should be 4 but it is %d", len(p))
@@ -61,7 +61,7 @@ func TestEmperical3D(t *testing.T) {
 		{1, 1, 0}, {1, 1, 1}, {1, 1, 2}, {1, 1, 3},
 		{1, 2, 0}, {1, 2, 1}, {1, 2, 2}, {1, 2, 3}}
 
-	p := goent.Emperical3D(d)
+	p := discrete.Emperical3D(d)
 
 	if len(p) != 2 {
 		t.Errorf("Emperical3D 1st dimension should be 2 but it is %d", len(p))

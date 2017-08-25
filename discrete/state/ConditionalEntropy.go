@@ -1,14 +1,16 @@
-package goent
+package state
 
 import (
 	"math"
+
+	"github.com/kzahedi/goent/discrete/"
 )
 
 // cH calculates the conditional entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
 // H(X|Y) = -\sum_x p(x,y) LnFunc(p(x,y)/p(y))
-func cH(pxy [][]float64, log LnFunc) float64 {
+func cH(pxy [][]float64, log goent.LnFunc) float64 {
 	var r float64
 	xDim := len(pxy)
 	yDim := len(pxy[0])
@@ -36,7 +38,7 @@ func ConditionalEntropy(pxy [][]float64) float64 {
 	return cH(pxy, math.Log)
 }
 
-// ConditionalEntropy calculates the conditional entropy of a
+// ConditionalEntropy2 calculates the conditional entropy of a
 // probability distribution in bits
 // H(X|Y) = -\sum_x p(x,y) log2(p(x,y)/p(y))
 func ConditionalEntropy2(pxy [][]float64) float64 {

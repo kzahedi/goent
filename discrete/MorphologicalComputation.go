@@ -1,4 +1,4 @@
-package goent
+package discrete
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	stat "gonum.org/v1/gonum/stat"
 )
 
-// MC_W quantifies morphological computation as the information that is contained in
+// MorphologicalComputationW quantifies morphological computation as the information that is contained in
 // W about W' that is not contained in A. For more details, please read
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 // http://www.mdpi.com/1099-4300/15/5/1887 (open access)
@@ -15,27 +15,27 @@ import (
 // morphological computation in muscle and dc-motor driven models of hopping movements.
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
-func MC_W(pw2w1a1 [][][]float64) float64 {
+func MorphologicalComputationW(pw2w1a1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2w1a1)
 }
 
-// MC_A quantifies morphological computation as the information that is contained in
+// MorphologicalComputationA quantifies morphological computation as the information that is contained in
 // A about W' that is not contained in W. For more details, please read
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 // http://www.mdpi.com/1099-4300/15/5/1887 (open access)
-func MC_A(pw2a1w1 [][][]float64) float64 {
+func MorphologicalComputationA(pw2a1w1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2a1w1)
 }
 
-// MC_CW quantifies morphological computation as the causal information flow from
+// MorphologicalComputationCW quantifies morphological computation as the causal information flow from
 // W to W' that does pass through A
-// MC_CW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
-func MC_CW(pw2w1, pw2a1 [][]float64) float64 {
+// MorphologicalComputationCW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
+func MorphologicalComputationCW(pw2w1, pw2a1 [][]float64) float64 {
 	return MutualInformation2(pw2w1) - MutualInformation2(pw2a1)
 }
 
-// MC_WA = I(W;{W,A}) - I(W';A)
-func MC_WA(pw2w1a1 [][][]float64) float64 {
+// MorphologicalComputationWA = I(W;{W,A}) - I(W';A)
+func MorphologicalComputationWA(pw2w1a1 [][][]float64) float64 {
 	w2Dim := len(pw2w1a1)
 	w1Dim := len(pw2w1a1[0])
 	a1Dim := len(pw2w1a1[0][0])
@@ -50,8 +50,8 @@ func MC_WA(pw2w1a1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2w1a1) - MutualInformation2(pw2a1)
 }
 
-// MC_WS = I(W;{W,S}) - I(W';S)
-func MC_WS(pw2w1s1 [][][]float64) float64 {
+// MorphologicalComputationWS = I(W;{W,S}) - I(W';S)
+func MorphologicalComputationWS(pw2w1s1 [][][]float64) float64 {
 	w2Dim := len(pw2w1s1)
 	w1Dim := len(pw2w1s1[0])
 	s1Dim := len(pw2w1s1[0][0])
@@ -66,20 +66,20 @@ func MC_WS(pw2w1s1 [][][]float64) float64 {
 	return ConditionalMutualInformation2(pw2w1s1) - MutualInformation2(pw2s1)
 }
 
-// MC_W quantifies morphological computation as the information that is contained in
+// MorphologicalComputationMI quantifies morphological computation as the information that is contained in
 // W about W' that is not contained in A. For more details, please read
 // K. Ghazi-Zahedi, D. F. Haeufle, G. F. Montufar, S. Schmitt, and N. Ay. Evaluating
 // morphological computation in muscle and dc-motor driven models of hopping movements.
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
-func MC_MI(pw2w1 [][]float64, pa1s1 [][]float64) float64 {
+func MorphologicalComputationMI(pw2w1 [][]float64, pa1s1 [][]float64) float64 {
 	return MutualInformation2(pw2w1) - MutualInformation2(pa1s1)
 }
 
-// MC_SY quantifies morphological computation as the synergistic information that
+// MorphologicalComputationSY quantifies morphological computation as the synergistic information that
 // W and A contain about W'. For more details, please read
 // TODO Paper reference
-func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
+func MorphologicalComputationSY(pw2w1a1 [][][]float64, iterations int) float64 {
 	split := IterativeScaling{}
 
 	split.NrOfVariables = 3
@@ -112,11 +112,11 @@ func MC_SY(pw2w1a1 [][][]float64, iterations int) float64 {
 	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
-// MC_SY_NID quantifies morphological computation as the synergistic
+// MorphologicalComputationSyNid quantifies morphological computation as the synergistic
 // information that W and A contain about W', excluding the input distribution
 // (W,A). For more details, please read
 // TODO Paper reference
-func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
+func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float64 {
 	split := IterativeScaling{}
 
 	split.NrOfVariables = 3
@@ -144,7 +144,7 @@ func MC_SY_NID(pw2w1a1 [][][]float64, iterations int) float64 {
 	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
-// MC_Wp [...]
-func MC_Wp(pw2w1a1 [][][]float64, iterations int) float64 {
-	return MC_W(pw2w1a1) - MC_SY(pw2w1a1, iterations)
+// MorphologicalComputationWp [...]
+func MorphologicalComputationWp(pw2w1a1 [][][]float64, iterations int) float64 {
+	return MorphologicalComputationW(pw2w1a1) - MorphologicalComputationSY(pw2w1a1, iterations)
 }

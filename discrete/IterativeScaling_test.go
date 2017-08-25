@@ -1,17 +1,18 @@
-package goent_test
+package discrete_test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
-	"github.com/kzahedi/goent"
+	"github.com/kzahedi/goent/discrete"
 	stat "gonum.org/v1/gonum/stat"
 )
 
 // alphabet         [][]int
 
 func TestIterativeScalingAND(t *testing.T) {
-	split := goent.IterativeScaling{}
+	split := discrete.IterativeScaling{}
 
 	split.NrOfVariables = 3
 	split.NrOfStates = make([]int, 3, 3)
@@ -38,12 +39,12 @@ func TestIterativeScalingAND(t *testing.T) {
 	r := stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 
 	if r > 0.0001 {
-		t.Errorf("AND should be 0 but it is ", r)
+		t.Errorf(fmt.Sprintf("AND should be 0 but it is %f", r))
 	}
 }
 
 func TestIterativeScalingOR(t *testing.T) {
-	split := goent.IterativeScaling{}
+	split := discrete.IterativeScaling{}
 
 	split.NrOfVariables = 3
 	split.NrOfStates = make([]int, 3, 3)
@@ -70,12 +71,12 @@ func TestIterativeScalingOR(t *testing.T) {
 	r := stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 
 	if r > 0.0001 {
-		t.Errorf("AND should be 0 but it is ", r)
+		t.Errorf(fmt.Sprintf("AND should be 0 but it is %f", r))
 	}
 }
 
 func TestIterativeScalingXOR(t *testing.T) {
-	split := goent.IterativeScaling{}
+	split := discrete.IterativeScaling{}
 
 	split.NrOfVariables = 3
 	split.NrOfStates = make([]int, 3, 3)
@@ -103,7 +104,7 @@ func TestIterativeScalingXOR(t *testing.T) {
 	r := stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 
 	if math.Abs(r-1.0) > 0.00001 {
-		t.Errorf("XOR should be 1 but it is ", r)
+		t.Errorf(fmt.Sprintf("XOR should be 1 but it is %f", r))
 	}
 }
 
@@ -111,12 +112,12 @@ func TestIterativeScalingXOR(t *testing.T) {
 // alph := []int{10, 20, 30, 40, 50}
 // a := []int{10, 20, 30, 40, 50}
 // f := []int{1, 3}
-// if goent.check_feature_alphabet(f, a, alph) == false {
+// if discrete.check_feature_alphabet(f, a, alph) == false {
 // t.Errorf("check_feature_alphabet(", f, ",", a, ",", alph, ") should be true")
 // }
 // a = []int{100, 200, 300, 400, 500}
 // g := []int{1, 2}
-// if goent.check_feature_alphabet(g, a, alph) == true {
+// if discrete.check_feature_alphabet(g, a, alph) == true {
 // t.Errorf("check_feature_alphabet(", g, ",", a, ",", alph, ") should be false")
 // }
 // }
@@ -131,7 +132,7 @@ func TestIterativeScalingXOR(t *testing.T) {
 // {1, 5, 3}}
 // f := []int{0, 2}
 // index := 0
-// indices := goent.Get_alphabet_indices(index, f, &alphabet)
+// indices := discrete.Get_alphabet_indices(index, f, &alphabet)
 // if len(indices) != 4 {
 // t.Errorf("Get_alphabet_indices should return 4 values, but only has ", len(indices))
 // }

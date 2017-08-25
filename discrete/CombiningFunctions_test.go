@@ -1,4 +1,4 @@
-package goent_test
+package discrete_test
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kzahedi/goent"
+	"github.com/kzahedi/goent/discrete"
 )
 
 func TestMIasEntropies(t *testing.T) {
@@ -20,9 +20,9 @@ func TestMIasEntropies(t *testing.T) {
 
 	px := []float64{1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0}
 
-	mi1 := goent.MutualInformation2(p1)
-	ch1 := goent.ConditionalEntropy2(p1)
-	h1 := goent.Entropy2(px)
+	mi1 := discrete.MutualInformation2(p1)
+	ch1 := discrete.ConditionalEntropy2(p1)
+	h1 := discrete.Entropy2(px)
 	diff1 := mi1 - (h1 - ch1)
 
 	if math.Abs(diff1) > 0.0001 {
@@ -35,9 +35,9 @@ func TestMIasEntropies(t *testing.T) {
 		{0.0, 0.0, 1.0 / 4.0, 0.0},
 		{0.0, 0.0, 0.0, 1.0 / 4.0}}
 
-	mi2 := goent.MutualInformation2(p2)  // I(X;Y) = H(X) - H(X|Y)
-	ch2 := goent.ConditionalEntropy2(p2) // H(X|Y)
-	h2 := goent.Entropy2(px)             // H(X)
+	mi2 := discrete.MutualInformation2(p2)  // I(X;Y) = H(X) - H(X|Y)
+	ch2 := discrete.ConditionalEntropy2(p2) // H(X|Y)
+	h2 := discrete.Entropy2(px)             // H(X)
 	diff2 := mi2 - (h2 - ch2)
 
 	if math.Abs(diff2) > 0.0001 {
@@ -101,9 +101,9 @@ func TestCMIasMI(t *testing.T) {
 		}
 	}
 
-	cmi := goent.ConditionalMutualInformation2(pxyz)
-	multi := goent.MutualInformation2(px_yz)
-	mi := goent.MutualInformation2(pxz)
+	cmi := discrete.ConditionalMutualInformation2(pxyz)
+	multi := discrete.MutualInformation2(px_yz)
+	mi := discrete.MutualInformation2(pxz)
 	diff := cmi - (multi - mi)
 
 	if math.Abs(diff) > 0.0001 {
