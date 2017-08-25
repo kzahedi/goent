@@ -13,19 +13,26 @@ Discrete state space
     - Chao-Shen
     - Conditional Entropy
 
+Discrete state-dependent measures
+- Mutual Information
+- Conditional Mutual Information
+- Entropy
+
+Continuous state spaces:
+- Frenzel-Pompe
+
+
 Morphological Computation Measures:
 - MC_W
 - MC_A
 - MC_SY
 - MC_WS
 - MC_WA
-- MC_P
+- MC_Wp
 
 Max Entropy Estimations:
 - Iterative Scaling
 
-Experiments:
-- Non-binary model of the sensorimotor loop
 
 References:
 - K. Ghazi-Zahedi, R. Deimel, G. Montufar, V. Wall, and O. Brock. Morphological computation: The good, the bad, and the ugly. In IROS 2017, 2017.
@@ -35,4 +42,4 @@ References:
 - T. M. Cover and J. A. Thomas. Elements of Information Theory, Volume 2nd. Wiley, Hoboken, New Jersey, USA, 2006.
 - I. Csiszar. i-divergence geometry of probability distributions and minimization problems. Ann. Probab., 3(1):146–158, 02 1975.
 - A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s index of diversity when there are unseen species in sample. Environmental and Ecological Statistics, 10(4):429–443, 2003.
-
+- S. Frenzel and B. Pompe. Partial mutual information for coupling analysis of multivariate time series. Phys. Rev. Lett., 99:204101, Nov 2007.
