@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/kzahedi/goent"
+	"github.com/kzahedi/goent/discrete"
 	"github.com/kzahedi/goent/state"
 )
 
@@ -20,8 +20,8 @@ func TestMutualInformation(t *testing.T) {
 		}
 
 		r := state.MutualInformation(data)
-		p := goent.Emperical2D(data)
-		mi := goent.MutualInformation(p)
+		p := discrete.Emperical2D(data)
+		mi := discrete.MutualInformation(p)
 
 		s := 0.0
 		for i := 0; i < len(r); i++ {

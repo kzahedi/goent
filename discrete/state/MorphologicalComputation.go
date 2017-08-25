@@ -1,7 +1,5 @@
 package state
 
-//
-
 // MorphologicalComputatioW quantifies morphological computation as the information that is contained in
 // W about W' that is not contained in A. For more details, please read
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.

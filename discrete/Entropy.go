@@ -19,7 +19,7 @@ func entropy(p []float64, ln LnFunc) float64 {
 }
 
 // Entropy calculates the entropy of a probability distribution with base e
-// H(X) = -\sum_x p(x) ln(p(x))
+//  H(X) = -\sum_x p(x) ln(p(x))
 func Entropy(p []float64) float64 {
 	return entropy(p, math.Log)
 }
