@@ -1,5 +1,7 @@
 package continuous
 
+import "math"
+
 // Harmonic as defined in Frenzel & Pompe, 2007
 //   h_x = - \sum_n n^{-1}
 func Harmonic(n int64) (r float64) {
@@ -12,4 +14,14 @@ func Harmonic(n int64) (r float64) {
 		}
 	}
 	return
+}
+
+// Distance calculates the Euclidean distance between
+// two vectors of equal length
+func Distance(a, b []float64, indices []int64) float64 {
+	d := 0.0
+	for _, v := range indices {
+		d += (a[v] - b[v]) * (a[v] - b[v])
+	}
+	return math.Sqrt(d)
 }

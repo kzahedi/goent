@@ -21,6 +21,8 @@ Discrete state-dependent measures
 Continuous state spaces:
 - Frenzel-Pompe
 
+State-dependent measures on continuous state spaces:
+- Frenzel-Pompe
 
 Morphological Computation Measures:
 - MC_W
@@ -43,3 +45,4 @@ References:
 - I. Csiszar. i-divergence geometry of probability distributions and minimization problems. Ann. Probab., 3(1):146–158, 02 1975.
 - A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s index of diversity when there are unseen species in sample. Environmental and Ecological Statistics, 10(4):429–443, 2003.
 - S. Frenzel and B. Pompe. Partial mutual information for coupling analysis of multivariate time series. Phys. Rev. Lett., 99:204101, Nov 2007.
+- A. Kraskov, H. Stoegbauer, and P. Grassberger. Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
