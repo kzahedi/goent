@@ -18,8 +18,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 	N := float64(len(xy))
 	r := make([]float64, len(xy), len(xy))
 
-	hk := continuous.Harmonic(k) / N            // h(k)
-	hN := continuous.Harmonic(int(len(xy))) / N // h(N)
+	hk := continuous.Harmonic(k)            // h(k)
+	hN := continuous.Harmonic(int(len(xy))) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -35,7 +35,7 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices) // N_y
 		hNy := continuous.Harmonic(cNy + 1)           // h(N_y)
 
-		r[t] = -hNx - hNy + hk + hN
+		r[t] = (-hNx - hNy + hk + hN) / N
 
 		if eta == true {
 			bar.Increment()
@@ -55,12 +55,14 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
 func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k int, eta bool) []float64 {
 
-	N := float64(len(xy))
-	r := make([]float64, len(xy), len(xy))
+	n := len(xy)
+	r := make([]float64, n, n)
 
-	hk := continuous.Harmonic(k) / N
-	hN := continuous.Harmonic(int(len(xy))) / N
-	kfactor := 1.0 / (float64(k) * N)
+	N := float64(len(xy))
+
+	hk := continuous.Harmonic(k)
+	hN := continuous.Harmonic(n)
+	k1 := 1.0 / float64(k)
 
 	var bar *pb.ProgressBar
 
@@ -76,7 +78,8 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices)
 		hNy := continuous.Harmonic(cNy)
 
-		r[t] = -hNx - hNy + hk + hN - kfactor
+		r[t] = (-hNx - hNy + hk + hN - k1) / N
+
 		if eta == true {
 			bar.Increment()
 		}
