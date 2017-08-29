@@ -2,9 +2,9 @@ package discrete
 
 import "math"
 
-// mi calculates the mutual information with the given LnFunc function
-// MI(X,Y) = \sum_x,y p(x,y) (LnFunc(p(x,y)) - LnFunc(p(x)p(y)))
-func mi(pxy [][]float64, log LnFunc) float64 {
+// mi calculates the mutual information with the given lnFunc function
+// MI(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
+func mi(pxy [][]float64, log lnFunc) float64 {
 
 	xDim := len(pxy)
 	yDim := len(pxy[0])

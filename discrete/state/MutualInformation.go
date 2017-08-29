@@ -6,9 +6,9 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-// mi calculates the mutual information for each state with the given LnFunc function
-//   MI(X,Y) = \sum_x,y p(x,y) (LnFunc(p(x,y)) - LnFunc(p(x)p(y)))
-func mi(data [][]int64, log discrete.LnFunc) []float64 {
+// mi calculates the mutual information for each state with the given lnFunc function
+//   MI(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
+func mi(data [][]int64, log lnFunc) []float64 {
 	pxy := discrete.Emperical2D(data)
 	r := make([]float64, len(data), len(data))
 

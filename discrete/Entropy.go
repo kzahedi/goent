@@ -7,8 +7,8 @@ import (
 // entropy calculates the entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
-// H(X) = -\sum_x p(x) LnFunc(p(x))
-func entropy(p []float64, ln LnFunc) float64 {
+// H(X) = -\sum_x p(x) lnFunc(p(x))
+func entropy(p []float64, ln lnFunc) float64 {
 	var r float64
 	for _, px := range p {
 		if px > 0 {
@@ -36,7 +36,7 @@ func Entropy2(p []float64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyMLBC(data []int64, ln LnFunc) float64 {
+func entropyMLBC(data []int64, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	S := float64(len(p))
@@ -81,7 +81,7 @@ func EntropyMLBC2(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyHorvitzThompson(data []int64, ln LnFunc) float64 {
+func entropyHorvitzThompson(data []int64, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	r := 0.0
@@ -123,7 +123,7 @@ func EntropyHorvitzThompson2(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyChaoShen(data []int64, ln LnFunc) float64 {
+func entropyChaoShen(data []int64, ln lnFunc) float64 {
 	n := float64(len(data))
 	nrOfSingletons := 0.0
 	histogram := map[int64]float64{}

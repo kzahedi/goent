@@ -6,10 +6,10 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-// CMI calculates the conditional mutual information with the given LnFunc
+// CMI calculates the conditional mutual information with the given lnFunc
 // function for each (x_t,y_t,z_t)
-// CMI(X_t,Y_t|Z_t) = (LnFunc(p(x,y|z)) - LnFunc(p(x|z)p(y|z)))
-func CMI(xyz [][]int64, ln discrete.LnFunc) []float64 {
+// CMI(X_t,Y_t|Z_t) = (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
+func CMI(xyz [][]int64, ln lnFunc) []float64 {
 
 	pxyz := discrete.Emperical3D(xyz)
 	r := make([]float64, len(xyz), len(xyz))

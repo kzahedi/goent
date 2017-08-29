@@ -2,9 +2,9 @@ package discrete
 
 import "math"
 
-// CMI calculates the conditional mutual information with the given LnFunc function
-// CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (LnFunc(p(x,y|z)) - LnFunc(p(x|z)p(y|z)))
-func cmi(pxyz [][][]float64, ln LnFunc) float64 {
+// CMI calculates the conditional mutual information with the given lnFunc function
+// CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
+func cmi(pxyz [][][]float64, ln lnFunc) float64 {
 
 	xDim := len(pxyz)
 	yDim := len(pxyz[0])

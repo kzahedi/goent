@@ -9,8 +9,8 @@ import (
 // H calculates the entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
-// H(X) = -\sum_x p(x) LnFunc(p(x))
-func H(data []int64, ln discrete.LnFunc) []float64 {
+// H(X) = -\sum_x p(x) lnFunc(p(x))
+func H(data []int64, ln lnFunc) []float64 {
 	r := make([]float64, len(data), len(data))
 	p := discrete.Emperical1D(data)
 	for i := 0; i < len(data); i++ {

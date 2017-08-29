@@ -2,15 +2,13 @@ package state
 
 import (
 	"math"
-
-	"github.com/kzahedi/goent/discrete"
 )
 
 // cH calculates the conditional entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
-// H(X|Y) = -\sum_x p(x,y) LnFunc(p(x,y)/p(y))
-func cH(pxy [][]float64, log discrete.LnFunc) float64 {
+// H(X|Y) = -\sum_x p(x,y) lnFunc(p(x,y)/p(y))
+func cH(pxy [][]float64, log lnFunc) float64 {
 	var r float64
 	xDim := len(pxy)
 	yDim := len(pxy[0])
