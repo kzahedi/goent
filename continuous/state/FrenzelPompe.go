@@ -4,8 +4,6 @@ import (
 	"math"
 	"sort"
 
-	"github.com/kzahedi/goent/continuous"
-
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
@@ -18,7 +16,7 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 	r := make([]float64, len(xyz), len(xyz))
 
 	N := float64(len(xyz))
-	hk := continuous.Harmonic(k - 1)
+	hk := harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
@@ -30,13 +28,13 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		epsilon := fpGetEpsilon(k, xyz[t], xyz, xIndices, yIndices, zIndices)
 
 		cNxy := fpCountXY(epsilon, xyz[t], xyz, xIndices, yIndices)
-		hNxy := continuous.Harmonic(cNxy)
+		hNxy := harmonic(cNxy)
 
 		cNyz := fpCountYZ(epsilon, xyz[t], xyz, yIndices, zIndices)
-		hNyz := continuous.Harmonic(cNyz)
+		hNyz := harmonic(cNyz)
 
 		cNz := fpCountZ(epsilon, xyz[t], xyz, zIndices)
-		hNz := continuous.Harmonic(cNz)
+		hNz := harmonic(cNz)
 
 		r[t] = (hNxy + hNyz - hNz - hk) / N
 		if eta == true {
@@ -125,4 +123,16 @@ func distance(a, b []float64, indices []int) float64 {
 		d += (a[v] - b[v]) * (a[v] - b[v])
 	}
 	return math.Sqrt(d)
+}
+
+func harmonic(n int) (r float64) {
+	// harmonic(1) = -C, see A. Kraskov, H. Stoeogbauer, and P. Grassberger.
+	// Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
+	r = -0.5772156649
+	if n > 0 {
+		for i := 2.0; i < float64(n); i++ {
+			r -= 1.0 / i
+		}
+	}
+	return
 }

@@ -4,8 +4,6 @@ import (
 	"math"
 	"sort"
 
-	"github.com/kzahedi/goent/continuous"
-
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
@@ -18,8 +16,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 	N := float64(len(xy))
 	r := make([]float64, len(xy), len(xy))
 
-	hk := continuous.Harmonic(k)            // h(k)
-	hN := continuous.Harmonic(int(len(xy))) // h(N)
+	hk := harmonic(k)            // h(k)
+	hN := harmonic(int(len(xy))) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -30,10 +28,10 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices) // N_x
-		hNx := continuous.Harmonic(cNx + 1)           // h(N_x)
+		hNx := harmonic(cNx + 1)                      // h(N_x)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices) // N_y
-		hNy := continuous.Harmonic(cNy + 1)           // h(N_y)
+		hNy := harmonic(cNy + 1)                      // h(N_y)
 
 		r[t] = (-hNx - hNy + hk + hN) / N
 
@@ -60,8 +58,8 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 
 	N := float64(len(xy))
 
-	hk := continuous.Harmonic(k)
-	hN := continuous.Harmonic(n)
+	hk := harmonic(k)
+	hN := harmonic(n)
 	k1 := 1.0 / float64(k)
 
 	var bar *pb.ProgressBar
@@ -73,10 +71,10 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices)
-		hNx := continuous.Harmonic(cNx)
+		hNx := harmonic(cNx)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices)
-		hNy := continuous.Harmonic(cNy)
+		hNy := harmonic(cNy)
 
 		r[t] = (-hNx - hNy + hk + hN - k1) / N
 

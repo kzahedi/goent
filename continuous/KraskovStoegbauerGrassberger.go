@@ -15,8 +15,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 
 	r = 0.0
 
-	hk := Harmonic(k)            // h(k)
-	hN := Harmonic(int(len(xy))) // h(N)
+	hk := harmonic(k)            // h(k)
+	hN := harmonic(int(len(xy))) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -27,10 +27,10 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices) // N_x
-		hNx := Harmonic(cNx + 1)                      // h(N_x)
+		hNx := harmonic(cNx + 1)                      // h(N_x)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices) // N_y
-		hNy := Harmonic(cNy + 1)                      // h(N_y)
+		hNy := harmonic(cNy + 1)                      // h(N_y)
 
 		r -= hNx + hNy
 
@@ -58,8 +58,8 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 
 	r = 0.0
 
-	hk := Harmonic(k)
-	hN := Harmonic(int(len(xy)))
+	hk := harmonic(k)
+	hN := harmonic(int(len(xy)))
 
 	var bar *pb.ProgressBar
 
@@ -70,10 +70,10 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices)
-		hNx := Harmonic(cNx)
+		hNx := harmonic(cNx)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices)
-		hNy := Harmonic(cNy)
+		hNy := harmonic(cNy)
 
 		r -= hNx + hNy
 
