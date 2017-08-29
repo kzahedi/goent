@@ -36,8 +36,8 @@ func TestFrenzelPompe(t *testing.T) {
 		xyz = append(xyz, xyzd)
 	}
 
-	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 5, false)
-	s := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 5, false)
+	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)
+	s := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)
 	q := 0.0
 
 	for _, v := range s {

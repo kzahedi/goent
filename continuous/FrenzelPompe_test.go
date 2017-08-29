@@ -14,7 +14,7 @@ import (
 
 func TestFrenzelPompe(t *testing.T) {
 	t.Log("Testing FrenzelPompe against independent distribution")
-	rand.Seed(1)
+	rand.Seed(2)
 
 	N := 1000
 
@@ -35,7 +35,7 @@ func TestFrenzelPompe(t *testing.T) {
 		xyz = append(xyz, xyzd)
 	}
 
-	if r := math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 5, false)); r > 0.0001 {
+	if r := math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)); r > 0.1 {
 		t.Errorf(fmt.Sprintf("Conditional Mutual information should be close to be 0.0 but it is %f", r))
 	}
 }

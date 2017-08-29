@@ -33,8 +33,8 @@ func TestKraskovStoegbauerGrassberger1Independent(t *testing.T) {
 		xy = append(xy, xyd)
 	}
 
-	r1 := continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 5, false)
-	r2 := state.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 5, false)
+	r1 := continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 30, false)
+	r2 := state.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 30, false)
 	r3 := 0.0
 
 	for _, v := range r2 {
@@ -104,8 +104,8 @@ func TestKraskovStoegbauerGrassberger2Independent(t *testing.T) {
 		xy = append(xy, xyd)
 	}
 
-	r1 := continuous.KraskovStoegbauerGrassberger2(xy, xIndex, yIndex, 5, false)
-	r2 := state.KraskovStoegbauerGrassberger2(xy, xIndex, yIndex, 5, false)
+	r1 := continuous.KraskovStoegbauerGrassberger2(xy, xIndex, yIndex, 30, false)
+	r2 := state.KraskovStoegbauerGrassberger2(xy, xIndex, yIndex, 30, false)
 	r3 := 0.0
 
 	for _, v := range r2 {
