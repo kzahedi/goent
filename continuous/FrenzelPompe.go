@@ -58,15 +58,15 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 // fpMaxNorm3 computes the max-norm of two 3-dimensional vectors
 //   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|, |a[2] - b[2]|)
 func fpMaxNorm3(a, b []float64, xIndices, yIndices, zIndices []int) float64 {
-	xDist := Distance(a, b, xIndices)
-	yDist := Distance(a, b, yIndices)
-	zDist := Distance(a, b, zIndices)
+	xDist := distance(a, b, xIndices)
+	yDist := distance(a, b, yIndices)
+	zDist := distance(a, b, zIndices)
 	return math.Max(xDist, math.Max(yDist, zDist))
 }
 
 // fpGetEpsilon calculate epsilon_k(t) as defined by Frenzel & Pompe, 2007
-// epsilon_k(t) is the Distance of the k-th nearest neighbour. The function
-// takes k, the point from which the Distance is calculated (xyz), and the
+// epsilon_k(t) is the distance of the k-th nearest neighbour. The function
+// takes k, the point from which the distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
 func fpGetEpsilon(k int, xyz []float64, data [][]float64, xIndices, yIndices, zIndices []int) float64 {
 	Distances := make([]float64, len(data), len(data))
@@ -81,7 +81,7 @@ func fpGetEpsilon(k int, xyz []float64, data [][]float64, xIndices, yIndices, zI
 }
 
 // fpCountXY count the number of points for which the x and y coordinate is
-// closer than epsilon, where the Distance is measured by the max-norm
+// closer than epsilon, where the distance is measured by the max-norm
 func fpCountXY(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndices []int) (c int) {
 
 	for t := 0; t < len(data); t++ {
@@ -94,7 +94,7 @@ func fpCountXY(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndi
 }
 
 // fpCountYZ count the number of points for which the y and z coordinate is
-// closer than epsilon, where the Distance is measured by the max-norm
+// closer than epsilon, where the distance is measured by the max-norm
 func fpCountYZ(epsilon float64, xyz []float64, data [][]float64, yIndices, zIndices []int) (c int) {
 
 	for t := 0; t < len(data); t++ {
@@ -107,8 +107,8 @@ func fpCountYZ(epsilon float64, xyz []float64, data [][]float64, yIndices, zIndi
 }
 
 func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
-	xDist := Distance(a, b, xIndices)
-	yDist := Distance(a, b, yIndices)
+	xDist := distance(a, b, xIndices)
+	yDist := distance(a, b, yIndices)
 	return math.Max(xDist, yDist)
 }
 
@@ -116,9 +116,17 @@ func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 // closer than epsilon
 func fpCountZ(epsilon float64, xyz []float64, data [][]float64, zIndices []int) (c int) {
 	for t := 0; t < len(data); t++ {
-		if Distance(xyz, data[t], zIndices) < epsilon {
+		if distance(xyz, data[t], zIndices) < epsilon {
 			c++
 		}
 	}
 	return
+}
+
+func distance(a, b []float64, indices []int) float64 {
+	d := 0.0
+	for _, v := range indices {
+		d += (a[v] - b[v]) * (a[v] - b[v])
+	}
+	return math.Sqrt(d)
 }

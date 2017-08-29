@@ -54,9 +54,9 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 // fpMaxNorm3 computes the max-norm of two 3-dimensional vectors
 //   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|, |a[2] - b[2]|)
 func fpMaxNorm3(a, b []float64, xIndices, yIndices, zIndices []int) float64 {
-	xDist := continuous.Distance(a, b, xIndices)
-	yDist := continuous.Distance(a, b, yIndices)
-	zDist := continuous.Distance(a, b, zIndices)
+	xDist := distance(a, b, xIndices)
+	yDist := distance(a, b, yIndices)
+	zDist := distance(a, b, zIndices)
 	return math.Max(xDist, math.Max(yDist, zDist))
 }
 
@@ -103,8 +103,8 @@ func fpCountYZ(epsilon float64, xyz []float64, data [][]float64, yIndices, zIndi
 }
 
 func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
-	xDist := continuous.Distance(a, b, xIndices)
-	yDist := continuous.Distance(a, b, yIndices)
+	xDist := distance(a, b, xIndices)
+	yDist := distance(a, b, yIndices)
 	return math.Max(xDist, yDist)
 }
 
@@ -112,9 +112,17 @@ func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 // closer than epsilon
 func fpCountZ(epsilon float64, xyz []float64, data [][]float64, zIndices []int) (c int) {
 	for t := 0; t < len(data); t++ {
-		if continuous.Distance(xyz, data[t], zIndices) < epsilon {
+		if distance(xyz, data[t], zIndices) < epsilon {
 			c++
 		}
 	}
 	return
+}
+
+func distance(a, b []float64, indices []int) float64 {
+	d := 0.0
+	for _, v := range indices {
+		d += (a[v] - b[v]) * (a[v] - b[v])
+	}
+	return math.Sqrt(d)
 }
