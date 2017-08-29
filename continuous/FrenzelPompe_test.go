@@ -14,6 +14,7 @@ import (
 
 func TestFrenzelPompe(t *testing.T) {
 	t.Log("Testing FrenzelPompe against independent distribution")
+	rand.Seed(1)
 
 	N := 1000
 
@@ -41,6 +42,7 @@ func TestFrenzelPompe(t *testing.T) {
 
 func TestFrenzelPompeGaussian(t *testing.T) {
 	t.Log("Testing FrenzelPompe against Gaussian distribution")
+	rand.Seed(1)
 
 	N := 1000
 	k := 30

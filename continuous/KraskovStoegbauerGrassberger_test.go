@@ -13,6 +13,7 @@ import (
 
 func TestKraskovStoegbauerGrassberger1Independent(t *testing.T) {
 	t.Log("Testing KraskovStoegbauerGrassberger1 against independent distribution")
+	rand.Seed(1)
 
 	N := 1000
 
@@ -37,6 +38,7 @@ func TestKraskovStoegbauerGrassberger1Independent(t *testing.T) {
 
 func TestKraskovStoegbauerGrassberger1Gaussian(t *testing.T) {
 	t.Log("Testing KraskovStoegbauerGrassberger1 against Gaussian distribution")
+	rand.Seed(1)
 
 	N := 1000
 	k := 20
@@ -75,6 +77,7 @@ func TestKraskovStoegbauerGrassberger1Gaussian(t *testing.T) {
 
 func TestKraskovStoegbauerGrassberger2Independent(t *testing.T) {
 	t.Log("Testing KraskovStoegbauerGrassberger1 against Gaussian")
+	rand.Seed(1)
 
 	N := 1000
 
@@ -99,6 +102,7 @@ func TestKraskovStoegbauerGrassberger2Independent(t *testing.T) {
 
 func TestKraskovStoegbauerGrassberger2Gaussian(t *testing.T) {
 	t.Log("Testing KraskovStoegbauerGrassberger2 against Gaussian distribution")
+	rand.Seed(1)
 
 	N := 1000
 	k := 20
