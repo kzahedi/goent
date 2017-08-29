@@ -34,7 +34,7 @@ func TestFrenzelPompe(t *testing.T) {
 		xyz = append(xyz, xyzd)
 	}
 
-	if r := math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 5, false)); r < 0.0001 {
+	if r := math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 5, false)); r > 0.0001 {
 		t.Errorf(fmt.Sprintf("Conditional Mutual information should be close to be 0.0 but it is %f", r))
 	}
 }

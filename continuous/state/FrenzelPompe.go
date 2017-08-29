@@ -17,29 +17,28 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 
 	r := make([]float64, len(xyz), len(xyz))
 
-	hk := continuous.Harmonic(k-1) / float64(len(xyz))
+	N := float64(len(xyz))
+	hk := continuous.Harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
 	if eta == true {
 		bar = pb.StartNew(len(xyz))
 	}
+
 	for t := 0; t < len(xyz); t++ {
 		epsilon := fpGetEpsilon(k, xyz[t], xyz, xIndices, yIndices, zIndices)
 
 		cNxy := fpCountXY(epsilon, xyz[t], xyz, xIndices, yIndices)
 		hNxy := continuous.Harmonic(cNxy)
-		// fmt.Println(fmt.Sprintf("cNxy %d hNxy %f", cNxy, hNxy))
 
 		cNyz := fpCountYZ(epsilon, xyz[t], xyz, yIndices, zIndices)
 		hNyz := continuous.Harmonic(cNyz)
-		// fmt.Println(fmt.Sprintf("cNyz %d hNyz %f", cNyz, hNyz))
 
 		cNz := fpCountZ(epsilon, xyz[t], xyz, zIndices)
 		hNz := continuous.Harmonic(cNz)
-		// fmt.Println(fmt.Sprintf("cNz %d hNz %f", cNz, hNz))
 
-		r[t] = hNxy + hNyz - hNz - hk
+		r[t] = (hNxy + hNyz - hNz - hk) / N
 		if eta == true {
 			bar.Increment()
 		}

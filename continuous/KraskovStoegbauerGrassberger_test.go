@@ -30,7 +30,7 @@ func TestKraskovStoegbauerGrassberger1Independent(t *testing.T) {
 		xy = append(xy, xyd)
 	}
 
-	if r := math.Abs(continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 5, false)); r < 0.0001 {
+	if r := math.Abs(continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 5, false)); r > 0.0001 {
 		t.Errorf(fmt.Sprintf("Mutual information should be close to be 0.0 but it is %f", r))
 	}
 }
