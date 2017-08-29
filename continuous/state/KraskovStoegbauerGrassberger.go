@@ -13,92 +13,113 @@ import (
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
-func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int64, k int64) (r float64) {
+func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k int, eta bool) []float64 {
 
-	r = 0.0
+	N := float64(len(xy))
+	r := make([]float64, len(xy), len(xy))
 
-	h_k := continuous.Harmonic(k)
-	h_N := continuous.Harmonic(len(xy))
+	hk := continuous.Harmonic(k) / N            // h(k)
+	hN := continuous.Harmonic(int(len(xy))) / N // h(N)
 
-	bar := pb.StartNew(len(xy))
+	var bar *pb.ProgressBar
+
+	if eta == true {
+		bar = pb.StartNew(len(xy))
+	}
 	for t := 0; t < len(xy); t++ {
-		epsilon := getEpsilon(k, xy[t], xy, xIndices, yIndices)
+		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
-		c_n_x := count(epsilon, xy[t], xy, xIndices)
-		h_n_x := continuous.Harmonic(c_n_x + 1)
-		// fmt.Println(fmt.Sprintf("c_n_xy %d h_n_xy %f", c_n_xy, h_n_xy))
+		cNx := ksgCount(epsilon, xy[t], xy, xIndices) // N_x
+		hNx := continuous.Harmonic(cNx + 1)           // h(N_x)
 
-		c_n_y := countY(epsilon, xy[t], xy, yIndices)
-		h_n_y := continuous.Harmonic(c_n_y + 1)
-		// fmt.Println(fmt.Sprintf("c_n_yz %d h_n_yz %f", c_n_yz, h_n_yz))
+		cNy := ksgCount(epsilon, xy[t], xy, yIndices) // N_y
+		hNy := continuous.Harmonic(cNy + 1)           // h(N_y)
 
-		r -= h_n_x + h_n_z
+		r[t] = -hNx - hNy + hk + hN
 
-		bar.Increment()
+		if eta == true {
+			bar.Increment()
+		}
 	}
 
-	bar.FinishPrint("Finished")
+	if eta == true {
+		bar.FinishPrint("Finished")
+	}
 
-	r /= float64(len(xy))
-
-	r += h_k + h_N
-
-	return
+	return r
 }
 
 // KraskovStoegbauerGrassberger2 is an implementation of the second
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
-func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int64, k int64) (r float64) {
+func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k int, eta bool) []float64 {
 
-	r = 0.0
+	N := float64(len(xy))
+	r := make([]float64, len(xy), len(xy))
 
-	h_k := continuous.Harmonic(k)
-	h_N := continuous.Harmonic(len(xy))
+	hk := continuous.Harmonic(k) / N
+	hN := continuous.Harmonic(int(len(xy))) / N
+	kfactor := 1.0 / (float64(k) * N)
 
-	bar := pb.StartNew(len(xy))
+	var bar *pb.ProgressBar
+
+	if eta == true {
+		bar = pb.StartNew(len(xy))
+	}
 	for t := 0; t < len(xy); t++ {
-		epsilon := getEpsilon(k, xy[t], xy, xIndices, yIndices)
+		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
-		c_n_x := count(epsilon, xy[t], xy, xIndices)
-		h_n_x := continuous.Harmonic(c_n_x)
+		cNx := ksgCount(epsilon, xy[t], xy, xIndices)
+		hNx := continuous.Harmonic(cNx)
 
-		c_n_y := countY(epsilon, xy[t], xy, yIndices)
-		h_n_y := continuous.Harmonic(c_n_y)
+		cNy := ksgCount(epsilon, xy[t], xy, yIndices)
+		hNy := continuous.Harmonic(cNy)
 
-		r -= h_n_x + h_n_z
-
-		bar.Increment()
+		r[t] = -hNx - hNy + hk + hN - kfactor
+		if eta == true {
+			bar.Increment()
+		}
 	}
 
-	bar.FinishPrint("Finished")
+	if eta == true {
+		bar.FinishPrint("Finished")
+	}
 
-	r /= float64(len(xy))
-
-	r += h_k + h_N - 1.0/float64(k)
-
-	return
+	return r
 }
 
-// getEpsilon calculate epsilon_k(t) as defined by Frenzel & Pompe, 2007
-// epsilon_k(t) is the distance of the k-th nearest neighbour. The function
-// takes k, the point from which the distance is calculated (xyz), and the
+// ksgGetEpsilon calculate epsilon_k(t) as defined by Frenzel & Pompe, 2007
+// epsilon_k(t) is the Distance of the k-th nearest neighbour. The function
+// takes k, the point from which the Distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
-func getEpsilon(k int64, xy []float64, data [][]float64, xIndices, yIndices []int64) float64 {
+func ksgGetEpsilon(k int, xy []float64, data [][]float64, xIndices, yIndices []int) float64 {
 	distances := make([]float64, len(data), len(data))
 
 	for t := 0; t < len(data); t++ {
-		distances[t] = maxNorm2(xy, data[t], xIndices, yIndices)
+		distances[t] = ksgMaxNorm2(xy, data[t], xIndices, yIndices)
 	}
 
 	sort.Float64s(distances)
 
-	return distances[k-1] // we start to count at zero
+	return distances[k-1] // we start to ksgCount at zero
 }
 
-func maxNorm2(a, b []float64, xIndices, yIndices []int64) float64 {
-	xDist := distance(a, b, xIndices)
-	yDist := distance(a, b, yIndices)
-	return math.Max(xDist, yDist)
+func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
+	xDistance := continuous.Distance(a, b, xIndices)
+	yDistance := continuous.Distance(a, b, yIndices)
+	return math.Max(xDistance, yDistance)
+}
+
+// ksgCount count the number of points for which the x or y coordinate is
+// closer than epsilon, where the ksgDistance is measured by the max-norm
+func ksgCount(epsilon float64, xy []float64, data [][]float64, indices []int) (c int) {
+
+	for t := 0; t < len(data); t++ {
+		if continuous.Distance(xy, data[t], indices) < epsilon {
+			c++
+		}
+	}
+
+	return
 }
