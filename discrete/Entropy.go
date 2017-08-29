@@ -4,11 +4,11 @@ import (
 	"math"
 )
 
-// entropy calculates the entropy of a probability distribution.
+// Entropy calculates the entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
 // H(X) = -\sum_x p(x) lnFunc(p(x))
-func entropy(p []float64, ln lnFunc) float64 {
+func Entropy(p []float64, ln lnFunc) float64 {
 	var r float64
 	for _, px := range p {
 		if px > 0 {
@@ -18,25 +18,25 @@ func entropy(p []float64, ln lnFunc) float64 {
 	return r
 }
 
-// Entropy calculates the entropy of a probability distribution with base e
+// EntropyBaseE calculates the entropy of a probability distribution with base e
 //  H(X) = -\sum_x p(x) ln(p(x))
-func Entropy(p []float64) float64 {
-	return entropy(p, math.Log)
+func EntropyBaseE(p []float64) float64 {
+	return Entropy(p, math.Log)
 }
 
-// Entropy2 calculates the entropy of a probability distribution with base 2
+// EntropyBase2 calculates the entropy of a probability distribution with base 2
 // H(X) = -\sum_x p(x) log2(p(x))
-func Entropy2(p []float64) float64 {
-	return entropy(p, math.Log2)
+func EntropyBase2(p []float64) float64 {
+	return Entropy(p, math.Log2)
 }
 
-// entropyMLBC is maximum likelihood estimator with bias correction
+// EntropyMLBC is maximum likelihood estimator with bias correction
 // It takes discretised data and the log
 // function as input. Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyMLBC(data []int64, ln lnFunc) float64 {
+func EntropyMLBC(data []int64, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	S := float64(len(p))
@@ -53,35 +53,35 @@ func entropyMLBC(data []int64, ln lnFunc) float64 {
 
 }
 
-// EntropyMLBC is maximum likelihood estimator with bias correction
+// EntropyMLBCBaseE is maximum likelihood estimator with bias correction
 // It takes discretised data as input and
 // returns the entropy in nats.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyMLBC(data []int64) float64 {
-	return entropyMLBC(data, math.Log)
+func EntropyMLBCBaseE(data []int64) float64 {
+	return EntropyMLBC(data, math.Log)
 }
 
-// EntropyMLBC2 is maximum likelihood estimator with bias correction
+// EntropyMLBCBase2 is maximum likelihood estimator with bias correction
 // It takes discretised data as input and
 // returns the entropy in bits.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyMLBC2(data []int64) float64 {
-	return entropyMLBC(data, math.Log2)
+func EntropyMLBCBase2(data []int64) float64 {
+	return EntropyMLBC(data, math.Log2)
 }
 
-// entropyHorvitzThompson is the Horvitz-Thompson entropy estimator.
+// EntropyHorvitzThompson is the Horvitz-Thompson entropy estimator.
 // It takes discretised data and log function as input.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyHorvitzThompson(data []int64, ln lnFunc) float64 {
+func EntropyHorvitzThompson(data []int64, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	r := 0.0
@@ -95,35 +95,35 @@ func entropyHorvitzThompson(data []int64, ln lnFunc) float64 {
 	return r
 }
 
-// EntropyHorvitzThompson is the Horvitz-Thompson entropy estimator.
+// EntropyHorvitzThompsonBaseE is the Horvitz-Thompson entropy estimator.
 // It takes discretised data as input and
 // return the entropy in nats.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyHorvitzThompson(data []int64) float64 {
-	return entropyHorvitzThompson(data, math.Log)
+func EntropyHorvitzThompsonBaseE(data []int64) float64 {
+	return EntropyHorvitzThompson(data, math.Log)
 }
 
-// EntropyHorvitzThompson2 is the Horvitz-Thompson entropy estimator.
+// EntropyHorvitzThompsonBase2 is the Horvitz-Thompson entropy estimator.
 // It takes discretised data as input and
 // return the entropy in bits.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyHorvitzThompson2(data []int64) float64 {
-	return entropyHorvitzThompson(data, math.Log)
+func EntropyHorvitzThompsonBase2(data []int64) float64 {
+	return EntropyHorvitzThompson(data, math.Log)
 }
 
-// entropyChaoShen is the Chao-Shen entropy estimator. It take discretised data
+// EntropyChaoShen is the Chao-Shen entropy estimator. It take discretised data
 // and the log-function as input
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func entropyChaoShen(data []int64, ln lnFunc) float64 {
+func EntropyChaoShen(data []int64, ln lnFunc) float64 {
 	n := float64(len(data))
 	nrOfSingletons := 0.0
 	histogram := map[int64]float64{}
@@ -168,22 +168,22 @@ func entropyChaoShen(data []int64, ln lnFunc) float64 {
 	return r
 }
 
-// EntropyChaoShen is the Chao-Shen entropy estimator. It take discretised data
+// EntropyChaoShenBaseE is the Chao-Shen entropy estimator. It take discretised data
 // and return nats.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyChaoShen(data []int64) float64 {
-	return entropyChaoShen(data, math.Log)
+func EntropyChaoShenBaseE(data []int64) float64 {
+	return EntropyChaoShen(data, math.Log)
 }
 
-// EntropyChaoShen2 is the Chao-Shen entropy estimator. It take discretised data
+// EntropyChaoShenBase2 is the Chao-Shen entropy estimator. It take discretised data
 // and return bits.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyChaoShen2(data []int64) float64 {
-	return entropyChaoShen(data, math.Log2)
+func EntropyChaoShenBase2(data []int64) float64 {
+	return EntropyChaoShen(data, math.Log2)
 }

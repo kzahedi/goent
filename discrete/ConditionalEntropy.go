@@ -4,11 +4,11 @@ import (
 	"math"
 )
 
-// cH calculates the conditional entropy of a probability distribution.
+// ConditionalEntropy calculates the conditional entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
 // can be chosen
 // H(X|Y) = -\sum_x p(x,y) lnFunc(p(x,y)/p(y))
-func cH(pxy [][]float64, log lnFunc) float64 {
+func ConditionalEntropy(pxy [][]float64, log lnFunc) float64 {
 	var r float64
 	xDim := len(pxy)
 	yDim := len(pxy[0])
@@ -29,16 +29,16 @@ func cH(pxy [][]float64, log lnFunc) float64 {
 	return r
 }
 
-// ConditionalEntropy calculates the conditional entropy of a
+// ConditionalEntropyBaseE calculates the conditional entropy of a
 // probability distribution in nats
 // H(X|Y) = -\sum_x p(x,y) ln(p(x,y)/p(y))
-func ConditionalEntropy(pxy [][]float64) float64 {
-	return cH(pxy, math.Log)
+func ConditionalEntropyBaseE(pxy [][]float64) float64 {
+	return ConditionalEntropy(pxy, math.Log)
 }
 
-// ConditionalEntropy calculates the conditional entropy of a
+// ConditionalEntropyBase2 calculates the conditional entropy of a
 // probability distribution in bits
 // H(X|Y) = -\sum_x p(x,y) log2(p(x,y)/p(y))
-func ConditionalEntropy2(pxy [][]float64) float64 {
-	return cH(pxy, math.Log2)
+func ConditionalEntropyBase2(pxy [][]float64) float64 {
+	return ConditionalEntropy(pxy, math.Log2)
 }

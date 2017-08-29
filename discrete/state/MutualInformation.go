@@ -6,9 +6,9 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-// mi calculates the mutual information for each state with the given lnFunc function
+// MutualInformation calculates the mutual information for each state with the given lnFunc function
 //   MI(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
-func mi(data [][]int64, log lnFunc) []float64 {
+func MutualInformation(data [][]int64, log lnFunc) []float64 {
 	pxy := discrete.Emperical2D(data)
 	r := make([]float64, len(data), len(data))
 
@@ -40,14 +40,14 @@ func mi(data [][]int64, log lnFunc) []float64 {
 	return r
 }
 
-// MutualInformation calculates the mutual information for each state with base e
+// MutualInformationBaseE calculates the mutual information for each state with base e
 //   MI(X,Y) = \sum_x,y p(x,y) (ln(p(x,y)) - ln(p(x)p(y)))
-func MutualInformation(data [][]int64) []float64 {
-	return mi(data, math.Log)
+func MutualInformationBaseE(data [][]int64) []float64 {
+	return MutualInformation(data, math.Log)
 }
 
-// MutualInformation2 calculates the mutual information with for each state with base 2
+// MutualInformationBase2 calculates the mutual information with for each state with base 2
 //   MI(X,Y) = \sum_x,y p(x,y) (log2(p(x,y)) - log2(p(x)p(y)))
-func MutualInformation2(data [][]int64) []float64 {
-	return mi(data, math.Log2)
+func MutualInformationBase2(data [][]int64) []float64 {
+	return MutualInformation(data, math.Log2)
 }

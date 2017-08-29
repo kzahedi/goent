@@ -19,9 +19,9 @@ func TestMutualInformation(t *testing.T) {
 			data[i][1] = rand.Int63n(100)
 		}
 
-		r := state.MutualInformation(data)
+		r := state.MutualInformationBase2(data)
 		p := discrete.Emperical2D(data)
-		mi := discrete.MutualInformation(p)
+		mi := discrete.MutualInformationBase2(p)
 
 		s := 0.0
 		for i := 0; i < len(r); i++ {

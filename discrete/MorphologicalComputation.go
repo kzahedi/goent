@@ -16,7 +16,7 @@ import (
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
 func MorphologicalComputationW(pw2w1a1 [][][]float64) float64 {
-	return ConditionalMutualInformation2(pw2w1a1)
+	return ConditionalMutualInformationBase2(pw2w1a1)
 }
 
 // MorphologicalComputationA quantifies morphological computation as the information that is contained in
@@ -24,14 +24,14 @@ func MorphologicalComputationW(pw2w1a1 [][][]float64) float64 {
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 // http://www.mdpi.com/1099-4300/15/5/1887 (open access)
 func MorphologicalComputationA(pw2a1w1 [][][]float64) float64 {
-	return ConditionalMutualInformation2(pw2a1w1)
+	return ConditionalMutualInformationBase2(pw2a1w1)
 }
 
 // MorphologicalComputationCW quantifies morphological computation as the causal information flow from
 // W to W' that does pass through A
 // MorphologicalComputationCW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
 func MorphologicalComputationCW(pw2w1, pw2a1 [][]float64) float64 {
-	return MutualInformation2(pw2w1) - MutualInformation2(pw2a1)
+	return MutualInformationBase2(pw2w1) - MutualInformationBase2(pw2a1)
 }
 
 // MorphologicalComputationWA = I(W;{W,A}) - I(W';A)
@@ -47,7 +47,7 @@ func MorphologicalComputationWA(pw2w1a1 [][][]float64) float64 {
 			}
 		}
 	}
-	return ConditionalMutualInformation2(pw2w1a1) - MutualInformation2(pw2a1)
+	return ConditionalMutualInformationBase2(pw2w1a1) - MutualInformationBase2(pw2a1)
 }
 
 // MorphologicalComputationWS = I(W;{W,S}) - I(W';S)
@@ -63,7 +63,7 @@ func MorphologicalComputationWS(pw2w1s1 [][][]float64) float64 {
 			}
 		}
 	}
-	return ConditionalMutualInformation2(pw2w1s1) - MutualInformation2(pw2s1)
+	return ConditionalMutualInformationBase2(pw2w1s1) - MutualInformationBase2(pw2s1)
 }
 
 // MorphologicalComputationMI quantifies morphological computation as the information that is contained in
@@ -73,7 +73,7 @@ func MorphologicalComputationWS(pw2w1s1 [][][]float64) float64 {
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
 func MorphologicalComputationMI(pw2w1 [][]float64, pa1s1 [][]float64) float64 {
-	return MutualInformation2(pw2w1) - MutualInformation2(pa1s1)
+	return MutualInformationBase2(pw2w1) - MutualInformationBase2(pa1s1)
 }
 
 // MorphologicalComputationSY quantifies morphological computation as the synergistic information that

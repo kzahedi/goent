@@ -2,9 +2,9 @@ package discrete
 
 import "math"
 
-// CMI calculates the conditional mutual information with the given lnFunc function
+// ConditionalMutualInformation calculates the conditional mutual information with the given lnFunc function
 // CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
-func cmi(pxyz [][][]float64, ln lnFunc) float64 {
+func ConditionalMutualInformation(pxyz [][][]float64, ln lnFunc) float64 {
 
 	xDim := len(pxyz)
 	yDim := len(pxyz[0])
@@ -59,14 +59,14 @@ func cmi(pxyz [][][]float64, ln lnFunc) float64 {
 	return r
 }
 
-// CMI calculates the conditional mutual information with base e
+// ConditionalMutualInformationBaseE calculates the conditional mutual information with base e
 // CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (ln(p(x,y|z)) - ln(p(x|z)p(y|z)))
-func ConditionalMutualInformation(pxyz [][][]float64) float64 {
-	return cmi(pxyz, math.Log)
+func ConditionalMutualInformationBaseE(pxyz [][][]float64) float64 {
+	return ConditionalMutualInformation(pxyz, math.Log)
 }
 
-// CMI calculates the conditional mutual information with base 2
+// ConditionalMutualInformationBase2 calculates the conditional mutual information with base 2
 // CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (log2(p(x,y|z)) - log2(p(x|z)p(y|z)))
-func ConditionalMutualInformation2(pxyz [][][]float64) float64 {
-	return cmi(pxyz, math.Log2)
+func ConditionalMutualInformationBase2(pxyz [][][]float64) float64 {
+	return ConditionalMutualInformation(pxyz, math.Log2)
 }

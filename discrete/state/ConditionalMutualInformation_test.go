@@ -20,9 +20,9 @@ func TestConditionalMutualInformation(t *testing.T) {
 			data[i][2] = rand.Int63n(100)
 		}
 
-		r := state.ConditionalMutualInformation(data)
+		r := state.ConditionalMutualInformationBaseE(data)
 		p := discrete.Emperical3D(data)
-		mi := discrete.ConditionalMutualInformation(p)
+		mi := discrete.ConditionalMutualInformationBaseE(p)
 
 		s := 0.0
 		for i := 0; i < len(r); i++ {
