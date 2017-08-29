@@ -4,24 +4,28 @@
 GO Implementation of Entropy Measures
 
 Discrete state space
-- Mutual Information
-- Conditional Mutual Information
 - Entropy
     - Shannon
     - Maximum Likelihood with Bias Correction
     - Horvitz-Thompson 
     - Chao-Shen
-    - Conditional Entropy
+- Conditional Entropy
+- Mutual Information
+- Conditional Mutual Information
 
 Discrete state-dependent measures
 - Mutual Information
 - Conditional Mutual Information
-- Entropy
+- Entropy (Shannon)
 
 Continuous state spaces:
+- Kraskov-Stoegbauer-Grassberger, Algorithm 1
+- Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
 
 State-dependent measures on continuous state spaces:
+- Kraskov-Stoegbauer-Grassberger, Algorithm 1
+- Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
 
 Morphological Computation Measures:
@@ -30,13 +34,13 @@ Morphological Computation Measures:
 - MC_SY
 - MC_WS
 - MC_WA
-- MC_Wp
+- MC_P
 
 Max Entropy Estimations:
 - Iterative Scaling
 
-
 References:
+- K. Ghazi-Zahedi, C. Langer, N. Ay, Morphological Computation: Synergy of Body and Brain, Entropy, 2017
 - K. Ghazi-Zahedi, R. Deimel, G. Montufar, V. Wall, and O. Brock. Morphological computation: The good, the bad, and the ugly. In IROS 2017, 2017.
 -  K. Ghazi-Zahedi, D. F. Haeufle, G. F. Montufar, S. Schmitt, and N. Ay. Evaluating morphological computation in muscle and dc-motor driven models of hopping movements. Frontiers in Robotics and AI, 3(42), 2016.
 - K. Ghazi-Zahedi and J. Rauh. Quantifying morphological computation based on an information decomposition of the sensorimotor loop. In Proceedings of the 13th European Conference on Artificial Life (ECAL 2015), pages 70—77, July 2015.

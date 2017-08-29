@@ -144,7 +144,7 @@ func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float6
 	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
-// MorphologicalComputationWp [...]
-func MorphologicalComputationWp(pw2w1a1 [][][]float64, iterations int) float64 {
+// MorphologicalComputationP [...]
+func MorphologicalComputationP(pw2w1a1 [][][]float64, iterations int) float64 {
 	return MorphologicalComputationW(pw2w1a1) - MorphologicalComputationSY(pw2w1a1, iterations)
 }
