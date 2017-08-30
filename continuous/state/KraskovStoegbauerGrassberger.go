@@ -41,7 +41,7 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 	}
 
 	if eta == true {
-		bar.FinishPrint("Finished")
+		bar.Finish()
 	}
 
 	return r

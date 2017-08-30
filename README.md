@@ -1,4 +1,4 @@
-# go-entropy
+# goent
 [![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent)
 
 GO Implementation of Entropy Measures

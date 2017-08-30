@@ -36,13 +36,15 @@ func TestFrenzelPompe(t *testing.T) {
 		xyz = append(xyz, xyzd)
 	}
 
-	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)
 	s := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)
+	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, 30, false)
 	q := 0.0
 
 	for _, v := range s {
 		q += v
 	}
+
+	q /= float64(len(s))
 
 	if d := math.Abs(q - rr); d > 0.0001 {
 		t.Errorf(fmt.Sprintf("Sum over states should be equal to averaged, but the difference is %f (%f %f)", d, q, rr))
@@ -79,13 +81,17 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 		xyz = append(xyz, xyzd)
 	}
 
-	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false)
 	s := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false)
+	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false)
 	q := 0.0
 
 	for _, v := range s {
 		q += v
 	}
+	// fmt.Println(xyz)
+	// fmt.Println(s)
+
+	q /= float64(len(s))
 
 	if d := math.Abs(q - rr); d > 0.0001 {
 		t.Errorf(fmt.Sprintf("Sum over states should be equal to averaged, but the difference is %f (%f vs. %f)", d, q, rr))
