@@ -1,9 +1,8 @@
-# goent
+# goent -  GO Implementation of Entropy Measures
 [![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent)
 
-GO Implementation of Entropy Measures
-
-Discrete state space
+## Measures for discrete state spaces
+### Averaged measures
 - Entropy
     - Shannon
     - Maximum Likelihood with Bias Correction
@@ -12,35 +11,57 @@ Discrete state space
 - Conditional Entropy
 - Mutual Information
 - Conditional Mutual Information
+- Morphological Computation Measures:
+    - MC_W
+    - MC_A
+    - MC_SY
+    - MC_WS
+    - MC_MI
+    - MC_WA
+    - MC_P
+- Max Entropy Estimations:
+    - Iterative Scaling
 
-Discrete state-dependent measures
+### State-dependent measures
 - Mutual Information
 - Conditional Mutual Information
 - Entropy (Shannon)
+- Morphological Computation
+    - MC_W
+    - MC_A
+    - MC_WS
+    - MC_WA
+    - MC_MI
 
-Continuous state spaces:
+
+
+## Measures for continuous state spaces
+### Averaged measures
 - Kraskov-Stoegbauer-Grassberger, Algorithm 1
 - Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
+- Morphological Computation
+    - MC_W
+    - MC_A
+    - MC_WS
+    - MC_WA
+    - MC_MI
 
-State-dependent measures on continuous state spaces:
+
+### State-dependent measures 
 - Kraskov-Stoegbauer-Grassberger, Algorithm 1
 - Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
+- Morphological Computation
+    - MC_W
+    - MC_A
+    - MC_WS
+    - MC_WA
+    - MC_MI
 
-Morphological Computation Measures:
-- MC_W
-- MC_A
-- MC_SY
-- MC_WS
-- MC_WA
-- MC_P
-
-Max Entropy Estimations:
-- Iterative Scaling
 
 References:
-- K. Ghazi-Zahedi, C. Langer, N. Ay, Morphological Computation: Synergy of Body and Brain, Entropy, 2017
+-  K. Ghazi-Zahedi, C. Langer, and N. Ay. Morphological computation: Synergy of body and brain. Entropy, 19(9), 2017.
 - K. Ghazi-Zahedi, R. Deimel, G. Montufar, V. Wall, and O. Brock. Morphological computation: The good, the bad, and the ugly. In IROS 2017, 2017.
 -  K. Ghazi-Zahedi, D. F. Haeufle, G. F. Montufar, S. Schmitt, and N. Ay. Evaluating morphological computation in muscle and dc-motor driven models of hopping movements. Frontiers in Robotics and AI, 3(42), 2016.
 - K. Ghazi-Zahedi and J. Rauh. Quantifying morphological computation based on an information decomposition of the sensorimotor loop. In Proceedings of the 13th European Conference on Artificial Life (ECAL 2015), pages 70—77, July 2015.

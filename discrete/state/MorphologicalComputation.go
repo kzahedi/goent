@@ -9,6 +9,7 @@ package state
 // morphological computation in muscle and dc-motor driven models of hopping movements.
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
+//   MC_W = I(W';W|A)
 func MorphologicalComputatioW(w2w1a1 [][]int64) []float64 {
 	return ConditionalMutualInformationBase2(w2w1a1)
 }
@@ -17,13 +18,14 @@ func MorphologicalComputatioW(w2w1a1 [][]int64) []float64 {
 // A about W' that is not contained in W. For more details, please read
 // K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
 // http://www.mdpi.com/1099-4300/15/5/1887 (open access)
+//   MC_W = I(W';A|W)
 func MorphologicalComputatioA(w2a1w1 [][]int64) []float64 {
 	return ConditionalMutualInformationBase2(w2a1w1)
 }
 
 // MorphologicalComputatioCW quantifies morphological computation as the causal information flow from
 // W to W' that does pass through A
-// MorphologicalComputatioCW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
+//   MC_CW = CIF(W -> W') - CIF(A -> W') = I(W';W) - I(W'|A)
 func MorphologicalComputatioCW(w2w1a1 [][]int64) []float64 {
 	w2w1 := make([][]int64, len(w2w1a1), len(w2w1a1))
 	w2a1 := make([][]int64, len(w2w1a1), len(w2w1a1))
@@ -44,7 +46,7 @@ func MorphologicalComputatioCW(w2w1a1 [][]int64) []float64 {
 	return r
 }
 
-// MorphologicalComputatioWA = I(W;{W,A}) - I(W';A)
+// MC_WA = I(W;{W,A}) - I(W';A)
 func MorphologicalComputatioWA(w2w1a1 [][]int64) []float64 {
 	w2a1 := make([][]int64, len(w2w1a1), len(w2w1a1))
 	for i := 0; i < len(w2w1a1); i++ {
@@ -64,7 +66,7 @@ func MorphologicalComputatioWA(w2w1a1 [][]int64) []float64 {
 	return r
 }
 
-// MorphologicalComputatioWS = I(W;{W,S}) - I(W';S)
+//   MC_WS = I(W;{W,S}) - I(W';S)
 func MorphologicalComputatioWS(w2w1s1 [][]int64) []float64 {
 	w2s1 := make([][]int64, len(w2w1s1), len(w2w1s1))
 	for i := 0; i < len(w2w1s1); i++ {
@@ -90,6 +92,7 @@ func MorphologicalComputatioWS(w2w1s1 [][]int64) []float64 {
 // morphological computation in muscle and dc-motor driven models of hopping movements.
 // Frontiers in Robotics and AI, 3(42), 2016.
 // http://journal.frontiersin.org/article/10.3389/frobt.2016.00042/full (open access)
+//   MC_MI = I(W';W) - I(A;S)
 func MorphologicalComputatioMI(w2w1s1a1 [][]int64) []float64 {
 	w2w1 := make([][]int64, len(w2w1s1a1), len(w2w1s1a1))
 	a1s1 := make([][]int64, len(w2w1s1a1), len(w2w1s1a1))

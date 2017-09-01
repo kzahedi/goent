@@ -6,9 +6,9 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-// ConditionalMutualInformation calculates the conditional mutual information with the given lnFunc
-// function for each (x_t,y_t,z_t)
-// CMI(X_t,Y_t|Z_t) = (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
+// ConditionalMutualInformation calculates the conditional
+// mutual information with the given lnFunc function for each (x_t,y_t,z_t)
+//   I(X_t,Y_t|Z_t) = (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
 func ConditionalMutualInformation(xyz [][]int64, ln lnFunc) []float64 {
 
 	pxyz := discrete.Emperical3D(xyz)
@@ -66,14 +66,16 @@ func ConditionalMutualInformation(xyz [][]int64, ln lnFunc) []float64 {
 	return r
 }
 
-// ConditionalMutualInformationBaseE calculates the conditional mutual information with base e
-// CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (ln(p(x,y|z)) - ln(p(x|z)p(y|z)))
+// ConditionalMutualInformationBaseE calculates the conditional
+// mutual information with base e
+//   I(X,Y|Z) = \sum_x,y, p(x,y,z) (ln(p(x,y|z)) - ln(p(x|z)p(y|z)))
 func ConditionalMutualInformationBaseE(xyz [][]int64) []float64 {
 	return ConditionalMutualInformation(xyz, math.Log)
 }
 
-// ConditionalMutualInformationBase2 calculates the conditional mutual information with base 2
-// CMI(X,Y|Z) = \sum_x,y, p(x,y,z) (log2(p(x,y|z)) - log2(p(x|z)p(y|z)))
+// ConditionalMutualInformationBase2 calculates the conditional
+// mutual information with base 2
+//   I(X,Y|Z) = \sum_x,y, p(x,y,z) (log2(p(x,y|z)) - log2(p(x|z)p(y|z)))
 func ConditionalMutualInformationBase2(xyz [][]int64) []float64 {
 	return ConditionalMutualInformation(xyz, math.Log2)
 }

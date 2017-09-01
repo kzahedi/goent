@@ -89,6 +89,8 @@ func fpCount2(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndic
 	return
 }
 
+// fpMaxNorm2 computes the max-norm of two 3-dimensional vectors
+//   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|)
 func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 	xDist := distance(a, b, xIndices)
 	yDist := distance(a, b, yIndices)

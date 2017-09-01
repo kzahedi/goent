@@ -3,7 +3,7 @@ package discrete
 import "math"
 
 // MutualInformation calculates the mutual information with the given lnFunc function
-// MI(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
+//   I(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
 func MutualInformation(pxy [][]float64, log lnFunc) float64 {
 
 	xDim := len(pxy)
@@ -39,13 +39,13 @@ func MutualInformation(pxy [][]float64, log lnFunc) float64 {
 }
 
 // MutualInformationBaseE calculates the mutual information with base e
-// MI(X,Y) = \sum_x,y p(x,y) (ln(p(x,y)) - ln(p(x)p(y)))
+//   I(X,Y) = \sum_x,y p(x,y) (ln(p(x,y)) - ln(p(x)p(y)))
 func MutualInformationBaseE(pxy [][]float64) float64 {
 	return MutualInformation(pxy, math.Log)
 }
 
 // MutualInformationBase2 calculates the mutual information with base 2
-// MI(X,Y) = \sum_x,y p(x,y) (log2(p(x,y)) - log2(p(x)p(y)))
+//   I(X,Y) = \sum_x,y p(x,y) (log2(p(x,y)) - log2(p(x)p(y)))
 func MutualInformationBase2(pxy [][]float64) float64 {
 	return MutualInformation(pxy, math.Log2)
 }

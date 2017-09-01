@@ -6,8 +6,8 @@ import (
 
 // Entropy calculates the entropy of a probability distribution.
 // It takes the log function as an additional parameter, so that the base
-// can be chosen
-// H(X) = -\sum_x p(x) lnFunc(p(x))
+// can be chosen:
+//   H(X) = -\sum_x p(x) lnFunc(p(x))
 func Entropy(p []float64, ln lnFunc) float64 {
 	var r float64
 	for _, px := range p {
@@ -19,13 +19,13 @@ func Entropy(p []float64, ln lnFunc) float64 {
 }
 
 // EntropyBaseE calculates the entropy of a probability distribution with base e
-//  H(X) = -\sum_x p(x) ln(p(x))
+//   H(X) = -\sum_x p(x) ln(p(x))
 func EntropyBaseE(p []float64) float64 {
 	return Entropy(p, math.Log)
 }
 
 // EntropyBase2 calculates the entropy of a probability distribution with base 2
-// H(X) = -\sum_x p(x) log2(p(x))
+//   H(X) = -\sum_x p(x) log2(p(x))
 func EntropyBase2(p []float64) float64 {
 	return Entropy(p, math.Log2)
 }
