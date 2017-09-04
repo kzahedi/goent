@@ -11,7 +11,7 @@ func TestDistanceZero(t *testing.T) {
 	a := []float64{1.0, 2.0, 3.0}
 	b := []float64{1.0, 2.0, 3.0}
 
-	if diff := distance(a, b, []int{0, 1, 2}); diff > 0.0 {
+	if diff := distance(a, b, []int64{0, 1, 2}); diff > 0.0 {
 		t.Errorf(fmt.Sprintf("Distance should be zero but it is %f", diff))
 	}
 }
@@ -21,7 +21,7 @@ func TestDistanceNotZero(t *testing.T) {
 	b := []float64{2.0, 4.0, 6.0}
 
 	dist1 := math.Sqrt(1.0 + 4.0 + 9.0)
-	dist2 := distance(a, b, []int{0, 1, 2})
+	dist2 := distance(a, b, []int64{0, 1, 2})
 
 	if math.Abs(dist1-dist2) > 0.00001 {
 		t.Errorf(fmt.Sprintf("Distance should be %f but it is %f", dist1, dist2))

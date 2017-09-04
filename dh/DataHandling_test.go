@@ -2,6 +2,8 @@ package dh_test
 
 import (
 	"testing"
+
+	"github.com/kzahedi/goent/dh"
 )
 
 func TestDiscretiseVector(t *testing.T) {
@@ -210,34 +212,34 @@ func TestRelabel(t *testing.T) {
 func TestExtractColumns(t *testing.T) {
 	t.Log("Testing Relabel")
 
-	d := [][]int64{
-		{1, 10, 100, 1000},
-		{2, 20, 200, 2000},
-		{3, 30, 300, 3000},
-		{4, 40, 400, 4000},
-		{5, 50, 500, 5000},
-		{6, 60, 600, 6000},
-		{7, 70, 700, 7000},
-		{8, 80, 800, 8000},
-		{9, 90, 900, 9000},
+	d := [][]float64{
+		{1.0, 10.0, 100.0, 1000.0},
+		{2.0, 20.0, 200.0, 2000.0},
+		{3.0, 30.0, 300.0, 3000.0},
+		{4.0, 40.0, 400.0, 4000.0},
+		{5.0, 50.0, 500.0, 5000.0},
+		{6.0, 60.0, 600.0, 6000.0},
+		{7.0, 70.0, 700.0, 7000.0},
+		{8.0, 80.0, 800.0, 8000.0},
+		{9.0, 90.0, 900.0, 9000.0},
 	}
 
 	c1 := dh.ExtractColumns(d, []int64{1})
 
 	for i := 0; i < 9; i++ {
-		if c1[i][0] != int64(10*(i+1)) {
-			t.Errorf("Values should be %d but it is %d", (10 * (i + 1)), c1[i][0])
+		if int(c1[i][0]) != 10*(i+1) {
+			t.Errorf("Values should be %f but it is %f", 10*(i+1), int(c1[i][0]))
 		}
 	}
 
 	c2 := dh.ExtractColumns(d, []int64{0, 3})
 
 	for i := 0; i < 9; i++ {
-		if c2[i][0] != int64(i+1) {
-			t.Errorf("Values should be %d but it is %d", (i + 1), c2[i][0])
+		if int(c2[i][0]) != i+1 {
+			t.Errorf("Values should be %d but it is %d", (i + 1), int(c2[i][0]))
 		}
-		if c2[i][1] != int64((i+2)*1000) {
-			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), c2[i][1])
+		if int(c2[i][1]) != (i+1)*1000 {
+			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), int(c2[i][1]))
 		}
 	}
 
