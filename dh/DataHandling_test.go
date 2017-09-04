@@ -1,9 +1,7 @@
-package discrete_test
+package dh_test
 
 import (
 	"testing"
-
-	"github.com/kzahedi/goent/discrete"
 )
 
 func TestDiscretiseVector(t *testing.T) {
@@ -22,7 +20,7 @@ func TestDiscretiseVector(t *testing.T) {
 	p[9] = 0.9
 	p[10] = 1.0
 
-	d := discrete.DiscrestiseVector(p, 10, 0.0, 1.0)
+	d := dh.DiscrestiseVector(p, 10, 0.0, 1.0)
 
 	if d[0] != 0 {
 		t.Errorf("0.0  must be mapped to 0 and not ", p[0])
@@ -74,7 +72,7 @@ func TestDiscretise(t *testing.T) {
 		{0.7, 0.8, 0.9},
 		{0.8, 0.9, 1.0}}
 
-	d := discrete.Discrestise(p,
+	d := dh.Discrestise(p,
 		[]int64{10, 10, 10},
 		[]float64{0.0, 0.0, 0.0},
 		[]float64{1.0, 1.0, 1.0})
@@ -176,7 +174,7 @@ func TestMakeUnivariate(t *testing.T) {
 		{6, 7, 8},
 		{7, 8, 9}}
 
-	d := discrete.MakeUnivariate(p, []int64{10, 10, 10})
+	d := dh.MakeUnivariate(p, []int64{10, 10, 10})
 
 	if d[0] != 1+10*2+100*3 {
 		t.Errorf("%d,%d,%d must be mapped to %d and not %d",
@@ -200,11 +198,47 @@ func TestRelabel(t *testing.T) {
 	p := []int64{10, 1, 4, 13, 871, 283, 123, 987, 2415, 88, 57, 10, 283, 987}
 	q := []int64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 5, 7}
 
-	d := discrete.Relabel(p)
+	d := dh.Relabel(p)
 
 	for i, _ := range p {
 		if d[i] != q[i] {
 			t.Errorf("%d must be mapped to %d and not %d", p[i], q[i], d[i])
 		}
 	}
+}
+
+func TestExtractColumns(t *testing.T) {
+	t.Log("Testing Relabel")
+
+	d := [][]int64{
+		{1, 10, 100, 1000},
+		{2, 20, 200, 2000},
+		{3, 30, 300, 3000},
+		{4, 40, 400, 4000},
+		{5, 50, 500, 5000},
+		{6, 60, 600, 6000},
+		{7, 70, 700, 7000},
+		{8, 80, 800, 8000},
+		{9, 90, 900, 9000},
+	}
+
+	c1 := dh.ExtractColumns(d, []int64{1})
+
+	for i := 0; i < 9; i++ {
+		if c1[i][0] != int64(10*(i+1)) {
+			t.Errorf("Values should be %d but it is %d", (10 * (i + 1)), c1[i][0])
+		}
+	}
+
+	c2 := dh.ExtractColumns(d, []int64{0, 3})
+
+	for i := 0; i < 9; i++ {
+		if c2[i][0] != int64(i+1) {
+			t.Errorf("Values should be %d but it is %d", (i + 1), c2[i][0])
+		}
+		if c2[i][1] != int64((i+2)*1000) {
+			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), c2[i][1])
+		}
+	}
+
 }

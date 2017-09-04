@@ -6,22 +6,27 @@ import (
 )
 
 type goentParameters struct {
-	File              string
+	Input             string
+	Output            string
+	UseEta            bool
 	UseContinuous     bool
 	UseStateDependent bool
 	Measure           string
 	Base              int64
-	XIndicices        []int64
+	K                 int64
+	XIndices          []int64
 	XBins             []int64
-	YIndicices        []int64
+	YIndices          []int64
 	YBins             []int64
-	W2Indicices       []int64
+	ZIndices          []int64
+	ZBins             []int64
+	W2Indices         []int64
 	W2Bins            []int64
-	W1Indicices       []int64
+	W1Indices         []int64
 	W1Bins            []int64
-	A1Indicices       []int64
+	A1Indices         []int64
 	A1Bins            []int64
-	S1Indicices       []int64
+	S1Indices         []int64
 	S1Bins            []int64
 }
 

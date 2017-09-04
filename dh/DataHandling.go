@@ -1,6 +1,15 @@
-package discrete
+package dh
 
-import "math"
+import (
+	"bufio"
+	"encoding/csv"
+	"fmt"
+	"io"
+	"math"
+	"os"
+	"strconv"
+	"strings"
+)
 
 // DiscrestiseVector takes a one-dimensional slice and discretises it.
 // Min/max and number of bins must be provided.
@@ -85,4 +94,59 @@ func Relabel(d []int64) []int64 {
 	}
 
 	return ret
+}
+
+// ReadData [...]
+func ReadData(filename string) (r [][]float64) {
+
+	f, _ := os.Open(filename)
+	defer f.Close()
+	reader := csv.NewReader(bufio.NewReader(f))
+
+	lineCount := 0
+
+	record, err := reader.Read()
+	for err != io.EOF {
+
+		if strings.HasPrefix(record[0], "#") {
+			record, err = reader.Read()
+			continue
+		}
+
+		d := make([]float64, len(record), len(record))
+		for i, v := range record {
+			s, err := strconv.ParseFloat(v, 64)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			d[i] = s
+		}
+
+		r = append(r, d)
+
+		lineCount++
+		fmt.Print(fmt.Sprintf("Line count: %d\r", lineCount))
+
+		record, err = reader.Read()
+	}
+
+	fmt.Println(fmt.Sprintf("\nRead %d lines from %s", lineCount, filename))
+
+	return
+}
+
+// ExtractColumns [...]
+func ExtractColumns(data [][]float64, indices []int64) [][]float64 {
+
+	r := make([][]float64, len(data), len(data))
+
+	for i := range data {
+		d := make([]float64, len(indices), len(indices))
+		for j, w := range indices {
+			d[j] = data[i][w]
+		}
+		r[i] = d
+	}
+	return r
 }
