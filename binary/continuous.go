@@ -1,8 +1,8 @@
 package main
 
-func continuous(data [][]float64, useState bool) float64 {
-	if useState == true {
-		return 1.0
+func continuous(data [][]float64, p goentParameters) float64 {
+	if p.UseStateDependent == true {
+		return 10.0
 	}
-	return 2.0
+	return 20.0
 }
