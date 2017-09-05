@@ -14,8 +14,9 @@ func main() {
 	useStatePtr := flag.Bool("s", false, "use measures for state-dependent analysis")
 	basePtr := flag.String("base", "2", "Selection of the log-base to use (if available). Can be either 2 or e.")
 	kPtr := flag.Int("k", 30, "k, for continuous measures")
+	iterationsPtr := flag.Int("it", 1000, "number of iterations (iterative scaling algorithms)")
 
-	mcPtr := flag.String("m", "MI", "Information theoretic measure. Can be any of the following: Entropy, EntropyMLBC, EntropyChaoShen, Entropy_HorvitzThompson, ConditionalEntropy, MutualInformation, ConditionalMutualInformation, MC_W, MC_A, MC_WS, MC_WA, MC_P, MC_SY, MC_SY_NID")
+	mcPtr := flag.String("m", "MI", "Information theoretic measure. Can be any of the following: Entropy, EntropyMLBC, EntropyChaoShen, Entropy_HorvitzThompson, ConditionalEntropy, MutualInformation, ConditionalMutualInformation, MC_W, MC_A, MC_WS, MC_WA, MC_MI, MC_P, MC_SY")
 
 	xIPtr := flag.String("xi", "", "Column indices for X")
 	xBinsPtr := flag.String("xb", "", "Number of bins for X")
@@ -40,7 +41,7 @@ func main() {
 	parameters := goentParameters{*inputPtr, *outputPtr,
 		*useEta, *useContPtr, *useStatePtr,
 		*mcPtr,
-		parseInt(*basePtr), int64(*kPtr),
+		parseInt(*basePtr), int64(*kPtr), int64(*iterationsPtr),
 		parseNumberString(*xIPtr), parseBinsString(*xBinsPtr),
 		parseNumberString(*yIPtr), parseBinsString(*yBinsPtr),
 		parseNumberString(*zIPtr), parseBinsString(*zBinsPtr),
@@ -74,12 +75,12 @@ func main() {
 		r = mcws(parameters)
 	case "MC_WA":
 		r = mcwa(parameters)
-	// case "MC_SY":
-	// r = mcsy(parameters)
-	// case "MC_SY_NID":
-	// r = mcsynid(parameters)
-	// case "MC_P":
-	// r = mcp(parameters)
+	case "MC_MI":
+		r = mcmi(parameters)
+	case "MC_SY":
+		r = mcsy(parameters)
+	case "MC_P":
+		r = mcp(parameters)
 	default:
 		panic("unknown measure given")
 	}

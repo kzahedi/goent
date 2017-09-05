@@ -4,6 +4,7 @@ import (
 	"math"
 
 	stat "gonum.org/v1/gonum/stat"
+	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
 // MorphologicalComputationW quantifies morphological computation as the information that is contained in
@@ -79,7 +80,7 @@ func MorphologicalComputationMI(pw2w1 [][]float64, pa1s1 [][]float64) float64 {
 // MorphologicalComputationSY quantifies morphological computation as the synergistic information that
 // W and A contain about W'. For more details, please read
 // TODO Paper reference
-func MorphologicalComputationSY(pw2w1a1 [][][]float64, iterations int) float64 {
+func MorphologicalComputationSY(pw2w1a1 [][][]float64, iterations int64, eta bool) float64 {
 	split := IterativeScaling{}
 
 	split.NrOfVariables = 3
@@ -101,12 +102,21 @@ func MorphologicalComputationSY(pw2w1a1 [][][]float64, iterations int) float64 {
 	split.Features["W,A"] = []int{0, 1}
 
 	split.Init()
-	// bar := uiprogress.AddBar(iterations).AppendCompleted().PrependElapsed()
-	// bar.PrependFunc(func(b *uiprogress.Bar) string {
-	// return fmt.Sprintf("%s (%d/%d)", *mc, b.Current(), count)
-	// })
-	for i := 0; i < iterations; i++ {
+	var bar *pb.ProgressBar
+
+	if eta == true {
+		bar = pb.StartNew(int(iterations))
+	}
+
+	for i := 0; i < int(iterations); i++ {
 		split.Iterate()
+		if eta == true {
+			bar.Increment()
+		}
+	}
+
+	if eta == true {
+		bar.Finish()
 	}
 
 	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
@@ -116,7 +126,7 @@ func MorphologicalComputationSY(pw2w1a1 [][][]float64, iterations int) float64 {
 // information that W and A contain about W', excluding the input distribution
 // (W,A). For more details, please read
 // TODO Paper reference
-func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float64 {
+func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int64) float64 {
 	split := IterativeScaling{}
 
 	split.NrOfVariables = 3
@@ -137,7 +147,7 @@ func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float6
 	split.Features["A,W'"] = []int{1, 2}
 
 	split.Init()
-	for i := 0; i < iterations; i++ {
+	for i := 0; i < int(iterations); i++ {
 		split.Iterate()
 	}
 
@@ -145,6 +155,6 @@ func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float6
 }
 
 // MorphologicalComputationP [...]
-func MorphologicalComputationP(pw2w1a1 [][][]float64, iterations int) float64 {
-	return MorphologicalComputationW(pw2w1a1) - MorphologicalComputationSY(pw2w1a1, iterations)
+func MorphologicalComputationP(pw2w1a1 [][][]float64, iterations int64, eta bool) float64 {
+	return MorphologicalComputationW(pw2w1a1) - MorphologicalComputationSY(pw2w1a1, iterations, eta)
 }

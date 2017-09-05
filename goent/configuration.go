@@ -14,6 +14,7 @@ type goentParameters struct {
 	Measure           string
 	Base              int64
 	K                 int64
+	Iterations        int64
 	XIndices          []int64
 	XBins             []int64
 	YIndices          []int64

@@ -42,7 +42,7 @@ func MorphologicalComputationWS2(w2w1s1 [][]float64, w2Indices, w1Indices, s1Ind
 
 // MorphologicalComputationMI1 [...]
 func MorphologicalComputationMI1(w2w1s1a1 [][]float64, w2Indices, w1Indices, s1Indices, a1Indices []int64, k int64, eta bool) float64 {
-	return KraskovStoegbauerGrassberger1(w2w1s1a1, w2Indices, w1Indices, k, false) - KraskovStoegbauerGrassberger1(w2w1s1a1, a1Indices, s1Indices, k, eta)
+	return KraskovStoegbauerGrassberger1(w2w1s1a1, w2Indices, w1Indices, k, false) - KraskovStoegbauerGrassberger1(w2w1s1a1, s1Indices, a1Indices, k, eta)
 }
 
 // MorphologicalComputationMI2 [...]

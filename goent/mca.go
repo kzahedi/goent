@@ -9,7 +9,7 @@ import (
 )
 
 ////////////////////////////////////////////////////////////
-// averaged functions
+// continuous
 ////////////////////////////////////////////////////////////
 
 func mcaContinuous(p goentParameters) (r float64) {
@@ -20,20 +20,6 @@ func mcaContinuous(p goentParameters) (r float64) {
 	return
 }
 
-func mcaDiscrete(p goentParameters) (r float64) {
-	data := dh.ReadData(p.Input)
-	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
-	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
-	ddata := discretise3D(w2a1w1, w2Indices, p.WBins, a1Indices, p.ABins, w1Indices, p.WBins)
-	p3d := discrete.Emperical3D(ddata)
-	r = discrete.MorphologicalComputationA(p3d)
-	return
-}
-
-////////////////////////////////////////////////////////////
-// state-dependent functions
-////////////////////////////////////////////////////////////
-
 func mcaContinuousState(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
 	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
@@ -41,6 +27,20 @@ func mcaContinuousState(p goentParameters) (r float64) {
 	s := cs.MorphologicalComputationA(w2a1w1, w2Indices, a1Indices, w1Indices, p.K, p.UseEta)
 	writeData(p.Output, s)
 	r = average(s)
+	return
+}
+
+////////////////////////////////////////////////////////////
+// discrete
+////////////////////////////////////////////////////////////
+
+func mcaDiscrete(p goentParameters) (r float64) {
+	data := dh.ReadData(p.Input)
+	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
+	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
+	ddata := discretise3D(w2a1w1, w2Indices, p.WBins, a1Indices, p.ABins, w1Indices, p.WBins)
+	p3d := discrete.Emperical3D(ddata)
+	r = discrete.MorphologicalComputationA(p3d)
 	return
 }
 
@@ -54,6 +54,10 @@ func mcaDiscreteState(p goentParameters) (r float64) {
 	r = average(s)
 	return
 }
+
+////////////////////////////////////////////////////////////
+// main
+////////////////////////////////////////////////////////////
 
 func mca(p goentParameters) (r float64) {
 	if p.UseContinuous == true && p.UseStateDependent == false {

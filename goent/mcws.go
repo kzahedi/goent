@@ -9,7 +9,7 @@ import (
 )
 
 ////////////////////////////////////////////////////////////
-// averaged functions
+// continuous
 ////////////////////////////////////////////////////////////
 
 func mcwsContinuous(p goentParameters) (r float64) {
@@ -20,20 +20,6 @@ func mcwsContinuous(p goentParameters) (r float64) {
 	return
 }
 
-func mcwsDiscrete(p goentParameters) (r float64) {
-	data := dh.ReadData(p.Input)
-	w2w1s1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.SIndices, 0, false)
-	w2Indices, w1Indices, s1Indices := createIndices3(p.WIndices, p.WIndices, p.SIndices)
-	ddata := discretise3D(w2w1s1, w2Indices, p.WBins, w1Indices, p.WBins, s1Indices, p.SBins)
-	p3d := discrete.Emperical3D(ddata)
-	r = discrete.MorphologicalComputationWS(p3d)
-	return
-}
-
-////////////////////////////////////////////////////////////
-// state-dependent functions
-////////////////////////////////////////////////////////////
-
 func mcwsContinuousState(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
 	w2w1s1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.SIndices, 0, false)
@@ -41,6 +27,20 @@ func mcwsContinuousState(p goentParameters) (r float64) {
 	s := cs.MorphologicalComputationWS1(w2w1s1, w2Indices, w1Indices, s1Indices, p.K, p.UseEta)
 	writeData(p.Output, s)
 	r = average(s)
+	return
+}
+
+////////////////////////////////////////////////////////////
+// discrete
+////////////////////////////////////////////////////////////
+
+func mcwsDiscrete(p goentParameters) (r float64) {
+	data := dh.ReadData(p.Input)
+	w2w1s1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.SIndices, 0, false)
+	w2Indices, w1Indices, s1Indices := createIndices3(p.WIndices, p.WIndices, p.SIndices)
+	ddata := discretise3D(w2w1s1, w2Indices, p.WBins, w1Indices, p.WBins, s1Indices, p.SBins)
+	p3d := discrete.Emperical3D(ddata)
+	r = discrete.MorphologicalComputationWS(p3d)
 	return
 }
 
@@ -54,6 +54,10 @@ func mcwsDiscreteState(p goentParameters) (r float64) {
 	r = average(s)
 	return
 }
+
+////////////////////////////////////////////////////////////
+// main
+////////////////////////////////////////////////////////////
 
 func mcws(p goentParameters) (r float64) {
 	if p.UseContinuous == true && p.UseStateDependent == false {
