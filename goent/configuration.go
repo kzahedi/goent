@@ -20,14 +20,12 @@ type goentParameters struct {
 	YBins             []int64
 	ZIndices          []int64
 	ZBins             []int64
-	W2Indices         []int64
-	W2Bins            []int64
-	W1Indices         []int64
-	W1Bins            []int64
-	A1Indices         []int64
-	A1Bins            []int64
-	S1Indices         []int64
-	S1Bins            []int64
+	WIndices          []int64
+	WBins             []int64
+	AIndices          []int64
+	ABins             []int64
+	SIndices          []int64
+	SBins             []int64
 }
 
 func check(e error) {
