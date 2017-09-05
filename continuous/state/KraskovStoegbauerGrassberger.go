@@ -24,6 +24,7 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int64, k
 	if eta == true {
 		bar = pb.StartNew(len(xy))
 	}
+
 	for t := 0; t < len(xy); t++ {
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 

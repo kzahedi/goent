@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/kzahedi/goent/dh"
+	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
 func discretise1D(data [][]float64, indices, bins []int64) []int64 {
@@ -112,10 +113,19 @@ func max3(a, b, c int64) int64 {
 func merge3Data(data [][]float64,
 	xIndices []int64, xOffset int64,
 	yIndices []int64, yOffset int64,
-	zIndices []int64, zOffset int64) [][]float64 {
+	zIndices []int64, zOffset int64,
+	eta bool) [][]float64 {
 	maxOffset := max3(xOffset, yOffset, zOffset)
 	N := len(data) - int(maxOffset)
 	r := make([][]float64, N, N)
+
+	var bar *pb.ProgressBar
+
+	if eta == true {
+		fmt.Println("Extracting W', W, A from data")
+		bar = pb.StartNew(N)
+	}
+
 	for i := 0; i < N; i++ {
 		var d []float64
 		for _, x := range xIndices {
@@ -128,7 +138,15 @@ func merge3Data(data [][]float64,
 			d = append(d, data[i+int(zOffset)][z])
 		}
 		r[i] = d
+		if eta == true {
+			bar.Increment()
+		}
 	}
+
+	if eta == true {
+		bar.Increment()
+	}
+
 	return r
 }
 
@@ -149,22 +167,22 @@ func average(data []float64) (r float64) {
 	return
 }
 
-func createW2W1A1(WIndices, AIndices []int64) ([]int64, []int64, []int64) {
-	w2Indices := make([]int64, len(WIndices), len(WIndices))
-	w1Indices := make([]int64, len(WIndices), len(WIndices))
-	a1Indices := make([]int64, len(AIndices), len(AIndices))
+func createIndices3(XIndices, YIndices, ZIndices []int64) ([]int64, []int64, []int64) {
+	xIndices := make([]int64, len(XIndices), len(XIndices))
+	yIndices := make([]int64, len(YIndices), len(YIndices))
+	zIndices := make([]int64, len(ZIndices), len(ZIndices))
 	index := 0
-	for i := range WIndices {
-		w2Indices[i] = int64(index)
+	for i := range XIndices {
+		xIndices[i] = int64(index)
 		index++
 	}
-	for i := range WIndices {
-		w1Indices[i] = int64(index)
+	for i := range YIndices {
+		yIndices[i] = int64(index)
 		index++
 	}
-	for i := range AIndices {
-		a1Indices[i] = int64(index)
+	for i := range ZIndices {
+		zIndices[i] = int64(index)
 		index++
 	}
-	return w2Indices, w1Indices, a1Indices
+	return xIndices, yIndices, zIndices
 }

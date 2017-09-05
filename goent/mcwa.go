@@ -12,21 +12,21 @@ import (
 // averaged functions
 ////////////////////////////////////////////////////////////
 
-func mcaContinuous(p goentParameters) (r float64) {
+func mcwaContinuous(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
-	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
 	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
-	r = continuous.MorphologicalComputationA(w2a1w1, w2Indices, a1Indices, w1Indices, p.K, p.UseEta)
+	w2w1a1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.AIndices, 0, false)
+	r = continuous.MorphologicalComputationWA1(w2w1a1, w2Indices, w1Indices, a1Indices, p.K, p.UseEta)
 	return
 }
 
-func mcaDiscrete(p goentParameters) (r float64) {
+func mcwaDiscrete(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
-	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
+	w2w1a1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.AIndices, 0, false)
 	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
-	ddata := discretise3D(w2a1w1, w2Indices, p.WBins, a1Indices, p.ABins, w1Indices, p.WBins)
+	ddata := discretise3D(w2w1a1, w2Indices, p.WBins, w1Indices, p.WBins, a1Indices, p.ABins)
 	p3d := discrete.Emperical3D(ddata)
-	r = discrete.MorphologicalComputationA(p3d)
+	r = discrete.MorphologicalComputationWA(p3d)
 	return
 }
 
@@ -34,36 +34,36 @@ func mcaDiscrete(p goentParameters) (r float64) {
 // state-dependent functions
 ////////////////////////////////////////////////////////////
 
-func mcaContinuousState(p goentParameters) (r float64) {
+func mcwaContinuousState(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
-	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
+	w2w1a1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.AIndices, 0, false)
 	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
-	s := cs.MorphologicalComputationA(w2a1w1, w2Indices, a1Indices, w1Indices, p.K, p.UseEta)
+	s := cs.MorphologicalComputationWA1(w2w1a1, w2Indices, w1Indices, a1Indices, p.K, p.UseEta)
 	writeData(p.Output, s)
 	r = average(s)
 	return
 }
 
-func mcaDiscreteState(p goentParameters) (r float64) {
+func mcwaDiscreteState(p goentParameters) (r float64) {
 	data := dh.ReadData(p.Input)
-	w2a1w1 := merge3Data(data, p.WIndices, 1, p.AIndices, 0, p.WIndices, 0, false)
+	w2w1a1 := merge3Data(data, p.WIndices, 1, p.WIndices, 0, p.AIndices, 0, false)
 	w2Indices, w1Indices, a1Indices := createIndices3(p.WIndices, p.WIndices, p.AIndices)
-	dw2a1w1 := discretise3D(w2a1w1, w2Indices, p.WBins, a1Indices, p.ABins, w1Indices, p.WBins)
-	s := ds.MorphologicalComputationA(dw2a1w1)
+	dw2w1a1 := discretise3D(w2w1a1, w2Indices, p.WBins, w1Indices, p.WBins, a1Indices, p.SBins)
+	s := ds.MorphologicalComputationWA(dw2w1a1)
 	writeData(p.Output, s)
 	r = average(s)
 	return
 }
 
-func mca(p goentParameters) (r float64) {
+func mcwa(p goentParameters) (r float64) {
 	if p.UseContinuous == true && p.UseStateDependent == false {
-		r = mcaContinuous(p)
+		r = mcwaContinuous(p)
 	} else if p.UseContinuous == false && p.UseStateDependent == false {
-		r = mcaDiscrete(p)
+		r = mcwaDiscrete(p)
 	} else if p.UseContinuous == true && p.UseStateDependent == true {
-		r = mcaContinuousState(p)
+		r = mcwaContinuousState(p)
 	} else if p.UseContinuous == false && p.UseStateDependent == true {
-		r = mcaDiscreteState(p)
+		r = mcwaDiscreteState(p)
 	}
 	return
 }

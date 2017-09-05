@@ -70,16 +70,16 @@ func main() {
 		r = mcw(parameters)
 	case "MC_A":
 		r = mca(parameters)
-	// case "MC_WS":
-	// r = mcws(parameters)
-	// case "MC_WA":
-	// r = mcwa(parameters)
-	// case "MC_P":
-	// r = mcp(parameters)
+	case "MC_WS":
+		r = mcws(parameters)
+	case "MC_WA":
+		r = mcwa(parameters)
 	// case "MC_SY":
 	// r = mcsy(parameters)
 	// case "MC_SY_NID":
 	// r = mcsynid(parameters)
+	// case "MC_P":
+	// r = mcp(parameters)
 	default:
 		panic("unknown measure given")
 	}

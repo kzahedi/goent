@@ -46,7 +46,7 @@ func TestMerge3Data(t *testing.T) {
 		{3.8, 4.8},
 		{3.9, 4.9}}
 
-	m := merge3Data(data, []int64{0, 1}, 0, []int64{1, 2}, 1, []int64{2, 3}, 2)
+	m := merge3Data(data, []int64{0, 1}, 0, []int64{1, 2}, 1, []int64{2, 3}, 2, false)
 
 	if len(m) != 7 {
 		t.Errorf(fmt.Sprintf("Length of the array should be 7 but it is %d", len(m)))
