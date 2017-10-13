@@ -41,7 +41,7 @@ func main() {
 	parameters := goentParameters{*inputPtr, *outputPtr,
 		*useEta, *useContPtr, *useStatePtr,
 		*mcPtr,
-		parseInt(*basePtr), int64(*kPtr), int64(*iterationsPtr),
+		parseInt(*basePtr), *kPtr, *iterationsPtr,
 		parseNumberString(*xIPtr), parseBinsString(*xBinsPtr),
 		parseNumberString(*yIPtr), parseBinsString(*yBinsPtr),
 		parseNumberString(*zIPtr), parseBinsString(*zBinsPtr),

@@ -56,7 +56,7 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 	rand.Seed(1)
 
 	N := 1000
-	k := int(30)
+	k := 30
 
 	r := 0.9 // co-variance
 

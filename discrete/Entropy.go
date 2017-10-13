@@ -36,7 +36,7 @@ func EntropyBase2(p []float64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyMLBC(data []int64, ln lnFunc) float64 {
+func EntropyMLBC(data []int, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	S := float64(len(p))
@@ -60,7 +60,7 @@ func EntropyMLBC(data []int64, ln lnFunc) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyMLBCBaseE(data []int64) float64 {
+func EntropyMLBCBaseE(data []int) float64 {
 	return EntropyMLBC(data, math.Log)
 }
 
@@ -71,7 +71,7 @@ func EntropyMLBCBaseE(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyMLBCBase2(data []int64) float64 {
+func EntropyMLBCBase2(data []int) float64 {
 	return EntropyMLBC(data, math.Log2)
 }
 
@@ -81,7 +81,7 @@ func EntropyMLBCBase2(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyHorvitzThompson(data []int64, ln lnFunc) float64 {
+func EntropyHorvitzThompson(data []int, ln lnFunc) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
 	r := 0.0
@@ -102,7 +102,7 @@ func EntropyHorvitzThompson(data []int64, ln lnFunc) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyHorvitzThompsonBaseE(data []int64) float64 {
+func EntropyHorvitzThompsonBaseE(data []int) float64 {
 	return EntropyHorvitzThompson(data, math.Log)
 }
 
@@ -113,7 +113,7 @@ func EntropyHorvitzThompsonBaseE(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyHorvitzThompsonBase2(data []int64) float64 {
+func EntropyHorvitzThompsonBase2(data []int) float64 {
 	return EntropyHorvitzThompson(data, math.Log)
 }
 
@@ -123,17 +123,17 @@ func EntropyHorvitzThompsonBase2(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyChaoShen(data []int64, ln lnFunc) float64 {
+func EntropyChaoShen(data []int, ln lnFunc) float64 {
 	n := float64(len(data))
 	nrOfSingletons := 0.0
-	histogram := map[int64]float64{}
+	histogram := map[int]float64{}
 	for _, v := range data {
 		histogram[v] += 1.0
 	}
 
 	p := make([]float64, len(histogram), len(histogram))
 
-	var keys []int64
+	var keys []int
 	for k, v := range histogram {
 		keys = append(keys, k)
 		if v == 1.0 {
@@ -174,7 +174,7 @@ func EntropyChaoShen(data []int64, ln lnFunc) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyChaoShenBaseE(data []int64) float64 {
+func EntropyChaoShenBaseE(data []int) float64 {
 	return EntropyChaoShen(data, math.Log)
 }
 
@@ -184,6 +184,6 @@ func EntropyChaoShenBaseE(data []int64) float64 {
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
-func EntropyChaoShenBase2(data []int64) float64 {
+func EntropyChaoShenBase2(data []int) float64 {
 	return EntropyChaoShen(data, math.Log2)
 }

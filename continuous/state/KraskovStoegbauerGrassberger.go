@@ -16,8 +16,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 	N := float64(len(xy))
 	r := make([]float64, len(xy), len(xy))
 
-	hk := harmonic(k)            // h(k)
-	hN := harmonic(int(len(xy))) // h(N)
+	hk := harmonic(k)       // h(k)
+	hN := harmonic(len(xy)) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -54,7 +54,7 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
 func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k int, eta bool) []float64 {
 
-	n := int(len(xy))
+	n := len(xy)
 	r := make([]float64, n, n)
 
 	N := float64(len(xy))

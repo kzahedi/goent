@@ -28,7 +28,7 @@ func TestEntropyChaoShen(t *testing.T) {
 	t.Log("Testing Chao-Shen Entropy")
 	r := 0.0
 	for i := 0; i < 100; i++ {
-		h := make([]int64, 5000, 5000)
+		h := make([]int, 5000, 5000)
 		for j := 0; j < 5000; j++ {
 			h[j] = rand.Int63n(100)
 		}
@@ -47,7 +47,7 @@ func TestEntropyMLBC(t *testing.T) {
 	t.Log("Testing Maximum Likelihood Bias Corrected")
 	r := 0.0
 	for i := 0; i < 100; i++ {
-		h := make([]int64, 5000, 5000)
+		h := make([]int, 5000, 5000)
 		for j := 0; j < 5000; j++ {
 			h[j] = rand.Int63n(100)
 		}

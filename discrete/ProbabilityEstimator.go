@@ -2,8 +2,8 @@ package discrete
 
 // Emperical1D is an empirical estimator for a one-dimensional
 // probability distribution
-func Emperical1D(d []int64) []float64 {
-	max := int64(0)
+func Emperical1D(d []int) []float64 {
+	max := 0
 	for _, v := range d {
 		if v > max {
 			max = v
@@ -28,8 +28,8 @@ func Emperical1D(d []int64) []float64 {
 
 // Emperical2D is an empirical estimator for a two-dimensional
 // probability distribution
-func Emperical2D(d [][]int64) [][]float64 {
-	max := make([]int64, 2, 2)
+func Emperical2D(d [][]int) [][]float64 {
+	max := make([]int, 2, 2)
 	rows := len(d)
 	for r := 0; r < rows; r++ {
 		for c := 0; c < 2; c++ {
@@ -43,7 +43,7 @@ func Emperical2D(d [][]int64) [][]float64 {
 	max[1]++
 
 	p := make([][]float64, max[0], max[0])
-	for m := 0; m < int(max[0]); m++ {
+	for m := 0; m < max[0]; m++ {
 		p[m] = make([]float64, max[1], max[1])
 	}
 
@@ -52,8 +52,8 @@ func Emperical2D(d [][]int64) [][]float64 {
 	}
 
 	l := float64(len(d))
-	for r := 0; r < int(max[0]); r++ {
-		for c := 0; c < int(max[1]); c++ {
+	for r := 0; r < max[0]; r++ {
+		for c := 0; c < max[1]; c++ {
 			p[r][c] /= l
 		}
 	}
@@ -63,8 +63,8 @@ func Emperical2D(d [][]int64) [][]float64 {
 
 // Emperical3D is an empirical estimator for a three-dimensional
 // probability distribution
-func Emperical3D(d [][]int64) [][][]float64 {
-	max := make([]int64, 3, 3)
+func Emperical3D(d [][]int) [][][]float64 {
+	max := make([]int, 3, 3)
 	rows := len(d)
 	for r := 0; r < rows; r++ {
 		for c := 0; c < 3; c++ {
@@ -79,9 +79,9 @@ func Emperical3D(d [][]int64) [][][]float64 {
 	max[2]++
 
 	p := make([][][]float64, max[0], max[0])
-	for m := 0; m < int(max[0]); m++ {
+	for m := 0; m < max[0]; m++ {
 		p[m] = make([][]float64, max[1], max[1])
-		for n := 0; n < int(max[1]); n++ {
+		for n := 0; n < max[1]; n++ {
 			p[m][n] = make([]float64, max[2], max[2])
 		}
 	}
@@ -91,9 +91,9 @@ func Emperical3D(d [][]int64) [][][]float64 {
 	}
 
 	l := float64(len(d))
-	for a := 0; a < int(max[0]); a++ {
-		for b := 0; b < int(max[1]); b++ {
-			for c := 0; c < int(max[2]); c++ {
+	for a := 0; a < max[0]; a++ {
+		for b := 0; b < max[1]; b++ {
+			for c := 0; c < max[2]; c++ {
 				p[a][b][c] /= l
 			}
 		}

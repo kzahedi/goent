@@ -8,7 +8,7 @@ import (
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
-func discretise1D(data [][]float64, indices, bins []int64) []int64 {
+func discretise1D(data [][]float64, indices, bins []int) []int {
 
 	x := dh.ExtractColumns(data, indices)
 
@@ -23,7 +23,7 @@ func discretise1D(data [][]float64, indices, bins []int64) []int64 {
 	return dh.Relabel(dh.MakeUnivariate(xd, bins))
 }
 
-func discretise2D(data [][]float64, xIndices, xBins, yIndices, yBins []int64) [][]int64 {
+func discretise2D(data [][]float64, xIndices, xBins, yIndices, yBins []int) [][]int {
 
 	x := dh.ExtractColumns(data, xIndices)
 	y := dh.ExtractColumns(data, yIndices)
@@ -46,9 +46,9 @@ func discretise2D(data [][]float64, xIndices, xBins, yIndices, yBins []int64) []
 	xuv := dh.Relabel(dh.MakeUnivariate(xd, xBins))
 	yuv := dh.Relabel(dh.MakeUnivariate(yd, yBins))
 
-	r := make([][]int64, len(data), len(data))
+	r := make([][]int, len(data), len(data))
 	for i := 0; i < len(data); i++ {
-		d := make([]int64, 2, 2)
+		d := make([]int, 2, 2)
 		d[0] = xuv[i]
 		d[1] = yuv[i]
 		r[i] = d
@@ -56,7 +56,7 @@ func discretise2D(data [][]float64, xIndices, xBins, yIndices, yBins []int64) []
 	return r
 }
 
-func discretise3D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, zBins []int64) [][]int64 {
+func discretise3D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, zBins []int) [][]int {
 	x := dh.ExtractColumns(data, xIndices)
 	y := dh.ExtractColumns(data, yIndices)
 	z := dh.ExtractColumns(data, zIndices)
@@ -88,9 +88,9 @@ func discretise3D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, 
 	yuv := dh.Relabel(dh.MakeUnivariate(yd, yBins))
 	zuv := dh.Relabel(dh.MakeUnivariate(zd, zBins))
 
-	r := make([][]int64, len(data), len(data))
+	r := make([][]int, len(data), len(data))
 	for i := 0; i < len(data); i++ {
-		d := make([]int64, 3, 3)
+		d := make([]int, 3, 3)
 		d[0] = xuv[i]
 		d[1] = yuv[i]
 		d[2] = zuv[i]
@@ -99,7 +99,7 @@ func discretise3D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, 
 	return r
 }
 
-func discretise4D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, zBins, wIndices, wBins []int64) [][]int64 {
+func discretise4D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, zBins, wIndices, wBins []int) [][]int {
 	x := dh.ExtractColumns(data, xIndices)
 	y := dh.ExtractColumns(data, yIndices)
 	z := dh.ExtractColumns(data, zIndices)
@@ -140,9 +140,9 @@ func discretise4D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, 
 	zuv := dh.Relabel(dh.MakeUnivariate(zd, zBins))
 	wuv := dh.Relabel(dh.MakeUnivariate(wd, wBins))
 
-	r := make([][]int64, len(data), len(data))
+	r := make([][]int, len(data), len(data))
 	for i := 0; i < len(data); i++ {
-		d := make([]int64, 4, 4)
+		d := make([]int, 4, 4)
 		d[0] = xuv[i]
 		d[1] = yuv[i]
 		d[2] = zuv[i]
@@ -152,7 +152,7 @@ func discretise4D(data [][]float64, xIndices, xBins, yIndices, yBins, zIndices, 
 	return r
 }
 
-func max2(a, b int64) int64 {
+func max2(a, b int) int {
 	r := a
 	if b > r {
 		r = b
@@ -160,7 +160,7 @@ func max2(a, b int64) int64 {
 	return r
 }
 
-func max3(a, b, c int64) int64 {
+func max3(a, b, c int) int {
 	r := a
 	if b > r {
 		r = b
@@ -171,7 +171,7 @@ func max3(a, b, c int64) int64 {
 	return r
 }
 
-func max4(a, b, c, d int64) int64 {
+func max4(a, b, c, d int) int {
 	r := a
 	if b > r {
 		r = b
@@ -186,12 +186,12 @@ func max4(a, b, c, d int64) int64 {
 }
 
 func merge3Data(data [][]float64,
-	xIndices []int64, xOffset int64,
-	yIndices []int64, yOffset int64,
-	zIndices []int64, zOffset int64,
+	xIndices []int, xOffset int,
+	yIndices []int, yOffset int,
+	zIndices []int, zOffset int,
 	eta bool) [][]float64 {
 	maxOffset := max3(xOffset, yOffset, zOffset)
-	N := len(data) - int(maxOffset)
+	N := len(data) - maxOffset
 	r := make([][]float64, N, N)
 
 	var bar *pb.ProgressBar
@@ -204,13 +204,13 @@ func merge3Data(data [][]float64,
 	for i := 0; i < N; i++ {
 		var d []float64
 		for _, x := range xIndices {
-			d = append(d, data[i+int(xOffset)][x])
+			d = append(d, data[i+xOffset][x])
 		}
 		for _, y := range yIndices {
-			d = append(d, data[i+int(yOffset)][y])
+			d = append(d, data[i+yOffset][y])
 		}
 		for _, z := range zIndices {
-			d = append(d, data[i+int(zOffset)][z])
+			d = append(d, data[i+zOffset][z])
 		}
 		r[i] = d
 		if eta == true {
@@ -225,11 +225,11 @@ func merge3Data(data [][]float64,
 }
 
 func merge2Data(data [][]float64,
-	xIndices []int64, xOffset int64,
-	yIndices []int64, yOffset int64,
+	xIndices []int, xOffset int,
+	yIndices []int, yOffset int,
 	eta bool) [][]float64 {
 	maxOffset := max2(xOffset, yOffset)
-	N := len(data) - int(maxOffset)
+	N := len(data) - maxOffset
 	r := make([][]float64, N, N)
 
 	var bar *pb.ProgressBar
@@ -242,10 +242,10 @@ func merge2Data(data [][]float64,
 	for i := 0; i < N; i++ {
 		var d []float64
 		for _, x := range xIndices {
-			d = append(d, data[i+int(xOffset)][x])
+			d = append(d, data[i+xOffset][x])
 		}
 		for _, y := range yIndices {
-			d = append(d, data[i+int(yOffset)][y])
+			d = append(d, data[i+yOffset][y])
 		}
 		r[i] = d
 		if eta == true {
@@ -260,13 +260,13 @@ func merge2Data(data [][]float64,
 }
 
 func merge4Data(data [][]float64,
-	xIndices []int64, xOffset int64,
-	yIndices []int64, yOffset int64,
-	zIndices []int64, zOffset int64,
-	wIndices []int64, wOffset int64,
+	xIndices []int, xOffset int,
+	yIndices []int, yOffset int,
+	zIndices []int, zOffset int,
+	wIndices []int, wOffset int,
 	eta bool) [][]float64 {
 	maxOffset := max4(xOffset, yOffset, zOffset, wOffset)
-	N := len(data) - int(maxOffset)
+	N := len(data) - maxOffset
 	r := make([][]float64, N, N)
 
 	var bar *pb.ProgressBar
@@ -279,16 +279,16 @@ func merge4Data(data [][]float64,
 	for i := 0; i < N; i++ {
 		var d []float64
 		for _, x := range xIndices {
-			d = append(d, data[i+int(xOffset)][x])
+			d = append(d, data[i+xOffset][x])
 		}
 		for _, y := range yIndices {
-			d = append(d, data[i+int(yOffset)][y])
+			d = append(d, data[i+yOffset][y])
 		}
 		for _, z := range zIndices {
-			d = append(d, data[i+int(zOffset)][z])
+			d = append(d, data[i+zOffset][z])
 		}
 		for _, w := range wIndices {
-			d = append(d, data[i+int(wOffset)][w])
+			d = append(d, data[i+wOffset][w])
 		}
 		r[i] = d
 		if eta == true {
@@ -319,46 +319,46 @@ func average(data []float64) (r float64) {
 	return
 }
 
-func createIndices3(XIndices, YIndices, ZIndices []int64) ([]int64, []int64, []int64) {
-	xIndices := make([]int64, len(XIndices), len(XIndices))
-	yIndices := make([]int64, len(YIndices), len(YIndices))
-	zIndices := make([]int64, len(ZIndices), len(ZIndices))
+func createIndices3(XIndices, YIndices, ZIndices []int) ([]int, []int, []int) {
+	xIndices := make([]int, len(XIndices), len(XIndices))
+	yIndices := make([]int, len(YIndices), len(YIndices))
+	zIndices := make([]int, len(ZIndices), len(ZIndices))
 	index := 0
 	for i := range XIndices {
-		xIndices[i] = int64(index)
+		xIndices[i] = index
 		index++
 	}
 	for i := range YIndices {
-		yIndices[i] = int64(index)
+		yIndices[i] = index
 		index++
 	}
 	for i := range ZIndices {
-		zIndices[i] = int64(index)
+		zIndices[i] = index
 		index++
 	}
 	return xIndices, yIndices, zIndices
 }
 
-func createIndices4(XIndices, YIndices, ZIndices, WIndices []int64) ([]int64, []int64, []int64, []int64) {
-	xIndices := make([]int64, len(XIndices), len(XIndices))
-	yIndices := make([]int64, len(YIndices), len(YIndices))
-	zIndices := make([]int64, len(ZIndices), len(ZIndices))
-	wIndices := make([]int64, len(WIndices), len(WIndices))
+func createIndices4(XIndices, YIndices, ZIndices, WIndices []int) ([]int, []int, []int, []int) {
+	xIndices := make([]int, len(XIndices), len(XIndices))
+	yIndices := make([]int, len(YIndices), len(YIndices))
+	zIndices := make([]int, len(ZIndices), len(ZIndices))
+	wIndices := make([]int, len(WIndices), len(WIndices))
 	index := 0
 	for i := range XIndices {
-		xIndices[i] = int64(index)
+		xIndices[i] = index
 		index++
 	}
 	for i := range YIndices {
-		yIndices[i] = int64(index)
+		yIndices[i] = index
 		index++
 	}
 	for i := range ZIndices {
-		zIndices[i] = int64(index)
+		zIndices[i] = index
 		index++
 	}
 	for i := range WIndices {
-		wIndices[i] = int64(index)
+		wIndices[i] = index
 		index++
 	}
 	return xIndices, yIndices, zIndices, wIndices

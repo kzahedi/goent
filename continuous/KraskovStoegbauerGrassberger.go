@@ -15,8 +15,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 
 	r = 0.0
 
-	hk := harmonic(k)            // h(k)
-	hN := harmonic(int(len(xy))) // h(N)
+	hk := harmonic(k)       // h(k)
+	hN := harmonic(len(xy)) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -59,7 +59,7 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 	r = 0.0
 
 	hk := harmonic(k)
-	hN := harmonic(int(len(xy)))
+	hN := harmonic(len(xy))
 
 	var bar *pb.ProgressBar
 

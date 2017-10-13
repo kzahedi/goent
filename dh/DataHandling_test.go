@@ -75,7 +75,7 @@ func TestDiscretise(t *testing.T) {
 		{0.8, 0.9, 1.0}}
 
 	d := dh.Discrestise(p,
-		[]int64{10, 10, 10},
+		[]int{10, 10, 10},
 		[]float64{0.0, 0.0, 0.0},
 		[]float64{1.0, 1.0, 1.0})
 
@@ -167,7 +167,7 @@ func TestDiscretise(t *testing.T) {
 func TestMakeUnivariate(t *testing.T) {
 	t.Log("Testing MakeUnivariate")
 
-	p := [][]int64{
+	p := [][]int{
 		{1, 2, 3},
 		{2, 3, 4},
 		{3, 4, 5},
@@ -176,7 +176,7 @@ func TestMakeUnivariate(t *testing.T) {
 		{6, 7, 8},
 		{7, 8, 9}}
 
-	d := dh.MakeUnivariate(p, []int64{10, 10, 10})
+	d := dh.MakeUnivariate(p, []int{10, 10, 10})
 
 	if d[0] != 1+10*2+100*3 {
 		t.Errorf("%d,%d,%d must be mapped to %d and not %d",
@@ -197,8 +197,8 @@ func TestMakeUnivariate(t *testing.T) {
 func TestRelabel(t *testing.T) {
 	t.Log("Testing Relabel")
 
-	p := []int64{10, 1, 4, 13, 871, 283, 123, 987, 2415, 88, 57, 10, 283, 987}
-	q := []int64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 5, 7}
+	p := []int{10, 1, 4, 13, 871, 283, 123, 987, 2415, 88, 57, 10, 283, 987}
+	q := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 5, 7}
 
 	d := dh.Relabel(p)
 
@@ -224,22 +224,22 @@ func TestExtractColumns(t *testing.T) {
 		{9.0, 90.0, 900.0, 9000.0},
 	}
 
-	c1 := dh.ExtractColumns(d, []int64{1})
+	c1 := dh.ExtractColumns(d, []int{1})
 
 	for i := 0; i < 9; i++ {
-		if int(c1[i][0]) != 10*(i+1) {
-			t.Errorf("Values should be %f but it is %f", 10*(i+1), int(c1[i][0]))
+		if c1[i][0] != 10*(i+1) {
+			t.Errorf("Values should be %f but it is %f", 10*(i+1), c1[i][0])
 		}
 	}
 
-	c2 := dh.ExtractColumns(d, []int64{0, 3})
+	c2 := dh.ExtractColumns(d, []int{0, 3})
 
 	for i := 0; i < 9; i++ {
-		if int(c2[i][0]) != i+1 {
-			t.Errorf("Values should be %d but it is %d", (i + 1), int(c2[i][0]))
+		if c2[i][0] != i+1 {
+			t.Errorf("Values should be %d but it is %d", (i + 1), c2[i][0])
 		}
-		if int(c2[i][1]) != (i+1)*1000 {
-			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), int(c2[i][1]))
+		if c2[i][1] != (i+1)*1000 {
+			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), c2[i][1])
 		}
 	}
 

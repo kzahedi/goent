@@ -12,21 +12,21 @@ type goentParameters struct {
 	UseContinuous     bool
 	UseStateDependent bool
 	Measure           string
-	Base              int64
-	K                 int64
-	Iterations        int64
-	XIndices          []int64
-	XBins             []int64
-	YIndices          []int64
-	YBins             []int64
-	ZIndices          []int64
-	ZBins             []int64
-	WIndices          []int64
-	WBins             []int64
-	AIndices          []int64
-	ABins             []int64
-	SIndices          []int64
-	SBins             []int64
+	Base              int
+	K                 int
+	Iterations        int
+	XIndices          []int
+	XBins             []int
+	YIndices          []int
+	YBins             []int
+	ZIndices          []int
+	ZBins             []int
+	WIndices          []int
+	WBins             []int
+	AIndices          []int
+	ABins             []int
+	SIndices          []int
+	SBins             []int
 }
 
 func check(e error) {
@@ -35,8 +35,8 @@ func check(e error) {
 	}
 }
 
-func parseNumberString(str string) []int64 {
-	var r []int64
+func parseNumberString(str string) []int {
+	var r []int
 	if str == "" {
 		return r
 	}
@@ -63,8 +63,8 @@ func parseNumberString(str string) []int64 {
 	return r
 }
 
-func parseBinsString(str string) []int64 {
-	var r []int64
+func parseBinsString(str string) []int {
+	var r []int
 	if str == "" {
 		return r
 	}
@@ -82,7 +82,7 @@ func parseBinsString(str string) []int64 {
 			check(err)
 			v, err := strconv.ParseInt(values[1], 10, 64)
 			check(err)
-			for i := 0; i < int(n); i++ {
+			for i := 0; i < n; i++ {
 				r = append(r, v)
 			}
 		}
@@ -91,7 +91,7 @@ func parseBinsString(str string) []int64 {
 	return r
 }
 
-func parseInt(str string) int64 {
+func parseInt(str string) int {
 	n, err := strconv.ParseInt(str, 10, 64)
 	check(err)
 	return n

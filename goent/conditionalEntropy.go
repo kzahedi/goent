@@ -37,9 +37,9 @@ func conditionalEntropyDiscrete(p goentParameters) (r float64) {
 	xuv := dh.Relabel(dh.MakeUnivariate(xd, p.XBins))
 	yuv := dh.Relabel(dh.MakeUnivariate(yd, p.YBins))
 
-	ddata := make([][]int64, len(data), len(data))
+	ddata := make([][]int, len(data), len(data))
 	for i := 0; i < len(data); i++ {
-		d := make([]int64, 2, 2)
+		d := make([]int, 2, 2)
 		d[0] = xuv[i]
 		d[1] = yuv[i]
 		ddata[i] = d

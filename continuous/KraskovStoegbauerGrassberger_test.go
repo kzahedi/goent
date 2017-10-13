@@ -41,7 +41,7 @@ func TestKraskovStoegbauerGrassberger1Gaussian(t *testing.T) {
 	rand.Seed(1)
 
 	N := 1000
-	k := int(20)
+	k := 20
 
 	r := 0.9 // co-variance
 	mi := 0.0
@@ -105,7 +105,7 @@ func TestKraskovStoegbauerGrassberger2Gaussian(t *testing.T) {
 	rand.Seed(2)
 
 	N := 1000
-	k := int(30)
+	k := 30
 
 	r := 0.9 // co-variance
 
