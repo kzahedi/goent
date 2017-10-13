@@ -227,7 +227,7 @@ func TestExtractColumns(t *testing.T) {
 	c1 := dh.ExtractColumns(d, []int{1})
 
 	for i := 0; i < 9; i++ {
-		if c1[i][0] != 10*(i+1) {
+		if int(c1[i][0]) != 10*(i+1) {
 			t.Errorf("Values should be %f but it is %f", 10*(i+1), c1[i][0])
 		}
 	}
@@ -235,12 +235,11 @@ func TestExtractColumns(t *testing.T) {
 	c2 := dh.ExtractColumns(d, []int{0, 3})
 
 	for i := 0; i < 9; i++ {
-		if c2[i][0] != i+1 {
+		if int(c2[i][0]) != i+1 {
 			t.Errorf("Values should be %d but it is %d", (i + 1), c2[i][0])
 		}
-		if c2[i][1] != (i+1)*1000 {
+		if int(c2[i][1]) != (i+1)*1000 {
 			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), c2[i][1])
 		}
 	}
-
 }
