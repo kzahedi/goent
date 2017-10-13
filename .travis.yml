@@ -3,6 +3,7 @@ go:
   - 1.8.x
 
 install:
+  - go get github.com/mattn/goveralls
   - go get -u gonum.org/v1/gonum/stat
   - go get -u gopkg.in/cheggaaa/pb.v1
   - go get -u github.com/axw/gocov/gocov
@@ -10,6 +11,6 @@ install:
   - go get -u golang.org/x/tools/cmd/cover
 
 script:
-  go test -v ./...
-  
-  # - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls  -service=travis-ci -repotoken $COVERALLS_TOKEN
+  - $HOME/gopath/bin/goveralls -service=travis-ci
+  - go test -v ./...
+

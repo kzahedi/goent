@@ -11,12 +11,12 @@ import (
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
-func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int64, k int64, eta bool) (r float64) {
+func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k int, eta bool) (r float64) {
 
 	r = 0.0
 
-	hk := harmonic(k)              // h(k)
-	hN := harmonic(int64(len(xy))) // h(N)
+	hk := harmonic(k)            // h(k)
+	hN := harmonic(int(len(xy))) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -54,12 +54,12 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int64, k
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
-func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int64, k int64, eta bool) (r float64) {
+func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k int, eta bool) (r float64) {
 
 	r = 0.0
 
 	hk := harmonic(k)
-	hN := harmonic(int64(len(xy)))
+	hN := harmonic(int(len(xy)))
 
 	var bar *pb.ProgressBar
 
@@ -97,7 +97,7 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int64, k
 // epsilon_k(t) is the distance of the k-th nearest neighbour. The function
 // takes k, the point from which the distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
-func ksgGetEpsilon(k int64, xy []float64, data [][]float64, xIndices, yIndices []int64) float64 {
+func ksgGetEpsilon(k int, xy []float64, data [][]float64, xIndices, yIndices []int) float64 {
 	distances := make([]float64, len(data), len(data))
 
 	for t := 0; t < len(data); t++ {
@@ -109,7 +109,7 @@ func ksgGetEpsilon(k int64, xy []float64, data [][]float64, xIndices, yIndices [
 	return distances[k-1] // we start to ksgCount at zero
 }
 
-func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int64) float64 {
+func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 	xDistance := distance(a, b, xIndices)
 	yDistance := distance(a, b, yIndices)
 	return math.Max(xDistance, yDistance)
@@ -117,7 +117,7 @@ func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int64) float64 {
 
 // ksgCount count the number of points for which the x or y coordinate is
 // closer than epsilon, where the ksgDistance is measured by the max-norm
-func ksgCount(epsilon float64, xy []float64, data [][]float64, indices []int64) (c int64) {
+func ksgCount(epsilon float64, xy []float64, data [][]float64, indices []int) (c int) {
 
 	for t := 0; t < len(data); t++ {
 		if distance(xy, data[t], indices) < epsilon {

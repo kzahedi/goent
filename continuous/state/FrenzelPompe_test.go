@@ -21,11 +21,11 @@ func TestFrenzelPompe(t *testing.T) {
 
 	var xyz [][]float64
 
-	xIndex := make([]int64, 1, 1)
+	xIndex := make([]int, 1, 1)
 	xIndex[0] = 0
-	yIndex := make([]int64, 1, 1)
+	yIndex := make([]int, 1, 1)
 	yIndex[0] = 1
-	zIndex := make([]int64, 1, 1)
+	zIndex := make([]int, 1, 1)
 	zIndex[0] = 2
 
 	for i := 0; i < N; i++ {
@@ -56,7 +56,7 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 	rand.Seed(1)
 
 	N := 1000
-	k := int64(30)
+	k := int(30)
 
 	r := 0.9 // co-variance
 
@@ -69,11 +69,11 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 
 	var xyz [][]float64
 
-	xIndex := make([]int64, 1, 1)
+	xIndex := make([]int, 1, 1)
 	xIndex[0] = 0
-	yIndex := make([]int64, 1, 1)
+	yIndex := make([]int, 1, 1)
 	yIndex[0] = 1
-	zIndex := make([]int64, 1, 1)
+	zIndex := make([]int, 1, 1)
 	zIndex[0] = 2
 
 	for i := 0; i < N; i++ {
