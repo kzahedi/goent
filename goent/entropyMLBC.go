@@ -26,12 +26,10 @@ func entropyMLBCDiscrete(p goentParameters) (r float64) {
 
 func entropyMLBCContinuousState(p goentParameters) (r float64) {
 	panic("Continuous-state EntropyMLBC is not available yet")
-	return
 }
 
 func entropyMLBCDiscreteState(p goentParameters) (r float64) {
 	panic("Discrete-state EntropyMLBC is not available yet")
-	return
 }
 
 func entropyMLBC(p goentParameters) (r float64) {

@@ -26,7 +26,7 @@ func MorphologicalComputationWA1(w2w1a1 [][]float64, w2Indices, w1Indices, a1Ind
 }
 
 // MorphologicalComputationWA2 = I(W;{W,A}) - I(W';A)
-func MorphologicalComputationWA(w2w1a1 [][]float64, w2Indices, w1Indices, a1Indices []int, k int, eta bool) float64 {
+func MorphologicalComputationWA2(w2w1a1 [][]float64, w2Indices, w1Indices, a1Indices []int, k int, eta bool) float64 {
 	return FrenzelPompe(w2w1a1, w2Indices, w1Indices, a1Indices, k, false) - KraskovStoegbauerGrassberger2(w2w1a1, w2Indices, a1Indices, k, eta)
 }
 

@@ -26,12 +26,10 @@ func entropyChaoShenDiscrete(p goentParameters) (r float64) {
 
 func entropyChaoShenContinuousState(p goentParameters) (r float64) {
 	panic("Continuous-state EntropyChaoShen is not available yet")
-	return
 }
 
 func entropyChaoShenDiscreteState(p goentParameters) (r float64) {
 	panic("Discrete-state EntropyChaoShen is not available yet")
-	return
 }
 
 func entropyChaoShen(p goentParameters) (r float64) {

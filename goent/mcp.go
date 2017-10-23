@@ -11,12 +11,10 @@ import (
 
 func mcpContinuous(p goentParameters) (r float64) {
 	panic("Continuous MC_P is not available yet")
-	return
 }
 
 func mcpContinuousState(p goentParameters) (r float64) {
 	panic("Continuous MC_P is not available yet")
-	return
 }
 
 ////////////////////////////////////////////////////////////
@@ -42,7 +40,6 @@ func mcpDiscreteState(p goentParameters) (r float64) {
 	// s := ds.MorphologicalComputationP(ddata, p.UseEta)
 	// writeData(p.Output, s)
 	// r = average(s)
-	return
 }
 
 ////////////////////////////////////////////////////////////

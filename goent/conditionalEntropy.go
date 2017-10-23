@@ -56,12 +56,10 @@ func conditionalEntropyDiscrete(p goentParameters) (r float64) {
 
 func conditionalEntropyContinuousState(p goentParameters) (r float64) {
 	panic("Continuous Entropy is not available yet")
-	return
 }
 
 func conditionalEntropyDiscreteState(p goentParameters) (r float64) {
 	panic("Continuous Entropy discrete state is not available yet")
-	return
 }
 
 func conditionalEntropy(p goentParameters) (r float64) {

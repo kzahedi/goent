@@ -75,7 +75,7 @@ func (data *IterativeScaling) CreateAlphabet() {
 	}
 
 	nrvi := data.NrOfVariables
-	nrsf := 0.0
+	var nrsf float64
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < nrvi; j++ {
@@ -104,8 +104,9 @@ func (data *IterativeScaling) Iterate() {
 	copy(pCopy, data.PEstimate) // for step with calculation with Kullback-Leibler
 	f := data.Features[data.Keys[data.CurrentFeatureIndex]]
 
-	a := 0.0
-	b := 0.0
+	var a float64
+	var b float64
+
 	var indices []int
 	for i := range data.PEstimate {
 		indices = getAlphabetIndices(i, f, &data.Alphabet)

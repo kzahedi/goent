@@ -11,12 +11,10 @@ import (
 
 func mcsyContinuous(p goentParameters) (r float64) {
 	panic("Continuous MC_SY is not available yet")
-	return
 }
 
 func mcsyContinuousState(p goentParameters) (r float64) {
 	panic("Continuous MC_SY is not available yet")
-	return
 }
 
 ////////////////////////////////////////////////////////////
@@ -42,7 +40,6 @@ func mcsyDiscreteState(p goentParameters) (r float64) {
 	// s := ds.MorphologicalComputationSY(ddata, p.UseEta)
 	// writeData(p.Output, s)
 	// r = average(s)
-	return
 }
 
 ////////////////////////////////////////////////////////////

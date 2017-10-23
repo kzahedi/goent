@@ -28,7 +28,6 @@ func entropyDiscrete(p goentParameters) (r float64) {
 
 func entropyContinuousState(p goentParameters) (r float64) {
 	panic("Continuous-state Entropy is not available yet")
-	return
 }
 
 func entropyDiscreteState(p goentParameters) (r float64) {

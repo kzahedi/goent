@@ -41,9 +41,9 @@ func parseNumberString(str string) []int {
 		return r
 	}
 
-	comma_values := strings.Split(str, ",")
+	commaValues := strings.Split(str, ",")
 
-	for _, c := range comma_values {
+	for _, c := range commaValues {
 		values := strings.Split(c, ":")
 		if len(values) == 1 {
 			v, err := strconv.ParseInt(values[0], 10, 64)
@@ -69,9 +69,9 @@ func parseBinsString(str string) []int {
 		return r
 	}
 
-	comma_values := strings.Split(str, ",")
+	commaValues := strings.Split(str, ",")
 
-	for _, c := range comma_values {
+	for _, c := range commaValues {
 		values := strings.Split(c, "x")
 		if len(values) == 1 {
 			v, err := strconv.ParseInt(values[0], 10, 64)

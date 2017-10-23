@@ -26,12 +26,10 @@ func entropyHorvitzThompsonDiscrete(p goentParameters) (r float64) {
 
 func entropyHorvitzThompsonContinuousState(p goentParameters) (r float64) {
 	panic("Continuous-state EntropyHorvitzThompson is not available yet")
-	return
 }
 
 func entropyHorvitzThompsonDiscreteState(p goentParameters) (r float64) {
 	panic("Discrete-state EntropyHorvitzThompson is not available yet")
-	return
 }
 
 func entropyHorvitzThompson(p goentParameters) (r float64) {
