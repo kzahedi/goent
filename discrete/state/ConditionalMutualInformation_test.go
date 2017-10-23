@@ -15,9 +15,9 @@ func TestConditionalMutualInformation(t *testing.T) {
 	for j := 0; j < 100; j++ {
 		for i := 0; i < 100; i++ {
 			data[i] = make([]int, 3, 3)
-			data[i][0] = rand.Int63n(100)
-			data[i][1] = rand.Int63n(100)
-			data[i][2] = rand.Int63n(100)
+			data[i][0] = int(rand.Int63n(100))
+			data[i][1] = int(rand.Int63n(100))
+			data[i][2] = int(rand.Int63n(100))
 		}
 
 		r := state.ConditionalMutualInformationBaseE(data)

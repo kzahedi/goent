@@ -30,7 +30,7 @@ func TestEntropyChaoShen(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		h := make([]int, 5000, 5000)
 		for j := 0; j < 5000; j++ {
-			h[j] = rand.Int63n(100)
+			h[j] = int(rand.Int63n(100))
 		}
 		r += discrete.EntropyChaoShenBaseE(h)
 	}
@@ -49,7 +49,7 @@ func TestEntropyMLBC(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		h := make([]int, 5000, 5000)
 		for j := 0; j < 5000; j++ {
-			h[j] = rand.Int63n(100)
+			h[j] = int(rand.Int63n(100))
 		}
 		r += discrete.EntropyMLBCBaseE(h)
 	}

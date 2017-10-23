@@ -48,14 +48,14 @@ func parseNumberString(str string) []int {
 		if len(values) == 1 {
 			v, err := strconv.ParseInt(values[0], 10, 64)
 			check(err)
-			r = append(r, v)
+			r = append(r, int(v))
 		} else {
 			start, err := strconv.ParseInt(values[0], 10, 64)
 			check(err)
 			end, err := strconv.ParseInt(values[1], 10, 64)
 			check(err)
 			for n := start; n <= end; n++ {
-				r = append(r, n)
+				r = append(r, int(n))
 			}
 		}
 	}
@@ -76,14 +76,14 @@ func parseBinsString(str string) []int {
 		if len(values) == 1 {
 			v, err := strconv.ParseInt(values[0], 10, 64)
 			check(err)
-			r = append(r, v)
+			r = append(r, int(v))
 		} else {
 			n, err := strconv.ParseInt(values[0], 10, 64)
 			check(err)
 			v, err := strconv.ParseInt(values[1], 10, 64)
 			check(err)
-			for i := 0; i < n; i++ {
-				r = append(r, v)
+			for i := 0; i < int(n); i++ {
+				r = append(r, int(v))
 			}
 		}
 	}
@@ -94,5 +94,5 @@ func parseBinsString(str string) []int {
 func parseInt(str string) int {
 	n, err := strconv.ParseInt(str, 10, 64)
 	check(err)
-	return n
+	return int(n)
 }
