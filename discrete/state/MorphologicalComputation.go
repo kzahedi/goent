@@ -46,7 +46,7 @@ func MorphologicalComputatioCW(w2w1a1 [][]int64) []float64 {
 	return r
 }
 
-// MC_WA = I(W;{W,A}) - I(W';A)
+// MorphologicalComputatioWA = I(W;{W,A}) - I(W';A)
 func MorphologicalComputatioWA(w2w1a1 [][]int64) []float64 {
 	w2a1 := make([][]int64, len(w2w1a1), len(w2w1a1))
 	for i := 0; i < len(w2w1a1); i++ {
@@ -66,7 +66,7 @@ func MorphologicalComputatioWA(w2w1a1 [][]int64) []float64 {
 	return r
 }
 
-//   MC_WS = I(W;{W,S}) - I(W';S)
+// MorphologicalComputatioWS = I(W;{W,S}) - I(W';S)
 func MorphologicalComputatioWS(w2w1s1 [][]int64) []float64 {
 	w2s1 := make([][]int64, len(w2w1s1), len(w2w1s1))
 	for i := 0; i < len(w2w1s1); i++ {

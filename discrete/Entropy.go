@@ -155,8 +155,8 @@ func EntropyChaoShen(data []int64, ln lnFunc) float64 {
 		p[i] = p[i] * C
 	}
 
-	z := 0.0
-	r := 0.0
+	var z float64
+	var r float64
 	for i := range p {
 		if p[i] > 0.0 {
 			z = math.Pow((1.0 - p[i]), n)

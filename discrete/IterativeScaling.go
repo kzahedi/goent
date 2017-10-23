@@ -45,7 +45,7 @@ func NewIterativeScaling() *IterativeScaling {
 // Init extract the feature names for faster processing
 func (data *IterativeScaling) Init() {
 	data.Keys = make([]string, 0, len(data.Features))
-	for k, _ := range data.Features {
+	for k := range data.Features {
 		data.Keys = append(data.Keys, k)
 	}
 	for _, k := range data.Keys {
@@ -56,7 +56,7 @@ func (data *IterativeScaling) Init() {
 
 	data.CurrentFeatureIndex = -1
 	data.PEstimate = make([]float64, len(data.PTarget), len(data.PTarget))
-	for i, _ := range data.PTarget {
+	for i := range data.PTarget {
 		data.PEstimate[i] = 1.0 / float64(len(data.PTarget))
 	}
 }
@@ -75,7 +75,7 @@ func (data *IterativeScaling) CreateAlphabet() {
 	}
 
 	nrvi := data.NrOfVariables
-	nrsf := 0.0
+	var nrsf float64
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < nrvi; j++ {
@@ -99,25 +99,26 @@ func (data *IterativeScaling) CreateAlphabet() {
 func (data *IterativeScaling) Iterate() {
 	data.CurrentFeatureIndex++
 	data.CurrentFeatureIndex = data.CurrentFeatureIndex % len(data.Features)
-	p_copy := make([]float64, len(data.PEstimate), len(data.PEstimate))
-	copy(p_copy, data.PEstimate) // for step with calculation with Kullback-Leibler
+	pCopy := make([]float64, len(data.PEstimate), len(data.PEstimate))
+	copy(pCopy, data.PEstimate) // for step with calculation with Kullback-Leibler
 	f := data.Features[data.Keys[data.CurrentFeatureIndex]]
 
-	a := 0.0
-	b := 0.0
+	var a float64
+	var b float64
 	var indices []int
-	for i, _ := range data.PEstimate {
-		indices = get_alphabet_indices(i, f, &data.Alphabet)
-		b = calculate_marginal(data.PEstimate, indices)
+
+	for i := range data.PEstimate {
+		indices = getAlphabetIndices(i, f, &data.Alphabet)
+		b = calculateMarginal(data.PEstimate, indices)
 		if b > 0 {
-			a = calculate_marginal(data.PTarget, indices)
+			a = calculateMarginal(data.PTarget, indices)
 			data.PEstimate[i] = data.PEstimate[i] * a / b
 		}
 	}
-	data.LastKLStep = stat.KullbackLeibler(p_copy, data.PEstimate)
+	data.LastKLStep = stat.KullbackLeibler(pCopy, data.PEstimate)
 }
 
-func calculate_marginal(p []float64, indices []int) float64 {
+func calculateMarginal(p []float64, indices []int) float64 {
 	sum := 0.0
 	if len(indices) > 0 {
 		for _, v := range indices {
@@ -127,18 +128,18 @@ func calculate_marginal(p []float64, indices []int) float64 {
 	return sum
 }
 
-func get_alphabet_indices(index int, feature []int, alphabet *[][]int) []int {
+func getAlphabetIndices(index int, feature []int, alphabet *[][]int) []int {
 	a := (*alphabet)[index]
 	var indices []int
 	for i, v := range *alphabet {
-		if check_feature_alphabet(feature, a, v) == true {
+		if checkFeatureAlphabet(feature, a, v) == true {
 			indices = append(indices, i)
 		}
 	}
 	return indices
 }
 
-func check_feature_alphabet(feature, values, alphabet []int) bool {
+func checkFeatureAlphabet(feature, values, alphabet []int) bool {
 	for _, v := range feature {
 		if values[v] != alphabet[v] {
 			return false
@@ -147,12 +148,13 @@ func check_feature_alphabet(feature, values, alphabet []int) bool {
 	return true
 }
 
+// CalculateMarginalProbability calculates the marginal probability p(x)
 func (data *IterativeScaling) CalculateMarginalProbability(feature []int) float64 {
 	var indices []int
 	sum := 0.0
-	for i, _ := range data.PEstimate {
-		indices = get_alphabet_indices(i, feature, &data.Alphabet)
-		sum += calculate_marginal(data.PEstimate, indices)
+	for i := range data.PEstimate {
+		indices = getAlphabetIndices(i, feature, &data.Alphabet)
+		sum += calculateMarginal(data.PEstimate, indices)
 	}
 	return sum
 }

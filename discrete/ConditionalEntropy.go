@@ -12,7 +12,7 @@ func ConditionalEntropy(pxy [][]float64, log lnFunc) float64 {
 	var r float64
 	xDim := len(pxy)
 	yDim := len(pxy[0])
-	py := 0.0
+	var py float64
 	for y := 0; y < yDim; y++ {
 		py = 0.0
 		for x := 0; x < xDim; x++ {

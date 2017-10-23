@@ -10,37 +10,37 @@ func ConditionalMutualInformation(pxyz [][][]float64, ln lnFunc) float64 {
 	yDim := len(pxyz[0])
 	zDim := len(pxyz[0][0])
 
-	pxy_c_z := Create3D(xDim, yDim, zDim)
-	px_c_z := Create2D(xDim, zDim)
-	py_c_z := Create2D(yDim, zDim)
+	pxyCz := Create3D(xDim, yDim, zDim)
+	pxCz := Create2D(xDim, zDim)
+	pyCz := Create2D(yDim, zDim)
 	pz := make([]float64, zDim)
 
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
 				pz[z] += pxyz[x][y][z]
-				px_c_z[x][z] += pxyz[x][y][z]
-				py_c_z[y][z] += pxyz[x][y][z]
+				pxCz[x][z] += pxyz[x][y][z]
+				pyCz[y][z] += pxyz[x][y][z]
 			}
 		}
 	}
 
 	for x := 0; x < xDim; x++ {
 		for z := 0; z < zDim; z++ {
-			px_c_z[x][z] /= pz[z]
+			pxCz[x][z] /= pz[z]
 		}
 	}
 
 	for y := 0; y < yDim; y++ {
 		for z := 0; z < zDim; z++ {
-			py_c_z[y][z] /= pz[z]
+			pyCz[y][z] /= pz[z]
 		}
 	}
 
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				pxy_c_z[x][y][z] = pxyz[x][y][z] / pz[z]
+				pxyCz[x][y][z] = pxyz[x][y][z] / pz[z]
 			}
 		}
 	}
@@ -49,8 +49,8 @@ func ConditionalMutualInformation(pxyz [][][]float64, ln lnFunc) float64 {
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				if pxyz[x][y][z] > 0.0 && pxy_c_z[x][y][z] > 0.0 && px_c_z[x][z] > 0.0 && py_c_z[y][z] > 0.0 {
-					r += pxyz[x][y][z] * (ln(pxy_c_z[x][y][z]) - ln(px_c_z[x][z]*py_c_z[y][z]))
+				if pxyz[x][y][z] > 0.0 && pxyCz[x][y][z] > 0.0 && pxCz[x][z] > 0.0 && pyCz[y][z] > 0.0 {
+					r += pxyz[x][y][z] * (ln(pxyCz[x][y][z]) - ln(pxCz[x][z]*pyCz[y][z]))
 				}
 			}
 		}

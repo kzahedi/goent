@@ -10,9 +10,11 @@ import (
 //   H(X|Y) = -\sum_x p(x,y) lnFunc(p(x,y)/p(y))
 func ConditionalEntropy(pxy [][]float64, log lnFunc) float64 {
 	var r float64
+	var py float64
+
 	xDim := len(pxy)
 	yDim := len(pxy[0])
-	py := 0.0
+
 	for y := 0; y < yDim; y++ {
 		py = 0.0
 		for x := 0; x < xDim; x++ {
@@ -39,6 +41,6 @@ func ConditionalEntropyBaseE(pxy [][]float64) float64 {
 // ConditionalEntropyBase2 calculates the conditional entropy of a
 // probability distribution in bits
 //   H(X|Y) = -\sum_x p(x,y) log2(p(x,y)/p(y))
-func ConditionalEntropyBase(pxy [][]float64) float64 {
+func ConditionalEntropyBase2(pxy [][]float64) float64 {
 	return ConditionalEntropy(pxy, math.Log2)
 }
