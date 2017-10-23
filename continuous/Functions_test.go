@@ -56,13 +56,13 @@ func TestNormaliseZero(t *testing.T) {
 	ndata := Normalise(data)
 
 	if len(ndata) != len(data) {
-		t.Errorf(fmt.Sprintf("Normalise should not change the number of rows from %d to %d"), len(data), len(ndata))
+		t.Errorf(fmt.Sprintf("Normalise should not change the number of rows from %d to %d", len(data), len(ndata)))
 	}
 
 	for row := range data {
 		for column := range data[row] {
 			if len(ndata[row]) != 5 {
-				t.Errorf(fmt.Sprintf("Normalise should not change the number of columns from 5 to %d"), len(ndata[row]))
+				t.Errorf(fmt.Sprintf("Normalise should not change the number of columns from 5 to %d", len(ndata[row])))
 			}
 			if math.Abs(ndata[row][column]) > 0.00000001 {
 				t.Errorf(fmt.Sprintf("Normalised data [%d,%d] should be zero and not %f", row, column, ndata[row][column]))

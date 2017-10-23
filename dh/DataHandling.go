@@ -47,8 +47,9 @@ func MakeUnivariate(d [][]int, bins []int) []int {
 	cols := len(d[0])
 	ret := make([]int, rows, rows)
 
-	f := 1
-	v := 0
+	var f int
+	var v int
+
 	for r := 0; r < rows; r++ {
 		v = 0
 		f = 1
@@ -76,7 +77,7 @@ func Relabel(d []int) []int {
 	encountered := map[int]bool{}
 	unique := []int{}
 
-	for i, _ := range d {
+	for i := range d {
 		if encountered[d[i]] == false {
 			encountered[d[i]] = true
 			unique = append(unique, d[i])
