@@ -15,8 +15,8 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 
 	r = 0.0
 
-	hk := harmonic(k)            // h(k)
-	hN := harmonic(int(len(xy))) // h(N)
+	hk := Harmonic(k)            // h(k)
+	hN := Harmonic(int(len(xy))) // h(N)
 
 	var bar *pb.ProgressBar
 
@@ -27,10 +27,10 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices) // N_x
-		hNx := harmonic(cNx + 1)                      // h(N_x)
+		hNx := Harmonic(cNx + 1)                      // h(N_x)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices) // N_y
-		hNy := harmonic(cNy + 1)                      // h(N_y)
+		hNy := Harmonic(cNy + 1)                      // h(N_y)
 
 		r -= hNx + hNy
 
@@ -58,8 +58,8 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 
 	r = 0.0
 
-	hk := harmonic(k)
-	hN := harmonic(int(len(xy)))
+	hk := Harmonic(k)
+	hN := Harmonic(int(len(xy)))
 
 	var bar *pb.ProgressBar
 
@@ -70,10 +70,10 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 
 		cNx := ksgCount(epsilon, xy[t], xy, xIndices)
-		hNx := harmonic(cNx)
+		hNx := Harmonic(cNx)
 
 		cNy := ksgCount(epsilon, xy[t], xy, yIndices)
-		hNy := harmonic(cNy)
+		hNy := Harmonic(cNy)
 
 		r -= hNx + hNy
 
@@ -94,8 +94,8 @@ func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k i
 }
 
 // ksgGetEpsilon calculate epsilon_k(t) as defined by Frenzel & Pompe, 2007
-// epsilon_k(t) is the distance of the k-th nearest neighbour. The function
-// takes k, the point from which the distance is calculated (xyz), and the
+// epsilon_k(t) is the Distance of the k-th nearest neighbour. The function
+// takes k, the point from which the Distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
 func ksgGetEpsilon(k int, xy []float64, data [][]float64, xIndices, yIndices []int) float64 {
 	distances := make([]float64, len(data), len(data))
@@ -110,8 +110,8 @@ func ksgGetEpsilon(k int, xy []float64, data [][]float64, xIndices, yIndices []i
 }
 
 func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
-	xDistance := distance(a, b, xIndices)
-	yDistance := distance(a, b, yIndices)
+	xDistance := Distance(a, b, xIndices)
+	yDistance := Distance(a, b, yIndices)
 	return math.Max(xDistance, yDistance)
 }
 
@@ -120,7 +120,7 @@ func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 func ksgCount(epsilon float64, xy []float64, data [][]float64, indices []int) (c int) {
 
 	for t := 0; t < len(data); t++ {
-		if distance(xy, data[t], indices) < epsilon {
+		if Distance(xy, data[t], indices) < epsilon {
 			c++
 		}
 	}

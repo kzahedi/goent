@@ -2,7 +2,7 @@ package continuous
 
 import "math"
 
-func distance(a, b []float64, indices []int) float64 {
+func Distance(a, b []float64, indices []int) float64 {
 	d := 0.0
 	for _, v := range indices {
 		d += (a[v] - b[v]) * (a[v] - b[v])
@@ -10,7 +10,7 @@ func distance(a, b []float64, indices []int) float64 {
 	return math.Sqrt(d)
 }
 
-func harmonic(n int) (r float64) {
+func Harmonic(n int) (r float64) {
 	// harmonic(1) = -C, see A. Kraskov, H. Stoeogbauer, and P. Grassberger.
 	// Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
 	if n == 0 {

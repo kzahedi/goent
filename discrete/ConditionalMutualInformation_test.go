@@ -107,7 +107,16 @@ func TestCMIasMI(t *testing.T) {
 	diff := cmi - (multi - mi)
 
 	if math.Abs(diff) > 0.0001 {
-		t.Errorf("I(X;Y|Z) = I(X;Y,Z) - I(X;Z) but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
+		t.Errorf("I(X;Y|Z) = I(X;Y,Z) - I(X;Z), but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
+	}
+
+	cmiE := discrete.ConditionalMutualInformationBaseE(pxyz)
+	multiE := discrete.MutualInformationBaseE(px_yz)
+	miE := discrete.MutualInformationBaseE(pxz)
+	diffE := cmiE - (multiE - miE)
+
+	if math.Abs(diffE) > 0.0001 {
+		t.Errorf("I_e(X;Y|Z) = I_e(X;Y,Z) - I_e(X;Z), but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
 	}
 
 }

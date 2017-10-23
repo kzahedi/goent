@@ -50,6 +50,7 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 	r := 0.9 // co-variance
 
 	cmi := 0.0
+	cmiTrue := 0.0
 
 	mu := []float64{0.0, 0.0, 0.0}
 	sym := mat.NewSymDense(3, []float64{
@@ -86,11 +87,18 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 		}
 
 		cmi += math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false))
+		cmiTrue += math.Abs(continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, true))
 	}
 
 	cmi /= 100.0
+	cmiTrue /= 100.0
 
 	if math.Abs(cmi-CMIGauss) > 0.1 {
 		t.Errorf(fmt.Sprintf("Conditional Mutual Information should be close %f but it is %f", CMIGauss, cmi))
 	}
+
+	if math.Abs(cmi-cmiTrue) > 0.1 {
+		t.Errorf(fmt.Sprintf("Frenzel-Pompe with and without ETA should be the same but %f != %f", cmi, cmiTrue))
+	}
+
 }

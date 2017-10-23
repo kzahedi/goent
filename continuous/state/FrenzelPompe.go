@@ -4,6 +4,7 @@ import (
 	"math"
 	"sort"
 
+	"github.com/kzahedi/goent/continuous"
 	pb "gopkg.in/cheggaaa/pb.v1"
 )
 
@@ -15,7 +16,7 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 
 	r := make([]float64, len(xyz), len(xyz))
 
-	hk := harmonic(k - 1)
+	hk := continuous.Harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
@@ -27,13 +28,13 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		epsilon := fpGetEpsilon(k, v, xyz, xIndices, yIndices, zIndices)
 
 		cNxz := fpCount2(epsilon, v, xyz, xIndices, zIndices)
-		hNxz := harmonic(cNxz)
+		hNxz := continuous.Harmonic(cNxz)
 
 		cNyz := fpCount2(epsilon, v, xyz, yIndices, zIndices)
-		hNyz := harmonic(cNyz)
+		hNyz := continuous.Harmonic(cNyz)
 
 		cNz := fpCount1(epsilon, v, xyz, zIndices)
-		hNz := harmonic(cNz)
+		hNz := continuous.Harmonic(cNz)
 
 		r[t] = hNxz + hNyz - hNz - hk
 
@@ -53,15 +54,15 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 // fpMaxNorm3 computes the max-norm of two 3-dimensional vectors
 //   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|, |a[2] - b[2]|)
 func fpMaxNorm3(a, b []float64, xIndices, yIndices, zIndices []int) float64 {
-	xDist := distance(a, b, xIndices)
-	yDist := distance(a, b, yIndices)
-	zDist := distance(a, b, zIndices)
+	xDist := continuous.Distance(a, b, xIndices)
+	yDist := continuous.Distance(a, b, yIndices)
+	zDist := continuous.Distance(a, b, zIndices)
 	return math.Max(xDist, math.Max(yDist, zDist))
 }
 
 // fpGetEpsilon calculate epsilon_k(t) as defined by Frenzel & Pompe, 2007
-// epsilon_k(t) is the distance of the k-th nearest neighbour. The function
-// takes k, the point from which the distance is calculated (xyz), and the
+// epsilon_k(t) is the continuous.Distance of the k-th nearest neighbour. The function
+// takes k, the point from which the continuous.Distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
 func fpGetEpsilon(k int, xyz []float64, data [][]float64, xIndices, yIndices, zIndices []int) float64 {
 	distances := make([]float64, len(data), len(data))
@@ -76,7 +77,7 @@ func fpGetEpsilon(k int, xyz []float64, data [][]float64, xIndices, yIndices, zI
 }
 
 // fpCount2 count the number of points for which the x and y coordinate is
-// closer than epsilon, where the distance is measured by the max-norm
+// closer than epsilon, where the continuous.Distance is measured by the max-norm
 func fpCount2(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndices []int) (c int) {
 
 	c = -1 // because we will also count xyz[t] vs. xyz[t]
@@ -92,8 +93,8 @@ func fpCount2(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndic
 // fpMaxNorm2 computes the max-norm of two 3-dimensional vectors
 //   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|)
 func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
-	xDist := distance(a, b, xIndices)
-	yDist := distance(a, b, yIndices)
+	xDist := continuous.Distance(a, b, xIndices)
+	yDist := continuous.Distance(a, b, yIndices)
 	return math.Max(xDist, yDist)
 }
 
@@ -102,7 +103,7 @@ func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 func fpCount1(epsilon float64, xyz []float64, data [][]float64, zIndices []int) (c int) {
 	c = -1 // because we will also count xyz[t] vs. xyz[t]
 	for t := 0; t < len(data); t++ {
-		if distance(xyz, data[t], zIndices) < epsilon {
+		if continuous.Distance(xyz, data[t], zIndices) < epsilon {
 			c++
 		}
 	}

@@ -82,6 +82,7 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 	}
 
 	s := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false)
+	tt := state.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, true)
 	rr := continuous.FrenzelPompe(xyz, xIndex, yIndex, zIndex, k, false)
 	q := 0.0
 
@@ -95,5 +96,11 @@ func TestFrenzelPompeGaussian(t *testing.T) {
 
 	if d := math.Abs(q - rr); d > 0.0001 {
 		t.Errorf(fmt.Sprintf("Sum over states should be equal to averaged, but the difference is %f (%f vs. %f)", d, q, rr))
+	}
+
+	for i := range s {
+		if d := math.Abs(s[i] - tt[i]); d > 0.0001 {
+			t.Errorf(fmt.Sprintf("Using ETA should not make a difference, but it is %f (%f vs. %f)", d, s[i], tt[i]))
+		}
 	}
 }
