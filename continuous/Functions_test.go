@@ -43,7 +43,12 @@ func TestHarmonic5(t *testing.T) {
 	r := -1.0/2.0 - 1.0/3.0 - 1.0/4.0 - 1.0/5.0 - 0.5772156649
 
 	if math.Abs(h-r) > 0.00001 {
-		t.Errorf(fmt.Sprintf("Harmonic(1) should be %f but it is %f", r, h))
+		t.Errorf(fmt.Sprintf("Harmonic(5) should be %f but it is %f", r, h))
+	}
+
+	h2 := harmonic(0)
+	if h2 != 0.0 {
+		t.Errorf(fmt.Sprintf("Harmonic(0) should be 0.0 but it is %f", h2))
 	}
 }
 
