@@ -1,15 +1,36 @@
 language: go
+
+cache:
+  directories:
+    - ${GOPATH}/src/github.com/${TRAVIS_REPO_SLUG}/vendor
+    - ${GOPATH}/src/github.com/fzipp
+    - ${GOPATH}/src/github.com/golang
+    - ${GOPATH}/src/github.com/gordonklaus
+    - ${GOPATH}/src/github.com/h12w
+    - ${GOPATH}/src/github.com/mattn
 go:
+  - tip
   - 1.8.x
 
+sudo: false
+
+env:
+    CI_SERVICE=travis-ci
+
 install:
-  - go get -u gonum.org/v1/gonum/stat
-  - go get -u gopkg.in/cheggaaa/pb.v1
-  - go get -u github.com/axw/gocov/gocov
-  - go get -u github.com/mattn/goveralls
-  - go get -u golang.org/x/tools/cmd/cover
+  - go get github.com/client9/misspell/cmd/misspell
+  - go get github.com/fzipp/gocyclo
+  - go get github.com/golang/lint/golint
+  - go get github.com/gordonklaus/ineffassign
+  - go get github.com/h12w/gosweep
+  - go get github.com/mattn/goveralls
+  - go get -u golang.org/x/tools/cmd/goimports
+  - go get github.com/mattn/goveralls
+  - go get gonum.org/v1/gonum/stat
+  - go get gopkg.in/cheggaaa/pb.v1
+  - go get github.com/axw/gocov/gocov
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
 
 script:
-  go test -v ./...
-  
-  # - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls  -service=travis-ci -repotoken $COVERALLS_TOKEN
+  - bash ${GOPATH}/src/github.com/h12w/gosweep/gosweep.sh
