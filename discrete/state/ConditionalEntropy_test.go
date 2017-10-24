@@ -1,7 +1,6 @@
 package state_test
 
 import (
-	"fmt"
 	"math"
 	"testing"
 
@@ -25,7 +24,6 @@ func TestConditionalEntropyBase2(t *testing.T) {
 
 	avg := discrete.ConditionalEntropyBase2(p1)
 	s := state.ConditionalEntropyBase2(d1)
-	fmt.Println(s)
 	r := 0.0
 	for _, v := range s {
 		r += v
