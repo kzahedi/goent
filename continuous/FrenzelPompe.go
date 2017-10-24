@@ -13,7 +13,7 @@ import (
 // Phys. Rev. Lett., 99:204101, Nov 2007.
 func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) (r float64) {
 
-	hk := harmonic(k - 1)
+	hk := Harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
@@ -26,13 +26,13 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		epsilon := fpGetEpsilon(k, xyz[t], xyz, xIndices, yIndices, zIndices)
 
 		cNxz := fpCount2(epsilon, xyz[t], xyz, xIndices, zIndices)
-		hNxz := harmonic(cNxz)
+		hNxz := Harmonic(cNxz)
 
 		cNyz := fpCount2(epsilon, xyz[t], xyz, yIndices, zIndices)
-		hNyz := harmonic(cNyz)
+		hNyz := Harmonic(cNyz)
 
 		cNz := fpCount1(epsilon, xyz[t], xyz, zIndices)
-		hNz := harmonic(cNz)
+		hNz := Harmonic(cNz)
 
 		r += hNxz + hNyz - hNz
 
@@ -55,9 +55,9 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 // fpMaxNorm3 computes the max-norm of two 3-dimensional vectors
 //   maxnorm(a,b) = max( |a[0] - b[0]|, |a[1] - b[1]|, |a[2] - b[2]|)
 func fpMaxNorm3(a, b []float64, xIndices, yIndices, zIndices []int) float64 {
-	xDist := distance(a, b, xIndices)
-	yDist := distance(a, b, yIndices)
-	zDist := distance(a, b, zIndices)
+	xDist := Distance(a, b, xIndices)
+	yDist := Distance(a, b, yIndices)
+	zDist := Distance(a, b, zIndices)
 	return math.Max(xDist, math.Max(yDist, zDist))
 }
 
@@ -92,8 +92,8 @@ func fpCount2(epsilon float64, xyz []float64, data [][]float64, xIndices, yIndic
 }
 
 func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
-	xDist := distance(a, b, xIndices)
-	yDist := distance(a, b, yIndices)
+	xDist := Distance(a, b, xIndices)
+	yDist := Distance(a, b, yIndices)
 	return math.Max(xDist, yDist)
 }
 
@@ -102,7 +102,7 @@ func fpMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {
 func fpCount1(epsilon float64, xyz []float64, data [][]float64, zIndices []int) (c int) {
 	c = -1 // because we will also count xyz[t] vs. xyz[t]
 	for t := 0; t < len(data); t++ {
-		if distance(xyz, data[t], zIndices) < epsilon {
+		if Distance(xyz, data[t], zIndices) < epsilon {
 			c++
 		}
 	}
