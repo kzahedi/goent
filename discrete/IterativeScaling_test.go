@@ -111,51 +111,51 @@ func TestIterativeScalingXOR(t *testing.T) {
 func TestConstructor(t *testing.T) {
 	isPtr := discrete.NewIterativeScaling()
 
-	if *isPtr.Alphabet != nil {
+	if isPtr.Alphabet != nil {
 		t.Errorf("Alphabet should be nil")
 	}
 
-	if *isPtr.CurrentFeatureIndex != -1 {
+	if isPtr.CurrentFeatureIndex != -1 {
 		t.Errorf("CurrentFeatureIndex should be -1")
 	}
 
-	if *isPtr.CurrentIteration != 0 {
+	if isPtr.CurrentIteration != 0 {
 		t.Errorf("CurrentIteration should be 0")
 	}
 
-	if *isPtr.ErrorThreshold != 0.0 {
+	if isPtr.ErrorThreshold != 0.0 {
 		t.Errorf("ErrorThreshold should be 0.0")
 	}
 
-	if *isPtr.Features != nil {
+	if isPtr.Features != nil {
 		t.Errorf("Features should be nil")
 	}
 
-	if *isPtr.LastKLStep != -1.0 {
+	if isPtr.LastKLStep != -1.0 {
 		t.Errorf("LastKLStep should be -1.0")
 	}
 
-	if *isPtr.NrOfIterations != 0 {
+	if isPtr.NrOfIterations != 0 {
 		t.Errorf("NrOfIterations should be 0")
 	}
 
-	if *isPtr.NrOfStates != nil {
+	if isPtr.NrOfStates != nil {
 		t.Errorf("NrOfStates should be nil")
 	}
 
-	if *isPtr.NrOfVariables != 0 {
+	if isPtr.NrOfVariables != 0 {
 		t.Errorf("NrOfVariables should be 0")
 	}
 
-	if *isPtr.PEstimate != nil {
+	if isPtr.PEstimate != nil {
 		t.Errorf("PEstimate should be nil")
 	}
 
-	if *isPtr.PTarget != nil {
+	if isPtr.PTarget != nil {
 		t.Errorf("PTarget should be nil")
 	}
 
-	if *isPtr.Keys != nil {
+	if isPtr.Keys != nil {
 		t.Errorf("Keys should be nil")
 	}
 }
