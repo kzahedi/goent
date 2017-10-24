@@ -108,44 +108,54 @@ func TestIterativeScalingXOR(t *testing.T) {
 	}
 }
 
-// func TestCheckFeature(t *testing.T) {
-// alph := []int{10, 20, 30, 40, 50}
-// a := []int{10, 20, 30, 40, 50}
-// f := []int{1, 3}
-// if discrete.check_feature_alphabet(f, a, alph) == false {
-// t.Errorf("check_feature_alphabet(", f, ",", a, ",", alph, ") should be true")
-// }
-// a = []int{100, 200, 300, 400, 500}
-// g := []int{1, 2}
-// if discrete.check_feature_alphabet(g, a, alph) == true {
-// t.Errorf("check_feature_alphabet(", g, ",", a, ",", alph, ") should be false")
-// }
-// }
+func TestConstructor(t *testing.T) {
+	isPtr := discrete.NewIterativeScaling()
 
-// func TestGetAlphabetIndices(t *testing.T) {
-// alphabet := [][]int{
-// {1, 2, 3},
-// {4, 5, 6},
-// {1, 9, 3},
-// {7, 8, 9},
-// {1, 0, 3},
-// {1, 5, 3}}
-// f := []int{0, 2}
-// index := 0
-// indices := discrete.Get_alphabet_indices(index, f, &alphabet)
-// if len(indices) != 4 {
-// t.Errorf("Get_alphabet_indices should return 4 values, but only has ", len(indices))
-// }
-// if indices[0] != 0 {
-// t.Errorf("First index should be 0")
-// }
-// if indices[1] != 2 {
-// t.Errorf("Second index should be 2")
-// }
-// if indices[2] != 4 {
-// t.Errorf("Third index should be 4")
-// }
-// if indices[3] != 5 {
-// t.Errorf("Fourth index should be 5")
-// }
-// }
+	if *isPtr.Alphabet != nil {
+		t.Errorf("Alphabet should be nil")
+	}
+
+	if *isPtr.CurrentFeatureIndex != -1 {
+		t.Errorf("CurrentFeatureIndex should be -1")
+	}
+
+	if *isPtr.CurrentIteration != 0 {
+		t.Errorf("CurrentIteration should be 0")
+	}
+
+	if *isPtr.ErrorThreshold != 0.0 {
+		t.Errorf("ErrorThreshold should be 0.0")
+	}
+
+	if *isPtr.Features != nil {
+		t.Errorf("Features should be nil")
+	}
+
+	if *isPtr.LastKLStep != -1.0 {
+		t.Errorf("LastKLStep should be -1.0")
+	}
+
+	if *isPtr.NrOfIterations != 0 {
+		t.Errorf("NrOfIterations should be 0")
+	}
+
+	if *isPtr.NrOfStates != nil {
+		t.Errorf("NrOfStates should be nil")
+	}
+
+	if *isPtr.NrOfVariables != 0 {
+		t.Errorf("NrOfVariables should be 0")
+	}
+
+	if *isPtr.PEstimate != nil {
+		t.Errorf("PEstimate should be nil")
+	}
+
+	if *isPtr.PTarget != nil {
+		t.Errorf("PTarget should be nil")
+	}
+
+	if *isPtr.Keys != nil {
+		t.Errorf("Keys should be nil")
+	}
+}

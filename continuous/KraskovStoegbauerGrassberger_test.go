@@ -31,9 +31,17 @@ func TestKraskovStoegbauerGrassberger1Independent(t *testing.T) {
 		xy = append(xy, xyd)
 	}
 
-	if r := math.Abs(continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 30, false)); r > 0.1 {
+	r := math.Abs(continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 30, false))
+	s := math.Abs(continuous.KraskovStoegbauerGrassberger1(xy, xIndex, yIndex, 30, true))
+
+	if r > 0.1 {
 		t.Errorf(fmt.Sprintf("Mutual information should be close to be 0.0 but it is %f", r))
 	}
+
+	if math.Abs(r-s) > 0.0001 {
+		t.Errorf(fmt.Sprintf("ETA should not make a difference, but it does %f - %f = %f", r, s, r-s))
+	}
+
 }
 
 func TestKraskovStoegbauerGrassberger1Gaussian(t *testing.T) {
