@@ -82,7 +82,8 @@ func (data *IterativeScaling) CreateAlphabet() {
 			nrsf = float64(data.NrOfStates[j])
 			b := int(math.Pow(nrsf, float64(j)))
 			w := int((i / b) % data.NrOfStates[j])
-			data.Alphabet[i][nrvi-j-1] = w
+			// data.Alphabet[i][nrvi-j-1] = w
+			data.Alphabet[i][j] = w
 		}
 	}
 }
@@ -105,6 +106,7 @@ func (data *IterativeScaling) Iterate() {
 
 	var a float64
 	var b float64
+
 	var indices []int
 
 	for i := range data.PEstimate {

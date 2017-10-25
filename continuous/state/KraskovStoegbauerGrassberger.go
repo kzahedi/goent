@@ -17,14 +17,15 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 	N := float64(len(xy))
 	r := make([]float64, len(xy), len(xy))
 
-	hk := continuous.Harmonic(k)            // h(k)
-	hN := continuous.Harmonic(int(len(xy))) // h(N)
+	hk := continuous.Harmonic(k)       // h(k)
+	hN := continuous.Harmonic(len(xy)) // h(N)
 
 	var bar *pb.ProgressBar
 
 	if eta == true {
 		bar = pb.StartNew(len(xy))
 	}
+
 	for t := 0; t < len(xy); t++ {
 		epsilon := ksgGetEpsilon(k, xy[t], xy, xIndices, yIndices)
 

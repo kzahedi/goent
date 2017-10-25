@@ -1,13 +1,14 @@
 package state_test
 
 import (
-	"fmt"
+	"math"
 	"testing"
 
 	"github.com/kzahedi/goent/discrete"
+	"github.com/kzahedi/goent/discrete/state"
 )
 
-func TestConditionalEntropy(t *testing.T) {
+func TestConditionalEntropyBase2(t *testing.T) {
 	t.Log("Testing Conditional Entropy")
 	p1 := [][]float64{
 		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0},
@@ -15,20 +16,113 @@ func TestConditionalEntropy(t *testing.T) {
 		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0},
 		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0}}
 
-	if r := discrete.ConditionalEntropyBase2(p1); r != 2.0 {
-		t.Errorf(fmt.Sprintf("Conditional entropy information of uniform distribution must be 2.0 (4 states) but it is %f", r))
+	d1 := [][]int{
+		{0, 0}, {0, 1}, {0, 2}, {0, 3},
+		{1, 0}, {1, 1}, {1, 2}, {1, 3},
+		{2, 0}, {2, 1}, {2, 2}, {2, 3},
+		{3, 0}, {3, 1}, {3, 2}, {3, 3}}
+
+	avg := discrete.ConditionalEntropyBase2(p1)
+	s := state.ConditionalEntropyBase2(d1)
+	r := 0.0
+	for _, v := range s {
+		r += v
 	}
 
-	p2 := [][]float64{
+	r /= float64(len(s))
+
+	diff := avg - r
+
+	if diff > 0.00001 {
+		t.Errorf("Discrete (%f) vs. state (%f) must be equal the difference is %f", avg, r, diff)
+	}
+}
+
+func TestConditionalEntropyBase2Zero(t *testing.T) {
+	t.Log("Testing Conditional Entropy")
+
+	p1 := [][]float64{
 		{1.0 / 4.0, 0.0, 0.0, 0.0},
 		{0.0, 1.0 / 4.0, 0.0, 0.0},
 		{0.0, 0.0, 1.0 / 4.0, 0.0},
 		{0.0, 0.0, 0.0, 1.0 / 4.0}}
 
-	// TODO
+	d1 := [][]int{
+		{0, 0}, {0, 0}, {0, 0}, {0, 0},
+		{1, 1}, {1, 1}, {1, 1}, {1, 1},
+		{2, 2}, {2, 2}, {2, 2}, {2, 2},
+		{3, 3}, {3, 3}, {3, 3}, {3, 3}}
 
-	if r := discrete.ConditionalEntropyBase2(p2); r != 0.0 {
-		t.Errorf(fmt.Sprintf("Conditional entropy of deterministic distribution must be 0.0 but it is %f", r))
+	avg := discrete.ConditionalEntropyBase2(p1)
+	s := state.ConditionalEntropyBase2(d1)
+	r := 0.0
+	for _, v := range s {
+		r += v
 	}
+	r /= float64(len(s))
 
+	diff := avg - r
+
+	if math.Abs(avg-r) > 0.00001 {
+		t.Errorf("Discrete (%f) vs. state (%f) must be equal the difference is %f", avg, r, diff)
+	}
+}
+
+func TestConditionalEntropyBaseE(t *testing.T) {
+	t.Log("Testing Conditional Entropy")
+	p1 := [][]float64{
+		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0},
+		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0},
+		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0},
+		{1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0, 1.0 / 16.0}}
+
+	d1 := [][]int{
+		{0, 0}, {0, 1}, {0, 2}, {0, 3},
+		{1, 0}, {1, 1}, {1, 2}, {1, 3},
+		{2, 0}, {2, 1}, {2, 2}, {2, 3},
+		{3, 0}, {3, 1}, {3, 2}, {3, 3}}
+
+	avg := discrete.ConditionalEntropyBaseE(p1)
+	s := state.ConditionalEntropyBaseE(d1)
+	r := 0.0
+	for _, v := range s {
+		r += v
+	}
+	r /= float64(len(s))
+
+	diff := avg - r
+
+	if math.Abs(avg-r) > 0.00001 {
+		t.Errorf("Discrete (%f) vs. state (%f) must be equal the difference is %f", avg, r, diff)
+	}
+}
+
+func TestConditionalEntropyBaseEZero(t *testing.T) {
+	t.Log("Testing Conditional Entropy")
+
+	p1 := [][]float64{
+		{1.0 / 4.0, 0.0, 0.0, 0.0},
+		{0.0, 1.0 / 4.0, 0.0, 0.0},
+		{0.0, 0.0, 1.0 / 4.0, 0.0},
+		{0.0, 0.0, 0.0, 1.0 / 4.0}}
+
+	d1 := [][]int{
+		{0, 0}, {0, 0}, {0, 0}, {0, 0},
+		{1, 1}, {1, 1}, {1, 1}, {1, 1},
+		{2, 2}, {2, 2}, {2, 2}, {2, 2},
+		{3, 3}, {3, 3}, {3, 3}, {3, 3}}
+
+	avg := discrete.ConditionalEntropyBaseE(p1)
+	s := state.ConditionalEntropyBaseE(d1)
+	r := 0.0
+	for _, v := range s {
+		r += v
+	}
+	r /= float64(len(s))
+
+	diff := avg - r
+
+	if math.Abs(avg-r) > 0.00001 {
+		t.Errorf("Discrete (%f) vs. state (%f) must be equal the difference is %f", avg, r, diff)
+	}
 }

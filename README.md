@@ -1,5 +1,5 @@
 # goent -  GO Implementation of Entropy Measures
-[![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent)
+[![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent) [![Coverage Status](https://coveralls.io/repos/github/kzahedi/goent/badge.svg?branch=master)](https://coveralls.io/github/kzahedi/goent?branch=master)
 
 ## Measures for discrete state spaces
 ### Averaged measures
