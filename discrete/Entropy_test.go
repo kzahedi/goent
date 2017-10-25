@@ -28,8 +28,8 @@ func TestEntropyBaseE(t *testing.T) {
 	t.Log("Testing Entropy")
 	p1 := []float64{0.5, 0.5, 0.5, 0.5}
 
-	if r := discrete.EntropyBaseE(p1); r != 2.0 {
-		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 2.0 but it is %f", r))
+	if r := discrete.EntropyBaseE(p1); math.Abs(r-1.386294) > 0.00001 {
+		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 1.386294 but it is %f", r))
 	}
 
 	p2 := []float64{1.0, 0.0, 0.0, 0.0}

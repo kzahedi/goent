@@ -16,7 +16,7 @@ func Entropy(data []int, ln lnFunc) []float64 {
 	for i := 0; i < len(data); i++ {
 		x := data[i]
 		if p[x] > 0 {
-			r[i] = ln(p[x])
+			r[i] = -ln(p[x])
 		}
 	}
 	return r
