@@ -9,7 +9,7 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-func TestEntropy(t *testing.T) {
+func TestEntropyBase2(t *testing.T) {
 	t.Log("Testing Entropy")
 	p1 := []float64{0.5, 0.5, 0.5, 0.5}
 
@@ -20,6 +20,21 @@ func TestEntropy(t *testing.T) {
 	p2 := []float64{1.0, 0.0, 0.0, 0.0}
 
 	if r := discrete.EntropyBase2(p2); r != 0.0 {
+		t.Errorf(fmt.Sprintf("Entropy of deterministic distribution should be 0.0 but it is %f", r))
+	}
+}
+
+func TestEntropyBaseE(t *testing.T) {
+	t.Log("Testing Entropy")
+	p1 := []float64{0.5, 0.5, 0.5, 0.5}
+
+	if r := discrete.EntropyBaseE(p1); r != 2.0 {
+		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 2.0 but it is %f", r))
+	}
+
+	p2 := []float64{1.0, 0.0, 0.0, 0.0}
+
+	if r := discrete.EntropyBaseE(p2); r != 0.0 {
 		t.Errorf(fmt.Sprintf("Entropy of deterministic distribution should be 0.0 but it is %f", r))
 	}
 }
