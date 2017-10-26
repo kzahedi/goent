@@ -1,2 +1,4 @@
 coverage.out
 profile.cov
+
+*.tmp

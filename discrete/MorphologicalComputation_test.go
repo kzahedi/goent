@@ -139,20 +139,20 @@ func TestMorphologicalComputationMI(t *testing.T) {
 	}
 }
 
-func TestMorphologicalComputationP(t *testing.T) {
-	pw2w1a1 := discrete.Create3D(10, 10, 10)
-	for i := 0; i < 10; i++ {
-		for j := 0; j < 10; j++ {
-			for k := 0; k < 10; k++ {
-				pw2w1a1[i][j][k] = rand.Float64()
-			}
-		}
-	}
+// func TestMorphologicalComputationP(t *testing.T) {
+// pw2w1a1 := discrete.Create3D(10, 10, 10)
+// for i := 0; i < 10; i++ {
+// for j := 0; j < 10; j++ {
+// for k := 0; k < 10; k++ {
+// pw2w1a1[i][j][k] = rand.Float64()
+// }
+// }
+// }
 
-	r := discrete.MorphologicalComputationP(pw2w1a1, 100, false)
-	s := discrete.MorphologicalComputationW(pw2w1a1) - discrete.MorphologicalComputationSY(pw2w1a1, 100, false)
+// r := discrete.MorphologicalComputationP(pw2w1a1, 100, false)
+// s := discrete.MorphologicalComputationW(pw2w1a1) - discrete.MorphologicalComputationSY(pw2w1a1, 100, false)
 
-	if math.Abs(r-s) > 0.00001 {
-		t.Errorf("MorphologicalComputationP should be %f but is %f", s, r)
-	}
-}
+// if math.Abs(r-s) > 0.00001 {
+// t.Errorf("MorphologicalComputationP should be %f but is %f", s, r)
+// }
+// }

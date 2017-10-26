@@ -261,7 +261,6 @@ func TestReadData(t *testing.T) {
 			v := rand.Float64()
 			data[i][j] = v
 			strdata[i][j] = fmt.Sprintf("%.8f", v)
-			fmt.Println(i, j, v, strdata[i][j])
 		}
 	}
 
