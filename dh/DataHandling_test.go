@@ -1,7 +1,13 @@
 package dh_test
 
 import (
+	"fmt"
+	"math"
+	"math/rand"
+	"os"
 	"testing"
+
+	"encoding/csv"
 
 	"github.com/kzahedi/goent/dh"
 )
@@ -240,6 +246,46 @@ func TestExtractColumns(t *testing.T) {
 		}
 		if int(c2[i][1]) != (i+1)*1000 {
 			t.Errorf("Values should be %d but it is %d", (1000 * (i + 1)), int(c2[i][1]))
+		}
+	}
+}
+
+func TestReadData(t *testing.T) {
+	data := make([][]float64, 100, 100)
+	strdata := make([][]string, 100, 100)
+	rand.Seed(42)
+	for i := 0; i < 100; i++ {
+		data[i] = make([]float64, 100, 100)
+		strdata[i] = make([]string, 100, 100)
+		for j := 0; j < 100; j++ {
+			v := rand.Float64()
+			data[i][j] = v
+			strdata[i][j] = fmt.Sprintf("%.8f", v)
+			fmt.Println(i, j, v, strdata[i][j])
+		}
+	}
+
+	f, err := os.Create("/tmp/test.csv")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	writer := csv.NewWriter(f)
+	defer writer.Flush()
+
+	for _, value := range strdata {
+		writer.Write(value)
+	}
+
+	writer.Flush()
+
+	rdata := dh.ReadData("/tmp/test.csv")
+	for i := 0; i < 100; i++ {
+		for j := 0; j < 100; j++ {
+			if math.Abs(data[i][j]-rdata[i][j]) > 0.00001 {
+				t.Errorf("Values don't match %f != %f (%d,%d)", data[i][j], rdata[i][j], i, j)
+			}
 		}
 	}
 }

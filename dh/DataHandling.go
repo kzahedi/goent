@@ -2,9 +2,7 @@ package dh
 
 import (
 	"bufio"
-	"encoding/csv"
 	"fmt"
-	"io"
 	"math"
 	"os"
 	"strconv"
@@ -102,15 +100,17 @@ func ReadData(filename string) (r [][]float64) {
 
 	f, _ := os.Open(filename)
 	defer f.Close()
-	reader := csv.NewReader(bufio.NewReader(f))
 
 	lineCount := 0
 
-	record, err := reader.Read()
-	for err != io.EOF {
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		record := strings.Split(line, ",")
 
 		if strings.HasPrefix(record[0], "#") {
-			record, err = reader.Read()
 			continue
 		}
 
@@ -128,8 +128,6 @@ func ReadData(filename string) (r [][]float64) {
 
 		lineCount++
 		fmt.Print(fmt.Sprintf("Line count: %d\r", lineCount))
-
-		record, err = reader.Read()
 	}
 
 	fmt.Println(fmt.Sprintf("\nRead %d lines from %s", lineCount, filename))
