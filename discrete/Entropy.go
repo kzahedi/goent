@@ -88,7 +88,9 @@ func EntropyHorvitzThompson(data []int, ln lnFunc) float64 {
 
 	for _, v := range p {
 		if v > 0.0 {
-			r -= v * ln(v) / (1.0 - (1.0 - math.Pow(v, n)))
+			N := v * ln(v)
+			D := 1.0 - math.Pow(1.0-v, n)
+			r -= N / D
 		}
 	}
 

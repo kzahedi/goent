@@ -39,7 +39,7 @@ func TestEntropyBaseE(t *testing.T) {
 	}
 }
 
-func TestEntropyChaoShen(t *testing.T) {
+func TestEntropyChaoShenBaseE(t *testing.T) {
 	t.Log("Testing Chao-Shen Entropy")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -58,7 +58,26 @@ func TestEntropyChaoShen(t *testing.T) {
 
 }
 
-func TestEntropyMLBC(t *testing.T) {
+func TestEntropyChaoShenBase2(t *testing.T) {
+	t.Log("Testing Chao-Shen Entropy")
+	r := 0.0
+	for i := 0; i < 100; i++ {
+		h := make([]int, 5000, 5000)
+		for j := 0; j < 5000; j++ {
+			h[j] = int(rand.Int63n(100))
+		}
+		r += discrete.EntropyChaoShenBase2(h)
+	}
+
+	r /= 100.0
+
+	if math.Abs(r-6.629297) > 0.1 {
+		t.Errorf("Entropy should be 6.629297 and not %f", r)
+	}
+
+}
+
+func TestEntropyMLBCBaseE(t *testing.T) {
 	t.Log("Testing Maximum Likelihood Bias Corrected")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -74,5 +93,58 @@ func TestEntropyMLBC(t *testing.T) {
 	if math.Abs(r-4.604982) > 0.1 {
 		t.Errorf("Entropy should be 4.604982 and not %f", r)
 	}
+}
 
+func TestEntropyMLBCBase2(t *testing.T) {
+	t.Log("Testing Maximum Likelihood Bias Corrected")
+	r := 0.0
+	for i := 0; i < 100; i++ {
+		h := make([]int, 5000, 5000)
+		for j := 0; j < 5000; j++ {
+			h[j] = int(rand.Int63n(100))
+		}
+		r += discrete.EntropyMLBCBase2(h)
+	}
+
+	r /= 100.0
+
+	if math.Abs(r-6.639633) > 0.1 {
+		t.Errorf("Entropy should be 6.639633 and not %f", r)
+	}
+}
+
+func TestEntropyHorvitzThompsonBase2(t *testing.T) {
+	t.Log("Testing Horvitz-Thompson Base 2")
+	r := 0.0
+	for i := 0; i < 100; i++ {
+		h := make([]int, 5000, 5000)
+		for j := 0; j < 5000; j++ {
+			h[j] = int(rand.Int63n(100))
+		}
+		r += discrete.EntropyHorvitzThompsonBase2(h)
+	}
+
+	r /= 100.0
+
+	if math.Abs(r-4.595013) > 0.1 {
+		t.Errorf("Entropy should be 4.595013 and not %f", r)
+	}
+}
+
+func TestEntropyHorvitzThompsonBaseE(t *testing.T) {
+	t.Log("Testing Horvitz-Thompson Base 2")
+	r := 0.0
+	for i := 0; i < 100; i++ {
+		h := make([]int, 5000, 5000)
+		for j := 0; j < 5000; j++ {
+			h[j] = int(rand.Int63n(100))
+		}
+		r += discrete.EntropyHorvitzThompsonBaseE(h)
+	}
+
+	r /= 100.0
+
+	if math.Abs(r-4.595032) > 0.1 {
+		t.Errorf("Entropy should be 4.595032 and not %f", r)
+	}
 }
