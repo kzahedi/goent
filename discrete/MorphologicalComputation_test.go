@@ -121,9 +121,6 @@ func TestMorphologicalComputationCW(t *testing.T) {
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationCW should be %f but is %f", s, r)
 	}
-	if r < 0.0 {
-		t.Errorf("MorphologicalComputationCW should non-negativ but is %f", r)
-	}
 }
 
 func TestMorphologicalComputationWA(t *testing.T) {
