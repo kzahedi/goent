@@ -74,6 +74,9 @@ func TestMorphologicalComputationW(t *testing.T) {
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationW should be %f but is %f", s, r)
 	}
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationW should non-negativ but is %f", r)
+	}
 }
 
 func TestMorphologicalComputationA(t *testing.T) {
@@ -93,6 +96,9 @@ func TestMorphologicalComputationA(t *testing.T) {
 
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationA should be %f but is %f", s, r)
+	}
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationA should non-negativ but is %f", r)
 	}
 
 }
@@ -114,6 +120,9 @@ func TestMorphologicalComputationCW(t *testing.T) {
 
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationCW should be %f but is %f", s, r)
+	}
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationCW should non-negativ but is %f", r)
 	}
 }
 
@@ -148,7 +157,9 @@ func TestMorphologicalComputationWA(t *testing.T) {
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationWA should be %f but is %f", s, r)
 	}
-
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationWA should non-negativ but is %f", r)
+	}
 }
 
 func TestMorphologicalComputationWS(t *testing.T) {
@@ -181,7 +192,9 @@ func TestMorphologicalComputationWS(t *testing.T) {
 	if math.Abs(r-s) > 0.00001 {
 		t.Errorf("MorphologicalComputationWS should be %f but is %f", s, r)
 	}
-
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationWS should non-negativ but is %f", r)
+	}
 }
 
 func TestMorphologicalComputationMI(t *testing.T) {
@@ -203,25 +216,6 @@ func TestMorphologicalComputationMI(t *testing.T) {
 		t.Errorf("MorphologicalComputationMI should be %f but is %f", s, r)
 	}
 }
-
-// func TestMorphologicalComputationP(t *testing.T) {
-// pw2w1a1 := discrete.Create3D(10, 10, 10)
-// for i := 0; i < 10; i++ {
-// for j := 0; j < 10; j++ {
-// for k := 0; k < 10; k++ {
-// pw2w1a1[i][j][k] = rand.Float64()
-// }
-// }
-// }
-
-// r := discrete.MorphologicalComputationP(pw2w1a1, 100, false)
-// s := discrete.MorphologicalComputationW(pw2w1a1) - discrete.MorphologicalComputationSY(pw2w1a1, 100, false)
-
-// if math.Abs(r-s) > 0.00001 {
-// t.Errorf("MorphologicalComputationP should be %f but is %f", s, r)
-// }
-// }
-//
 
 func TestMorphologicalComputationSyNid(t *testing.T) {
 	iterations := 100
@@ -262,8 +256,79 @@ func TestMorphologicalComputationSyNid(t *testing.T) {
 	r := stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 	s := discrete.MorphologicalComputationSyNid(pw2w1a1, iterations)
 
-	if math.Abs(r-s) > 0.00001 {
+	if math.Abs(r-s) > 0.001 {
 		t.Errorf("MorphologicalComputationSyNid should be %f but is %f", r, s)
 	}
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationSyNid should non-negativ but is %f", r)
+	}
+}
 
+func TestMorphologicalComputationSY(t *testing.T) {
+	iterations := 100
+	pw2w1a1 := discrete.Create3D(10, 10, 10)
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			for k := 0; k < 10; k++ {
+				pw2w1a1[i][j][k] = rand.Float64()
+			}
+		}
+	}
+	pw2w1a1 = normalise3D(pw2w1a1)
+
+	split := discrete.IterativeScaling{}
+
+	split.NrOfVariables = 3
+	w2Dim := len(pw2w1a1)
+	w1Dim := len(pw2w1a1[0])
+	a1Dim := len(pw2w1a1[0][0])
+	split.NrOfStates = []int{w2Dim, w1Dim, a1Dim}
+
+	split.CreateAlphabet()
+
+	split.PTarget = make([]float64, w2Dim*w1Dim*a1Dim, w2Dim*w1Dim*a1Dim)
+	for i, a := range split.Alphabet {
+		split.PTarget[i] = pw2w1a1[a[0]][a[1]][a[2]]
+	}
+
+	split.Features = make(map[string][]int)
+	split.Features["W,W'"] = []int{0, 2}
+	split.Features["A,W'"] = []int{1, 2}
+	split.Features["W,A"] = []int{0, 1}
+
+	split.Init()
+	for i := 0; i < iterations; i++ {
+		split.Iterate()
+	}
+
+	r := stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
+	s := discrete.MorphologicalComputationSY(pw2w1a1, iterations, false)
+
+	if math.Abs(r-s) > 0.001 {
+		t.Errorf("MorphologicalComputationSY should be %f but is %f", r, s)
+	}
+	if r < 0.0 {
+		t.Errorf("MorphologicalComputationSY should non-negativ but is %f", r)
+	}
+
+}
+
+func TestMorphologicalComputationP(t *testing.T) {
+	iterations := 100
+	pw2w1a1 := discrete.Create3D(10, 10, 10)
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			for k := 0; k < 10; k++ {
+				pw2w1a1[i][j][k] = rand.Float64()
+			}
+		}
+	}
+	pw2w1a1 = normalise3D(pw2w1a1)
+
+	r := discrete.MorphologicalComputationW(pw2w1a1) - discrete.MorphologicalComputationSY(pw2w1a1, iterations, false)
+	s := discrete.MorphologicalComputationP(pw2w1a1, iterations, false)
+
+	if math.Abs(r-s) > 0.001 {
+		t.Errorf("MorphologicalComputationP should be %f but is %f", r, s)
+	}
 }
