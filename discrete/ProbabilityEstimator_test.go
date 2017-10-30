@@ -1,7 +1,6 @@
 package discrete_test
 
 import (
-	"fmt"
 	"math"
 	"testing"
 
@@ -98,7 +97,6 @@ func TestEmperical4D(t *testing.T) {
 		for j := 0; j < 3; j++ {
 			for k := 0; k < 4; k++ {
 				for l := 0; l < 2; l++ {
-					fmt.Println(index)
 					d[index][0] = i
 					d[index][1] = j
 					d[index][2] = k

@@ -37,7 +37,7 @@ func TestMorphologicalComputationA(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -59,7 +59,7 @@ func TestMorphologicalComputationCW1(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -80,7 +80,7 @@ func TestMorphologicalComputationCW2(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -101,7 +101,7 @@ func TestMorphologicalComputationWA1(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -123,7 +123,7 @@ func TestMorphologicalComputationWA2(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -144,7 +144,7 @@ func TestMorphologicalComputationWS1(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	s1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -165,7 +165,7 @@ func TestMorphologicalComputationWS2(t *testing.T) {
 	w2Indices := []int{0, 1, 2}
 	w1Indices := []int{3, 4, 5}
 	s1Indices := []int{6, 7, 8}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 9; j++ {
@@ -187,7 +187,7 @@ func TestMorphologicalComputationMI1(t *testing.T) {
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
 	s1Indices := []int{9, 10, 11}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 12; j++ {
@@ -209,7 +209,7 @@ func TestMorphologicalComputationMI2(t *testing.T) {
 	w1Indices := []int{3, 4, 5}
 	a1Indices := []int{6, 7, 8}
 	s1Indices := []int{9, 10, 11}
-	k := 5
+	k := 30
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < 12; j++ {

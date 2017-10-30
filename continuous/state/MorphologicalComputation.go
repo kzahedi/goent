@@ -14,7 +14,7 @@ func MorphologicalComputationA(w2a1w1 [][]float64, w2Indices, a1Indices, w1Indic
 func MorphologicalComputationCW1(w2w1a1 [][]float64, w2Indices, w1Indices, a1Indices []int, k int, eta bool) []float64 {
 	r1 := KraskovStoegbauerGrassberger1(w2w1a1, w2Indices, w1Indices, k, eta)
 	r2 := KraskovStoegbauerGrassberger1(w2w1a1, w2Indices, a1Indices, k, eta)
-	r := make([]float64, len(r1), len(r2))
+	r := make([]float64, len(r1), len(r1))
 	for i := range r1 {
 		r[i] = r1[i] - r2[i]
 	}
