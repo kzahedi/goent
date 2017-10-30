@@ -5,6 +5,8 @@ import (
 	"math"
 	"math/rand"
 	"testing"
+
+	"github.com/kzahedi/goent/discrete"
 )
 
 func TestDistanceZero(t *testing.T) {
@@ -61,10 +63,7 @@ func TestHarmonic5(t *testing.T) {
 }
 
 func TestNormaliseZero(t *testing.T) {
-	data := make([][]float64, 10, 10)
-	for i := range data {
-		data[i] = make([]float64, 5, 5)
-	}
+	data := discrete.Create2D(10, 5)
 
 	ndata := Normalise(data)
 
@@ -79,6 +78,25 @@ func TestNormaliseZero(t *testing.T) {
 			}
 			if math.Abs(ndata[row][column]) > 0.00000001 {
 				t.Errorf(fmt.Sprintf("Normalised data [%d,%d] should be zero and not %f", row, column, ndata[row][column]))
+			}
+		}
+	}
+
+	for i := range data {
+		for j := 0; j < 5; j++ {
+			data[i][j] = rand.Float64()*10.0 - 5.0
+		}
+	}
+
+	ndata = Normalise(data)
+
+	for row := range data {
+		for column := range data[row] {
+			if ndata[row][column] < 0.0 {
+				t.Errorf("Normalise should not produce values smaller than 0, but we have %f", ndata[row][column])
+			}
+			if ndata[row][column] > 1.0 {
+				t.Errorf("Normalise should not produce values larger than 1, but we have %f", ndata[row][column])
 			}
 		}
 	}

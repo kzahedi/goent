@@ -252,15 +252,28 @@ func TestExtractColumns(t *testing.T) {
 
 func TestReadData(t *testing.T) {
 	data := make([][]float64, 100, 100)
-	strdata := make([][]string, 100, 100)
 	rand.Seed(42)
 	for i := 0; i < 100; i++ {
 		data[i] = make([]float64, 100, 100)
-		strdata[i] = make([]string, 100, 100)
 		for j := 0; j < 100; j++ {
-			v := rand.Float64()
-			data[i][j] = v
-			strdata[i][j] = fmt.Sprintf("%.8f", v)
+			data[i][j] = rand.Float64()
+		}
+	}
+
+	strdata := make([][]string, 102, 102)
+	for i := 0; i < 102; i++ {
+		strdata[i] = make([]string, 100, 100)
+	}
+	strdata[0][0] = "# header"
+	strdata[0][1] = "second column header"
+	strdata[0][2] = "second column header"
+	strdata[1][0] = "# some"
+	strdata[1][1] = "comment"
+	strdata[1][2] = "line"
+
+	for i := 2; i < 102; i++ {
+		for j := 0; j < 100; j++ {
+			strdata[i][j] = fmt.Sprintf("%.8f", data[i-2][j])
 		}
 	}
 
