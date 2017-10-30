@@ -1,6 +1,7 @@
 package discrete_test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
@@ -78,6 +79,58 @@ func TestEmperical3D(t *testing.T) {
 			for c := 0; c < 4; c++ {
 				if math.Abs(p[a][b][c]-1.0/24.0) > 0.0000001 {
 					t.Errorf("p[%d][%d][%d] should be 1/24 and not %f", a, b, c, p[a][b][c])
+				}
+			}
+		}
+	}
+}
+
+func TestEmperical4D(t *testing.T) {
+	t.Log("Testing Emperical4D")
+
+	d := make([][]int, 2*3*4*2, 2*3*4*2)
+	for i := 0; i < 2*3*4*2; i++ {
+		d[i] = make([]int, 4, 4)
+	}
+
+	index := 0
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 3; j++ {
+			for k := 0; k < 4; k++ {
+				for l := 0; l < 2; l++ {
+					fmt.Println(index)
+					d[index][0] = i
+					d[index][1] = j
+					d[index][2] = k
+					d[index][3] = l
+					index++
+				}
+			}
+		}
+	}
+
+	p := discrete.Emperical4D(d)
+
+	if len(p) != 2 {
+		t.Errorf("Emperical4D 1st dimension should be 2 but it is %d", len(p))
+	}
+	if len(p[0]) != 3 {
+		t.Errorf("Emperical4D 2nd dimension should be 3 but it is %d", len(p[0]))
+	}
+	if len(p[0][0]) != 4 {
+		t.Errorf("Emperical4D 3rd dimension should be 4 but it is %d", len(p[0][0]))
+	}
+	if len(p[0][0][0]) != 2 {
+		t.Errorf("Emperical4D 4th dimension should be 4 but it is %d", len(p[0][0][0]))
+	}
+
+	for a := 0; a < 2; a++ {
+		for b := 0; b < 3; b++ {
+			for c := 0; c < 4; c++ {
+				for d := 0; d < 2; d++ {
+					if math.Abs(p[a][b][c][d]-1.0/(2.0*3.0*4.0*2.0)) > 0.0000001 {
+						t.Errorf("p[%d][%d][%d][%d] should be 1/%d and not %f", a, b, c, d, 2*3*4*2, p[a][b][c][d])
+					}
 				}
 			}
 		}
