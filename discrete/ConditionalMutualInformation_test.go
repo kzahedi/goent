@@ -47,15 +47,9 @@ func TestMIasEntropies(t *testing.T) {
 
 func TestCMIasMI(t *testing.T) {
 	t.Log("Testing Conditional Mutual Information as Mutual Informations")
-	pxyz := make([][][]float64, 5, 5)
+	pxyz := discrete.Create3D(5, 5, 5)
 
 	sum := 0.0
-	for x := 0; x < 5; x++ {
-		pxyz[x] = make([][]float64, 5, 5)
-		for y := 0; y < 5; y++ {
-			pxyz[x][y] = make([]float64, 5, 5)
-		}
-	}
 	for x := 0; x < 5; x++ {
 		for y := 0; y < 5; y++ {
 			for z := 0; z < 5; z++ {
@@ -73,10 +67,8 @@ func TestCMIasMI(t *testing.T) {
 		}
 	}
 
-	pxz := make([][]float64, 5, 5)
-	for x := 0; x < 5; x++ {
-		pxz[x] = make([]float64, 5, 5)
-	}
+	pxz := discrete.Create2D(5, 5)
+
 	sum = 0.0
 	for x := 0; x < 5; x++ {
 		for y := 0; y < 5; y++ {
@@ -118,5 +110,4 @@ func TestCMIasMI(t *testing.T) {
 	if math.Abs(diffE) > 0.0001 {
 		t.Errorf("I_e(X;Y|Z) = I_e(X;Y,Z) - I_e(X;Z), but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
 	}
-
 }

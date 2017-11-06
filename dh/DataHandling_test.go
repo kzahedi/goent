@@ -12,6 +12,13 @@ import (
 	"github.com/kzahedi/goent/dh"
 )
 
+func min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
 func TestDiscretiseVector(t *testing.T) {
 	t.Log("Testing DiscrestiseVector")
 	p := make([]float64, 11, 11)
@@ -85,88 +92,18 @@ func TestDiscretise(t *testing.T) {
 		[]float64{0.0, 0.0, 0.0},
 		[]float64{1.0, 1.0, 1.0})
 
-	if d[0][0] != 0 {
-		t.Errorf("%f must be mapped to 0 and not %d", p[0][0], d[0][0])
-	}
-	if d[1][0] != 1 {
-		t.Errorf("%f must be mapped to 1 and not %d", p[1][0], d[1][0])
-	}
-	if d[2][0] != 2 {
-		t.Errorf("%f must be mapped to 2 and not %d", p[2][0], d[2][0])
-	}
-	if d[3][0] != 3 {
-		t.Errorf("%f must be mapped to 3 and not %d", p[3][0], d[3][0])
-	}
-	if d[4][0] != 4 {
-		t.Errorf("%f must be mapped to 4 and not %d", p[4][0], d[4][0])
-	}
-	if d[5][0] != 5 {
-		t.Errorf("%f must be mapped to 5 and not %d", p[5][0], d[5][0])
-	}
-	if d[6][0] != 6 {
-		t.Errorf("%f must be mapped to 6 and not %d", p[6][0], d[6][0])
-	}
-	if d[7][0] != 7 {
-		t.Errorf("%f must be mapped to 7 and not %d", p[7][0], d[7][0])
-	}
-	if d[8][0] != 8 {
-		t.Errorf("%f must be mapped to 8 and not %d", p[8][0], d[8][0])
-	}
+	for i := 0; i < 9; i++ {
+		if d[i][0] != i {
+			t.Errorf("%f must be mapped to %d and not %d", p[i][0], i, d[i][0])
+		}
 
-	if d[0][1] != 1 {
-		t.Errorf("%f must be mapped to 1 and not %d", p[0][1], d[0][1])
-	}
-	if d[1][1] != 2 {
-		t.Errorf("%f must be mapped to 2 and not %d", p[1][1], d[1][1])
-	}
-	if d[2][1] != 3 {
-		t.Errorf("%f must be mapped to 3 and not %d", p[2][1], d[2][1])
-	}
-	if d[3][1] != 4 {
-		t.Errorf("%f must be mapped to 4 and not %d", p[3][1], d[3][1])
-	}
-	if d[4][1] != 5 {
-		t.Errorf("%f must be mapped to 5 and not %d", p[4][1], d[4][1])
-	}
-	if d[5][1] != 6 {
-		t.Errorf("%f must be mapped to 6 and not %d", p[5][1], d[5][1])
-	}
-	if d[6][1] != 7 {
-		t.Errorf("%f must be mapped to 7 and not %d", p[6][1], d[6][1])
-	}
-	if d[7][1] != 8 {
-		t.Errorf("%f must be mapped to 8 and not %d", p[7][1], d[7][1])
-	}
-	if d[8][1] != 9 {
-		t.Errorf("%f must be mapped to 9 and not %d", p[8][1], d[8][1])
-	}
+		if d[i][1] != i+1 {
+			t.Errorf("%f must be mapped to %d and not %d", p[i][1], i+1, d[i][1])
+		}
 
-	if d[0][2] != 2 {
-		t.Errorf("%f must be mapped to 2 and not %d", p[0][2], d[0][2])
-	}
-	if d[1][2] != 3 {
-		t.Errorf("%f must be mapped to 3 and not %d", p[1][2], d[1][2])
-	}
-	if d[2][2] != 4 {
-		t.Errorf("%f must be mapped to 4 and not %d", p[2][2], d[2][2])
-	}
-	if d[3][2] != 5 {
-		t.Errorf("%f must be mapped to 5 and not %d", p[3][2], d[3][2])
-	}
-	if d[4][2] != 6 {
-		t.Errorf("%f must be mapped to 6 and not %d", p[4][2], d[4][2])
-	}
-	if d[5][2] != 7 {
-		t.Errorf("%f must be mapped to 7 and not %d", p[5][2], d[5][2])
-	}
-	if d[6][2] != 8 {
-		t.Errorf("%f must be mapped to 8 and not %d", p[6][2], d[6][2])
-	}
-	if d[7][2] != 9 {
-		t.Errorf("%f must be mapped to 9 and not %d", p[7][2], d[7][2])
-	}
-	if d[8][2] != 9 {
-		t.Errorf("%f must be mapped to 10 and not %d", p[8][2], d[8][2])
+		if d[i][2] != min(9, i+2) {
+			t.Errorf("%f must be mapped to %d and not %d", p[i][2], i+2, d[i][2])
+		}
 	}
 }
 
@@ -208,7 +145,7 @@ func TestRelabel(t *testing.T) {
 
 	d := dh.Relabel(p)
 
-	for i, _ := range p {
+	for i := range p {
 		if d[i] != q[i] {
 			t.Errorf("%d must be mapped to %d and not %d", p[i], q[i], d[i])
 		}

@@ -16,7 +16,7 @@ func TestEmperical1D(t *testing.T) {
 		t.Errorf("Emperical1D should return a slice of length 4 and not %d", len(p))
 	}
 
-	for i, _ := range p {
+	for i := range p {
 		if math.Abs(p[i]-1.0/4.0) > 0.0000001 {
 			t.Errorf("p[%d] should be 1/4 and not %f", i, p[i])
 		}

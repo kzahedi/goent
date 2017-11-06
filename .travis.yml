@@ -11,6 +11,7 @@ cache:
 go:
   - tip
   - 1.8.x
+  - 1.9.x
 
 sudo: false
 

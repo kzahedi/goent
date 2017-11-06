@@ -58,7 +58,7 @@ func ConditionalMutualInformation(xyz [][]int, ln lnFunc) []float64 {
 		x := xyz[i][0]
 		y := xyz[i][1]
 		z := xyz[i][2]
-		if pxyz[x][y][z] > 0.0 && pxyCz[x][y][z] > 0.0 && pxCz[x][z] > 0.0 && pyCz[y][z] > 0.0 {
+		if pxyCz[x][y][z] > 0.0 && pxCz[x][z] > 0.0 && pyCz[y][z] > 0.0 {
 			r[i] = ln(pxyCz[x][y][z]) - ln(pxCz[x][z]*pyCz[y][z])
 		}
 	}
