@@ -1,5 +1,5 @@
 # goent -  GO Implementation of Entropy Measures
-[![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent) [![Coverage Status](https://coveralls.io/repos/github/kzahedi/goent/badge.svg?branch=master)](https://coveralls.io/github/kzahedi/goent?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/kzahedi/goent)](https://goreportcard.com/report/github.com/kzahedi/goent)
+[![GoDoc](https://godoc.org/github.com/kzahedi/goent?status.svg)](https://godoc.org/github.com/kzahedi/goent) [![Build Status](https://travis-ci.org/kzahedi/goent.svg?branch=master)](https://travis-ci.org/kzahedi/goent) [![Coverage Status](https://coveralls.io/repos/github/kzahedi/goent/badge.svg?branch=master)](https://coveralls.io/github/kzahedi/goent?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/kzahedi/goent)](https://goreportcard.com/report/github.com/kzahedi/goent)[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go)
 
 ## Measures for discrete state spaces
 ### Averaged measures
