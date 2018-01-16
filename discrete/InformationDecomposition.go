@@ -157,34 +157,26 @@ func InformationDecomposition(pxyz [][][]float64, resolution int) (float64, floa
 	bmax := math.Min(pxyz[1][0][1], pxyz[1][1][0])
 	bdelta := (bmax - bmin) / float64(resolution)
 
-	minMiXvYgZ := 0.0
-	minMiXvZgY := 0.0
-	maxCoI := 0.0
+	minMiXvYgZ := miXvYgZ(pt(pxyz, 0.0, 0.0))
+	minMiXvZgY := miXvZgY(pt(pxyz, 0.0, 0.0))
+	maxCoI := coI(pt(pxyz, 0.0, 0.0))
 
-	first := true
 	r := 0.0
 	for a := amin; a <= amax; a += adelta {
 		for b := bmin; b <= bmax; b += bdelta {
-			if first == true {
-				first = false
-				maxCoI = coI(pt(pxyz, a, b))
-				minMiXvZgY = miXvZgY(pt(pxyz, a, b))
-				minMiXvYgZ = miXvYgZ(pt(pxyz, a, b))
-			} else {
-				r = coI(pt(pxyz, a, b))
-				if r > maxCoI {
-					maxCoI = r
-				}
+			r = coI(pt(pxyz, a, b))
+			if r > maxCoI {
+				maxCoI = r
+			}
 
-				r = miXvZgY(pt(pxyz, a, b))
-				if r < minMiXvZgY {
-					minMiXvZgY = r
-				}
+			r = miXvZgY(pt(pxyz, a, b))
+			if r < minMiXvZgY {
+				minMiXvZgY = r
+			}
 
-				r = miXvYgZ(pt(pxyz, a, b))
-				if r < minMiXvZgY {
-					minMiXvYgZ = r
-				}
+			r = miXvYgZ(pt(pxyz, a, b))
+			if r < minMiXvZgY {
+				minMiXvYgZ = r
 			}
 		}
 	}
