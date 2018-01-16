@@ -154,7 +154,138 @@ func MorphologicalComputationSyNid(pw2w1a1 [][][]float64, iterations int) float6
 	return stat.KullbackLeibler(split.PTarget, split.PEstimate) / math.Log(2)
 }
 
-// MorphologicalComputationP [...]
-func MorphologicalComputationP(pw2w1a1 [][][]float64, iterations int, eta bool) float64 {
+// MorphologicalComputationWp calculates the unique information W -> W'. For more details,
+// please see
+// Ghazi-Zahedi, Keyan and Langer, Carlotta and Ay, Nihat,
+// Morphological Computation: Synergy of Body and Brain, Entropy, 2017
+func MorphologicalComputationWp(pw2w1a1 [][][]float64, iterations int, eta bool) float64 {
 	return MorphologicalComputationW(pw2w1a1) - MorphologicalComputationSY(pw2w1a1, iterations, eta)
+}
+
+// MorphologicalComputationIntrinsicCA [...]
+// For more details, please read
+// K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
+// http://www.mdpi.com/1099-4300/15/5/1887 (open access)
+func MorphologicalComputationIntrinsicCA(ps2s1a1 [][][]float64, sbins int) float64 {
+	s2Dim := len(ps2s1a1)
+	s1Dim := len(ps2s1a1[0])
+	a1Dim := len(ps2s1a1[0][0])
+	ps1a1 := Create2D(s1Dim, a1Dim)
+	ps2doa1 := Create2D(s1Dim, a1Dim)
+	ps2dos1 := Create2D(s1Dim, a1Dim)
+	pa1Cs1 := Create2D(a1Dim, s1Dim)
+	ps1 := make([]float64, s1Dim, s1Dim)
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				ps1a1[s1][a1] += ps2s1a1[s2][s1][a1]
+			}
+		}
+	}
+
+	for s1 := 0; s1 < s1Dim; s1++ {
+		for a1 := 0; a1 < a1Dim; a1++ {
+			ps1[s1] += ps1a1[s1][a1]
+		}
+	}
+
+	for s1 := 0; s1 < s1Dim; s1++ {
+		for a1 := 0; a1 < a1Dim; a1++ {
+			pa1Cs1[a1][s1] = ps1a1[s1][a1] / ps1[s1]
+		}
+	}
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for a1 := 0; a1 < a1Dim; a1++ {
+			for s1 := 0; s1 < s1Dim; s1++ {
+				ps2doa1[s2][a1] += ps1[s1] * ps2s1a1[s2][s1][a1] / ps1a1[s1][a1]
+			}
+		}
+	}
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				ps2dos1[s2][s1] += pa1Cs1[a1][s1] * ps2doa1[s2][a1]
+			}
+		}
+	}
+
+	r := 0.0
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				r += ps1a1[s1][a1] * ps2doa1[s2][a1] * math.Log2(ps2doa1[s2][a1]/ps2dos1[s2][s1])
+			}
+		}
+	}
+
+	return 1.0 - r/math.Log2(float64(sbins))
+}
+
+// MorphologicalComputationIntrinsicCW [...]
+// For more details, please read
+// K. Zahedi and N. Ay. Quantifying morphological computation. Entropy, 15(5):1887–1915, 2013.
+// http://www.mdpi.com/1099-4300/15/5/1887 (open access)
+func MorphologicalComputationIntrinsicCW(ps2s1a1 [][][]float64) (r float64) {
+	s2Dim := len(ps2s1a1)
+	s1Dim := len(ps2s1a1[0])
+	a1Dim := len(ps2s1a1[0][0])
+	ps2Cs1 := Create2D(s2Dim, s1Dim)
+	ps2Cs1Hat := Create2D(s2Dim, s1Dim)
+	ps2Cs1a1 := Create3D(s2Dim, s1Dim, a1Dim)
+	pa1Cs1 := Create2D(s2Dim, a1Dim)
+	ps1a1 := Create2D(s1Dim, a1Dim)
+	ps1 := make([]float64, s1Dim, s1Dim)
+	pa1 := make([]float64, a1Dim, a1Dim)
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				ps1a1[s1][a1] += ps2s1a1[s2][s1][a1]
+			}
+		}
+	}
+
+	for s1 := 0; s1 < s1Dim; s1++ {
+		for a1 := 0; a1 < a1Dim; a1++ {
+			ps1[s1] += ps1a1[s1][a1]
+			pa1[a1] += ps1a1[s1][a1]
+		}
+	}
+
+	for s1 := 0; s1 < s1Dim; s1++ {
+		for a1 := 0; a1 < a1Dim; a1++ {
+			pa1Cs1[a1][s1] = ps1a1[s1][a1] / ps1[s1]
+		}
+	}
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				ps2Cs1a1[s2][s1][a1] = ps2s1a1[s2][s1][a1] / ps1a1[s1][a1]
+			}
+		}
+	}
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			for a1 := 0; a1 < a1Dim; a1++ {
+				ps2Cs1[s2][s1] += ps2Cs1a1[s2][s1][a1] * pa1Cs1[a1][s1]
+				for s3 := 0; s3 < s1Dim; s3++ {
+					ps2Cs1Hat[s2][s1] += pa1Cs1[a1][s1] * ps2Cs1a1[s2][s3][a1] * pa1Cs1[a1][s3] * ps1[s3] / pa1[a1]
+				}
+			}
+		}
+	}
+
+	for s2 := 0; s2 < s2Dim; s2++ {
+		for s1 := 0; s1 < s1Dim; s1++ {
+			r += ps2Cs1[s2][s1] * math.Log2(ps2Cs1[s2][s1]/ps2Cs1Hat[s2][s1])
+		}
+	}
+
+	return r
 }

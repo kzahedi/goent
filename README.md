@@ -6,7 +6,7 @@
 - Entropy
     - Shannon
     - Maximum Likelihood with Bias Correction
-    - Horvitz-Thompson 
+    - Horvitz-Thompson
     - Chao-Shen
 - Conditional Entropy
 - Mutual Information
@@ -48,7 +48,7 @@
     - MC_MI
 
 
-### State-dependent measures 
+### State-dependent measures
 - Kraskov-Stoegbauer-Grassberger, Algorithm 1
 - Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
@@ -71,3 +71,6 @@ References:
 - A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s index of diversity when there are unseen species in sample. Environmental and Ecological Statistics, 10(4):429–443, 2003.
 - S. Frenzel and B. Pompe. Partial mutual information for coupling analysis of multivariate time series. Phys. Rev. Lett., 99:204101, Nov 2007.
 - A. Kraskov, H. Stoegbauer, and P. Grassberger. Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
+Bertschinger2013aQuantifying
+- N. Bertschinger, J. Rauh, E. Olbrich, J. Jost, and N. Ay, Quantifying unique information, CoRR, 2013
+
