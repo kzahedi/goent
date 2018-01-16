@@ -31,6 +31,7 @@ install:
   - go get github.com/axw/gocov/gocov
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
+  - go get golang.org/x/exp/rand
 
 script:
   - bash ${GOPATH}/src/github.com/h12w/gosweep/gosweep.sh
