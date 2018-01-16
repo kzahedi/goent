@@ -310,7 +310,7 @@ func TestMorphologicalComputationSY(t *testing.T) {
 
 }
 
-func TestMorphologicalComputationP(t *testing.T) {
+func TestMorphologicalComputationWp(t *testing.T) {
 	iterations := 100
 	pw2w1a1 := discrete.Create3D(10, 10, 10)
 	for i := 0; i < 10; i++ {
@@ -323,7 +323,7 @@ func TestMorphologicalComputationP(t *testing.T) {
 	pw2w1a1 = normalise3D(pw2w1a1)
 
 	r := discrete.MorphologicalComputationW(pw2w1a1) - discrete.MorphologicalComputationSY(pw2w1a1, iterations, false)
-	s := discrete.MorphologicalComputationP(pw2w1a1, iterations, false)
+	s := discrete.MorphologicalComputationWp(pw2w1a1, iterations, false)
 
 	if math.Abs(r-s) > 0.001 {
 		t.Errorf("MorphologicalComputationP should be %f but is %f", r, s)
