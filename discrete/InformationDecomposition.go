@@ -2,28 +2,28 @@ package discrete
 
 import "math"
 
-func pX(pxyz [][][]float64) []float64 {
+func PX(pxyz [][][]float64) []float64 {
 	r := make([]float64, 2, 2)
 	r[0] = pxyz[0][0][0] + pxyz[0][0][1] + pxyz[0][1][0] + pxyz[0][1][1]
 	r[1] = pxyz[0][0][0] + pxyz[0][0][0] + pxyz[0][0][0] + pxyz[0][0][0]
 	return r
 }
 
-func pY(pxyz [][][]float64) []float64 {
+func PY(pxyz [][][]float64) []float64 {
 	r := make([]float64, 2, 2)
 	r[0] = pxyz[0][0][0] + pxyz[0][0][1] + pxyz[1][0][0] + pxyz[1][0][1]
 	r[1] = pxyz[0][1][0] + pxyz[0][1][1] + pxyz[1][1][0] + pxyz[1][1][1]
 	return r
 }
 
-func pZ(pxyz [][][]float64) []float64 {
+func PZ(pxyz [][][]float64) []float64 {
 	r := make([]float64, 2, 2)
 	r[0] = pxyz[0][0][0] + pxyz[0][1][0] + pxyz[1][0][0] + pxyz[1][1][0]
 	r[1] = pxyz[0][0][1] + pxyz[0][1][1] + pxyz[1][0][1] + pxyz[1][1][1]
 	return r
 }
 
-func pYZ(pxyz [][][]float64) [][]float64 {
+func PYZ(pxyz [][][]float64) [][]float64 {
 	r := make([][]float64, 2, 2)
 	r[0] = make([]float64, 2, 2)
 	r[1] = make([]float64, 2, 2)
@@ -34,7 +34,7 @@ func pYZ(pxyz [][][]float64) [][]float64 {
 	return r
 }
 
-func pXZ(pxyz [][][]float64) [][]float64 {
+func PXZ(pxyz [][][]float64) [][]float64 {
 	r := make([][]float64, 2, 2)
 	r[0] = make([]float64, 2, 2)
 	r[1] = make([]float64, 2, 2)
@@ -45,7 +45,7 @@ func pXZ(pxyz [][][]float64) [][]float64 {
 	return r
 }
 
-func pXY(pxyz [][][]float64) [][]float64 {
+func PXY(pxyz [][][]float64) [][]float64 {
 	r := make([][]float64, 2, 2)
 	r[0] = make([]float64, 2, 2)
 	r[1] = make([]float64, 2, 2)
@@ -89,7 +89,7 @@ func H1(pxyz []float64) float64 {
 	return r
 }
 
-func pt(pxyz [][][]float64, a, b float64) [][][]float64 {
+func Pt(pxyz [][][]float64, a, b float64) [][][]float64 {
 	A := make([][][]float64, 2, 2)
 	A[0] = make([][]float64, 2, 2)
 	A[1] = make([][]float64, 2, 2)
@@ -129,20 +129,20 @@ func pt(pxyz [][][]float64, a, b float64) [][][]float64 {
 	return r
 }
 
-func miXvYgZ(pxyz [][][]float64) float64 {
-	return H2(pXZ(pxyz)) + H2(pYZ(pxyz)) - H3(pxyz) - H1(pZ(pxyz))
+func MiXvYgZ(pxyz [][][]float64) float64 {
+	return H2(PXZ(pxyz)) + H2(PYZ(pxyz)) - H3(pxyz) - H1(PZ(pxyz))
 }
 
-func miXvZgY(pxyz [][][]float64) float64 {
-	return H2(pXY(pxyz)) + H2(pYZ(pxyz)) - H3(pxyz) - H1(pY(pxyz))
+func MiXvZgY(pxyz [][][]float64) float64 {
+	return H2(PXY(pxyz)) + H2(PYZ(pxyz)) - H3(pxyz) - H1(PY(pxyz))
 }
 
-func miXvY(pxyz [][][]float64) float64 {
-	return H1(pX(pxyz)) + H1(pY(pxyz)) - H2(pXY(pxyz))
+func MiXvY(pxyz [][][]float64) float64 {
+	return H1(PX(pxyz)) + H1(PY(pxyz)) - H2(PXY(pxyz))
 }
 
-func coI(pxyz [][][]float64) float64 {
-	return miXvY(pxyz) - miXvYgZ(pxyz)
+func CoI(pxyz [][][]float64) float64 {
+	return MiXvY(pxyz) - MiXvYgZ(pxyz)
 }
 
 // InformationDecomposition return the UI(X;Y\Z), UI(X;Z\Y), CI(X;Y,Z), and SI(X;Y,Z)
@@ -157,31 +157,31 @@ func InformationDecomposition(pxyz [][][]float64, resolution int) (float64, floa
 	bmax := math.Min(pxyz[1][0][1], pxyz[1][1][0])
 	bdelta := (bmax - bmin) / float64(resolution)
 
-	minMiXvYgZ := miXvYgZ(pt(pxyz, 0.0, 0.0))
-	minMiXvZgY := miXvZgY(pt(pxyz, 0.0, 0.0))
-	maxCoI := coI(pt(pxyz, 0.0, 0.0))
+	minMiXvYgZ := MiXvYgZ(Pt(pxyz, 0.0, 0.0))
+	minMiXvZgY := MiXvZgY(Pt(pxyz, 0.0, 0.0))
+	maxCoI := CoI(Pt(pxyz, 0.0, 0.0))
 
 	r := 0.0
 	for a := amin; a <= amax; a += adelta {
 		for b := bmin; b <= bmax; b += bdelta {
-			r = coI(pt(pxyz, a, b))
+			r = CoI(Pt(pxyz, a, b))
 			if r > maxCoI {
 				maxCoI = r
 			}
 
-			r = miXvZgY(pt(pxyz, a, b))
+			r = MiXvZgY(Pt(pxyz, a, b))
 			if r < minMiXvZgY {
 				minMiXvZgY = r
 			}
 
-			r = miXvYgZ(pt(pxyz, a, b))
+			r = MiXvYgZ(Pt(pxyz, a, b))
 			if r < minMiXvZgY {
 				minMiXvYgZ = r
 			}
 		}
 	}
 
-	coI := maxCoI - coI(pxyz)
+	coI := maxCoI - CoI(pxyz)
 
 	return coI, minMiXvYgZ, minMiXvZgY // synergistic, uniqueXY, uniqueXZ
 }

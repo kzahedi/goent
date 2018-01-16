@@ -21,6 +21,7 @@
     - MC_P
 - Max Entropy Estimations:
     - Iterative Scaling
+- Information Decomposition (Bertschinger et al., 2014) for binary variables
 
 ### State-dependent measures
 - Mutual Information
