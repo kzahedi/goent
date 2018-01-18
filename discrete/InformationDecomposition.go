@@ -5,7 +5,7 @@ import "math"
 func PX(pxyz [][][]float64) []float64 {
 	r := make([]float64, 2, 2)
 	r[0] = pxyz[0][0][0] + pxyz[0][0][1] + pxyz[0][1][0] + pxyz[0][1][1]
-	r[1] = pxyz[0][0][0] + pxyz[0][0][0] + pxyz[0][0][0] + pxyz[0][0][0]
+	r[1] = pxyz[1][0][0] + pxyz[1][0][1] + pxyz[1][1][0] + pxyz[1][1][1]
 	return r
 }
 
@@ -38,8 +38,8 @@ func PXZ(pxyz [][][]float64) [][]float64 {
 	r := make([][]float64, 2, 2)
 	r[0] = make([]float64, 2, 2)
 	r[1] = make([]float64, 2, 2)
-	r[0][0] = pxyz[0][0][0] + pxyz[1][0][0]
-	r[0][1] = pxyz[0][0][1] + pxyz[1][0][1]
+	r[0][0] = pxyz[0][0][0] + pxyz[0][1][0]
+	r[0][1] = pxyz[0][0][1] + pxyz[0][1][1]
 	r[1][0] = pxyz[1][0][0] + pxyz[1][1][0]
 	r[1][1] = pxyz[1][0][1] + pxyz[1][1][1]
 	return r
@@ -69,22 +69,22 @@ func H3(pxyz [][][]float64) float64 {
 	return r
 }
 
-func H2(pxyz [][]float64) float64 {
+func H2(pxy [][]float64) float64 {
 	r := 0.0
 
 	for x := 0; x < 2; x++ {
 		for y := 0; y < 2; y++ {
-			r -= pxyz[x][y] * math.Log2(pxyz[x][y]+0.00000000000001)
+			r -= pxy[x][y] * math.Log2(pxy[x][y]+0.00000000000001)
 		}
 	}
 	return r
 }
 
-func H1(pxyz []float64) float64 {
+func H1(px []float64) float64 {
 	r := 0.0
 
 	for x := 0; x < 2; x++ {
-		r -= pxyz[x] * math.Log2(pxyz[x]+0.00000000000001)
+		r -= px[x] * math.Log2(px[x]+0.00000000000001)
 	}
 	return r
 }
