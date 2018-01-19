@@ -62,7 +62,7 @@ func H3(pxyz [][][]float64) float64 {
 	for x := 0; x < 2; x++ {
 		for y := 0; y < 2; y++ {
 			for z := 0; z < 2; z++ {
-				r -= pxyz[x][y][z] * math.Log2(pxyz[x][y][z]+0.00000000000001)
+				r -= pxyz[x][y][z] * math.Log2(pxyz[x][y][z])
 			}
 		}
 	}
@@ -74,7 +74,7 @@ func H2(pxy [][]float64) float64 {
 
 	for x := 0; x < 2; x++ {
 		for y := 0; y < 2; y++ {
-			r -= pxy[x][y] * math.Log2(pxy[x][y]+0.00000000000001)
+			r -= pxy[x][y] * math.Log2(pxy[x][y])
 		}
 	}
 	return r
@@ -84,7 +84,7 @@ func H1(px []float64) float64 {
 	r := 0.0
 
 	for x := 0; x < 2; x++ {
-		r -= px[x] * math.Log2(px[x]+0.00000000000001)
+		r -= px[x] * math.Log2(px[x])
 	}
 	return r
 }
@@ -139,6 +139,10 @@ func MiXvZgY(pxyz [][][]float64) float64 {
 
 func MiXvY(pxyz [][][]float64) float64 {
 	return H1(PX(pxyz)) + H1(PY(pxyz)) - H2(PXY(pxyz))
+}
+
+func MiXvYZ(pxyz [][][]float64) float64 {
+	return H1(PX(pxyz)) + H2(PYZ(pxyz)) - H3(pxyz)
 }
 
 func CoI(pxyz [][][]float64) float64 {
