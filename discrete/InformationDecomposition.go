@@ -1,6 +1,8 @@
 package discrete
 
-import "math"
+import (
+	"math"
+)
 
 func PX(pxyz [][][]float64) []float64 {
 	r := make([]float64, 2, 2)
@@ -149,43 +151,50 @@ func CoI(pxyz [][][]float64) float64 {
 	return MiXvY(pxyz) - MiXvYgZ(pxyz)
 }
 
-// InformationDecomposition return the UI(X;Y\Z), UI(X;Z\Y), CI(X;Y,Z), and SI(X;Y,Z)
-// according to
-// N. Bertschinger, J. Rauh, E. Olbrich, J. Jost, and N. Ay, Quantifying unique information, CoRR, 2013
-func InformationDecomposition(pxyz [][][]float64, resolution int) (float64, float64, float64) {
-
+func MinMax(pxyz [][][]float64, resolution int) (float64, float64, float64, float64, float64, float64) {
 	amin := math.Max(-pxyz[0][0][0], -pxyz[0][1][1])
 	amax := math.Min(pxyz[0][0][1], pxyz[0][1][0])
 	adelta := (amax - amin) / float64(resolution)
 	bmin := math.Max(-pxyz[1][0][0], -pxyz[1][1][1])
 	bmax := math.Min(pxyz[1][0][1], pxyz[1][1][0])
 	bdelta := (bmax - bmin) / float64(resolution)
+	return amin, amax, adelta, bmin, bmax, bdelta
+}
 
-	minMiXvYgZ := MiXvYgZ(Pt(pxyz, 0.0, 0.0))
-	minMiXvZgY := MiXvZgY(Pt(pxyz, 0.0, 0.0))
+// InformationDecomposition return the UI(X;Y\Z), UI(X;Z\Y), CI(X;Y,Z), and SI(X;Y,Z)
+// according to
+// N. Bertschinger, J. Rauh, E. Olbrich, J. Jost, and N. Ay, Quantifying unique information, CoRR, 2013
+func InformationDecomposition(pxyz [][][]float64, resolution int) (float64, float64, float64) {
+
+	amin, amax, adelta, bmin, bmax, bdelta := MinMax(pxyz, resolution)
+
+	uniqueXY := MiXvYgZ(Pt(pxyz, 0.0, 0.0))
+	uniqueXZ := MiXvZgY(Pt(pxyz, 0.0, 0.0))
 	maxCoI := CoI(Pt(pxyz, 0.0, 0.0))
 
 	r := 0.0
 	for a := amin; a <= amax; a += adelta {
 		for b := bmin; b <= bmax; b += bdelta {
-			r = CoI(Pt(pxyz, a, b))
+			q := Pt(pxyz, a, b)
+
+			r = CoI(q)
 			if r > maxCoI {
 				maxCoI = r
 			}
 
-			r = MiXvZgY(Pt(pxyz, a, b))
-			if r < minMiXvZgY {
-				minMiXvZgY = r
+			r = MiXvZgY(q)
+			if r < uniqueXY {
+				uniqueXY = r
 			}
 
-			r = MiXvYgZ(Pt(pxyz, a, b))
-			if r < minMiXvZgY {
-				minMiXvYgZ = r
+			r = MiXvYgZ(q)
+			if r < uniqueXZ {
+				uniqueXZ = r
 			}
 		}
 	}
 
 	coI := maxCoI - CoI(pxyz)
 
-	return coI, minMiXvYgZ, minMiXvZgY // synergistic, uniqueXY, uniqueXZ
+	return coI, uniqueXY, uniqueXZ
 }

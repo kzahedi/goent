@@ -15,7 +15,7 @@ func random3D1() [][][]float64 {
 }
 
 func random3D2() [][][]float64 {
-	return [][][]float64{{{0.00, 0.03}, {0.22, 0.06}}, {{0.15, 0.14}, {0.21, 0.19}}}
+	return [][][]float64{{{0.02, 0.03}, {0.20, 0.06}}, {{0.15, 0.14}, {0.21, 0.19}}}
 }
 
 func random2D() [][]float64 {
@@ -80,7 +80,7 @@ func TestPY1(t *testing.T) {
 func TestPY2(t *testing.T) {
 	p := random3D2()
 	r := discrete.PY(p)
-	s := []float64{0.32, 0.68}
+	s := []float64{0.34, 0.66}
 	check1D(r, s, "PY 2", t)
 }
 
@@ -158,7 +158,7 @@ func TestMiXvYgZ1(t *testing.T) {
 
 func TestMiXvYgZ2(t *testing.T) {
 	p := random3D2()
-	s := 0.0122117
+	s := 0.0585017
 	r := discrete.MiXvYgZ(p)
 	if math.Abs(r-s) > precision {
 		t.Errorf(fmt.Sprintf("MiXvYgZ should be %f, but it is %f", s, r))
@@ -222,7 +222,7 @@ func TestMiXvZgY1(t *testing.T) {
 
 func TestMiXvZgY2(t *testing.T) {
 	p := random3D2()
-	s := 0.0436263
+	s := 0.0315317
 	r := discrete.MiXvZgY(p)
 	if math.Abs(r-s) > precision {
 		t.Errorf(fmt.Sprintf("MiXvZgY should be %f, but it is %f", s, r))
@@ -240,7 +240,7 @@ func TestMiXvYZ1(t *testing.T) {
 
 func TestMiXvYZ2(t *testing.T) {
 	p := random3D2()
-	s := 0.00283869
+	s := 0.0814641
 	r := discrete.MiXvYZ(p)
 	if math.Abs(r-s) > precision {
 		t.Errorf(fmt.Sprintf("MiXvYgZ should be %f, but it is %f", s, r))
@@ -258,20 +258,57 @@ func TestMiXvY1(t *testing.T) {
 
 func TestMiXvY2(t *testing.T) {
 	p := random3D2()
-	s := 0.0848927
+	s := 0.0499324
 	r := discrete.MiXvY(p)
-	fmt.Println(discrete.H1(discrete.PX(p)), " ", discrete.H1(discrete.PY(p)), " ", discrete.H2(discrete.PXY(p)))
 	if math.Abs(r-s) > precision {
 		t.Errorf(fmt.Sprintf("MiXvY should be %f, but it is %f", s, r))
 	}
 }
 
+func TestCoI1(t *testing.T) {
+	p := random3D1()
+	s := -0.000080589
+	r := discrete.CoI(p)
+	if math.Abs(r-s) > precision {
+		t.Errorf(fmt.Sprintf("CoI should be %f, but it is %f", s, r))
+	}
+}
+
+func TestCoI2(t *testing.T) {
+	p := random3D2()
+	s := -0.00856927
+	r := discrete.CoI(p)
+	if math.Abs(r-s) > precision {
+		t.Errorf(fmt.Sprintf("CoI should be %f, but it is %f", s, r))
+	}
+}
+
 // func TestID1(t *testing.T) {
-// p := random31()
+// p := random3D1()
 // a, b, c := discrete.InformationDecomposition(p, 100)
 // sa := 0.0
-// sb := 0.000913594
-// sc := 0.00479433
+// sb := 0.0000952709
+// sc := 0.00283869
+
+// if math.Abs(a-sa) > 0.0 {
+// t.Errorf(fmt.Sprintf("Synergy should be %f, but it is %f", sa, a))
+// }
+
+// if math.Abs(b-sb) > 0.0 {
+// t.Errorf(fmt.Sprintf("UniqueXY should be %f, but it is %f", sb, b))
+// }
+
+// if math.Abs(c-sc) > 0.0 {
+// t.Errorf(fmt.Sprintf("UniqueXZ should be %f, but it is %f", sc, c))
+// }
+// }
+
+// func TestID2(t *testing.T) {
+// p := random3D2()
+// a, b, c := discrete.InformationDecomposition(p, 100)
+// sa := 0.0291504
+// sb := 0.0293513
+// sc := 0.00238131
 
 // if math.Abs(a-sa) > precision {
 // t.Errorf(fmt.Sprintf("Synergy should be %f, but it is %f", sa, a))
@@ -285,3 +322,56 @@ func TestMiXvY2(t *testing.T) {
 // t.Errorf(fmt.Sprintf("UniqueXZ should be %f, but it is %f", sc, c))
 // }
 // }
+
+func TestMinMax1(t *testing.T) {
+	p := random3D1()
+
+	amin, amax, _, bmin, bmax, _ := discrete.MinMax(p, 100)
+	gamin := -0.09
+	gamax := 0.1
+	gbmin := -0.11
+	gbmax := 0.09
+
+	if math.Abs(amin-gamin) > precision {
+		t.Errorf(fmt.Sprintf("amin should be %f, but it is %f", amin, gamin))
+	}
+
+	if math.Abs(amax-gamax) > precision {
+		t.Errorf(fmt.Sprintf("amax should be %f, but it is %f", amax, gamax))
+	}
+
+	if math.Abs(bmin-gbmin) > precision {
+		t.Errorf(fmt.Sprintf("bmin should be %f, but it is %f", bmin, gbmin))
+	}
+
+	if math.Abs(bmax-gbmax) > precision {
+		t.Errorf(fmt.Sprintf("bmax should be %f, but it is %f", bmax, gbmax))
+	}
+
+}
+
+func TestMinMax2(t *testing.T) {
+	p := random3D2()
+
+	amin, amax, _, bmin, bmax, _ := discrete.MinMax(p, 100)
+	gamin := -0.02
+	gamax := 0.03
+	gbmin := -0.15
+	gbmax := 0.14
+
+	if math.Abs(amin-gamin) > precision {
+		t.Errorf(fmt.Sprintf("amin should be %f, but it is %f", amin, gamin))
+	}
+
+	if math.Abs(amax-gamax) > precision {
+		t.Errorf(fmt.Sprintf("amax should be %f, but it is %f", amax, gamax))
+	}
+
+	if math.Abs(bmin-gbmin) > precision {
+		t.Errorf(fmt.Sprintf("bmin should be %f, but it is %f", bmin, gbmin))
+	}
+
+	if math.Abs(bmax-gbmax) > precision {
+		t.Errorf(fmt.Sprintf("bmax should be %f, but it is %f", bmax, gbmax))
+	}
+}

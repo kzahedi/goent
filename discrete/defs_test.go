@@ -1,6 +1,7 @@
 package discrete_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/kzahedi/goent/discrete"
@@ -89,5 +90,53 @@ func TestCreate3DInt(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestNormalise1D(t *testing.T) {
+	a := make([]float64, 10, 10)
+
+	for i := 0; i < 10; i++ {
+		a[i] = float64(i)
+	}
+
+	b := discrete.Normalise1D(a)
+
+	sum := 0.0
+	for i := 0; i < 10; i++ {
+		if math.Abs(a[i]-float64(i)) > 0.0001 {
+			t.Errorf("a[%d] should be %f but is %f", i, float64(i), a[i])
+		}
+		sum += b[i]
+	}
+
+	if math.Abs(sum-1.0) > 0.0001 {
+		t.Errorf("b should be normalised but the sum is %f", sum)
+	}
+}
+
+func TestNormalise2D(t *testing.T) {
+	a := discrete.Create2D(10, 10)
+
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			a[i][j] = float64(i + 10*j)
+		}
+	}
+
+	b := discrete.Normalise2D(a)
+
+	sum := 0.0
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			if math.Abs(a[i][j]-float64(i+10*j)) > 0.0001 {
+				t.Errorf("a[%d][%d] should be %f but is %f", i, j, float64(i+10*j), a[i][j])
+			}
+			sum += b[i][j]
+		}
+	}
+
+	if math.Abs(sum-1.0) > 0.0001 {
+		t.Errorf("b should be normalised but the sum is %f", sum)
 	}
 }
