@@ -20,7 +20,7 @@ func min(a, b int) int {
 }
 
 func TestDiscretiseVector(t *testing.T) {
-	t.Log("Testing DiscrestiseVector")
+	t.Log("Testing DiscretiseVector")
 	p := make([]float64, 11, 11)
 
 	p[0] = 0.0
@@ -35,7 +35,7 @@ func TestDiscretiseVector(t *testing.T) {
 	p[9] = 0.9
 	p[10] = 1.0
 
-	d := dh.DiscrestiseVector(p, 10, 0.0, 1.0)
+	d := dh.DiscretiseVector(p, 10, 0.0, 1.0)
 
 	if d[0] != 0 {
 		t.Errorf("0.0  must be mapped to 0 and not %f", p[0])
@@ -74,7 +74,7 @@ func TestDiscretiseVector(t *testing.T) {
 }
 
 func TestDiscretise(t *testing.T) {
-	t.Log("Testing Discrestise")
+	t.Log("Testing Discretise")
 
 	p := [][]float64{
 		{0.0, 0.1, 0.2},
@@ -87,7 +87,7 @@ func TestDiscretise(t *testing.T) {
 		{0.7, 0.8, 0.9},
 		{0.8, 0.9, 1.0}}
 
-	d := dh.Discrestise(p,
+	d := dh.Discretise(p,
 		[]int{10, 10, 10},
 		[]float64{0.0, 0.0, 0.0},
 		[]float64{1.0, 1.0, 1.0})
@@ -236,5 +236,53 @@ func TestReadData(t *testing.T) {
 				t.Errorf("Values don't match %f != %f (%d,%d)", data[i][j], rdata[i][j], i, j)
 			}
 		}
+	}
+}
+
+func TestGetMinMax(t *testing.T) {
+	data := make([][]float64, 10, 10)
+	index := 0.0
+	for i := 0; i < 10; i++ {
+		data[i] = make([]float64, 5, 5)
+	}
+	for j := 0; j < 5; j++ {
+		for i := 0; i < 10; i++ {
+			data[i][j] = index
+			index++
+		}
+	}
+
+	min, max := dh.GetMinMax(data)
+
+	if min[0] != 0.0 {
+		t.Errorf("min[0] should be 0.0 but it is %f", min[0])
+	}
+	if min[1] != 10.0 {
+		t.Errorf("min[1] should be 10.0 but it is %f", min[1])
+	}
+	if min[2] != 20.0 {
+		t.Errorf("min[2] should be 20.0 but it is %f", min[2])
+	}
+	if min[3] != 30.0 {
+		t.Errorf("min[3] should be 30.0 but it is %f", min[3])
+	}
+	if min[4] != 40.0 {
+		t.Errorf("min[4] should be 40.0 but it is %f", min[4])
+	}
+
+	if max[0] != 9.0 {
+		t.Errorf("max[0] should be 9.0 but it is %f", max[0])
+	}
+	if max[1] != 19.0 {
+		t.Errorf("max[1] should be 19.0 but it is %f", max[1])
+	}
+	if max[2] != 29.0 {
+		t.Errorf("max[2] should be 29.0 but it is %f", max[2])
+	}
+	if max[3] != 39.0 {
+		t.Errorf("max[3] should be 39.0 but it is %f", max[3])
+	}
+	if max[4] != 49.0 {
+		t.Errorf("max[4] should be 49.0 but it is %f", max[4])
 	}
 }

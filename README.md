@@ -11,29 +11,20 @@
 - Conditional Entropy
 - Mutual Information
 - Conditional Mutual Information
-- Morphological Computation Measures:
-    - MC_W
-    - MC_A
-    - MC_SY
-    - MC_WS
-    - MC_MI
-    - MC_WA
-    - MC_P
 - Max Entropy Estimations:
     - Iterative Scaling
 - Information Decomposition (Bertschinger et al., 2014) for binary variables
+
+- Morphological Computation measures have been moved to gomi
+  https://github.com/kzahedi/gomi
 
 ### State-dependent measures
 - Mutual Information
 - Conditional Mutual Information
 - Entropy (Shannon)
-- Morphological Computation
-    - MC_W
-    - MC_A
-    - MC_WS
-    - MC_WA
-    - MC_MI
 
+- Morphological Computation measures have been moved to gomi
+  https://github.com/kzahedi/gomi
 
 
 ## Measures for continuous state spaces
@@ -41,24 +32,18 @@
 - Kraskov-Stoegbauer-Grassberger, Algorithm 1
 - Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
-- Morphological Computation
-    - MC_W
-    - MC_A
-    - MC_WS
-    - MC_WA
-    - MC_MI
+
+- Morphological Computation measures have been moved to gomi
+  https://github.com/kzahedi/gomi
 
 
 ### State-dependent measures
 - Kraskov-Stoegbauer-Grassberger, Algorithm 1
 - Kraskov-Stoegbauer-Grassberger, Algorithm 2
 - Frenzel-Pompe
-- Morphological Computation
-    - MC_W
-    - MC_A
-    - MC_WS
-    - MC_WA
-    - MC_MI
+
+- Morphological Computation measures have been moved to gomi
+  https://github.com/kzahedi/gomi
 
 
 References:

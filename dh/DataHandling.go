@@ -9,9 +9,38 @@ import (
 	"strings"
 )
 
-// DiscrestiseVector takes a one-dimensional slice and discretises it.
+// GetMinMax get the minimum and maximum values
+// The return value are two arrays. The number of elements
+// corresponds to the number of columns in the data.
+// The first array contains the minimum values.
+// The second array contains the minimum values.
+func GetMinMax(data [][]float64) ([]float64, []float64) {
+	cols := len(data[0])
+	min := make([]float64, cols, cols)
+	max := make([]float64, cols, cols)
+	// set initial values
+	for c := 0; c < cols; c++ {
+		min[c] = data[0][c]
+		max[c] = data[0][c]
+	}
+
+	for _, row := range data {
+		for i, v := range row {
+			if v > max[i] {
+				max[i] = v
+			}
+			if v < min[i] {
+				min[i] = v
+			}
+		}
+	}
+
+	return min, max
+}
+
+// DiscretiseVector takes a one-dimensional slice and discretises it.
 // Min/max and number of bins must be provided.
-func DiscrestiseVector(d []float64, bins int, min, max float64) []int {
+func DiscretiseVector(d []float64, bins int, min, max float64) []int {
 	r := make([]int, len(d), len(d))
 	domain := max - min
 	for i := 0; i < len(d); i++ {
@@ -20,11 +49,11 @@ func DiscrestiseVector(d []float64, bins int, min, max float64) []int {
 	return r
 }
 
-// Discrestise takes a two-dimensional slice and discretises it.
+// Discretise takes a two-dimensional slice and discretises it.
 // Min/max and number of bins must be provided for each column. The first
 // index of the data are the rows and the second index the columns, i.e.,
 // d[r][c] is the data point in the r-th row and c-th column
-func Discrestise(d [][]float64, bins []int, min, max []float64) [][]int {
+func Discretise(d [][]float64, bins []int, min, max []float64) [][]int {
 	rows := len(d)
 	ret := make([][]int, rows, rows)
 	for r := 0; r < rows; r++ {
@@ -32,10 +61,20 @@ func Discrestise(d [][]float64, bins []int, min, max []float64) [][]int {
 		ret[r] = make([]int, cols, cols)
 		for c := 0; c < cols; c++ {
 			domain := max[c] - min[c]
-			ret[r][c] = int(math.Min(((d[r][c]-min[c])/domain)*float64(bins[c]), float64(bins[c]-1)))
+			if domain > 0.00001 {
+				ret[r][c] = int(math.Min(((d[r][c]-min[c])/domain)*float64(bins[c]), float64(bins[c]-1)))
+			} else {
+				ret[r][c] = 0.0
+			}
 		}
 	}
 	return ret
+}
+
+// MakeUnivariateRelabelled takes a two-dimensional discretised slice and returns
+// a one-dimensional representation of it.
+func MakeUnivariateRelabelled(d [][]int, bins []int) []int {
+	return Relabel(MakeUnivariate(d, bins))
 }
 
 // MakeUnivariate takes a two-dimensional discretised slice and returns

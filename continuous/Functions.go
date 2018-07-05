@@ -1,6 +1,8 @@
 package continuous
 
-import "math"
+import (
+	"math"
+)
 
 // Distance calculates the distance between to vectors,
 // given the set of indices

@@ -106,7 +106,7 @@ func ksgGetEpsilon(k int, xy []float64, data [][]float64, xIndices, yIndices []i
 
 	sort.Float64s(distances)
 
-	return distances[k-1] // we start to ksgCount at zero
+	return distances[k-1] // we start to count at zero
 }
 
 func ksgMaxNorm2(a, b []float64, xIndices, yIndices []int) float64 {

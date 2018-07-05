@@ -63,7 +63,7 @@ func TestCreate2DInt(t *testing.T) {
 	for i := 0; i < 20; i++ {
 		for j := 0; j < 30; j++ {
 			if a[i][j] != 0 {
-				t.Errorf("a[%d][%d] should be 0.0 but is %f", i, j, a[i][j])
+				t.Errorf("a[%d][%d] should be 0.0 but is %d", i, j, a[i][j])
 			}
 		}
 	}
@@ -86,7 +86,7 @@ func TestCreate3DInt(t *testing.T) {
 		for j := 0; j < 30; j++ {
 			for k := 0; k < 40; k++ {
 				if a[i][j][k] != 0 {
-					t.Errorf("a[%d][%d][%d] should be 0.0 but is %f", i, j, k, a[i][j][k])
+					t.Errorf("a[%d][%d][%d] should be 0.0 but is %d", i, j, k, a[i][j][k])
 				}
 			}
 		}
