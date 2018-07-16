@@ -14,14 +14,17 @@ import (
 // Phys. Rev. Lett., 99:204101, Nov 2007.
 func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) []float64 {
 
-	r := make([]float64, len(xyz), len(xyz))
+	T := len(xyz)
+	Tf := float64(T)
+
+	r := make([]float64, T, T)
 
 	hk := continuous.Harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
 	if eta == true {
-		bar = pb.StartNew(len(xyz))
+		bar = pb.StartNew(T)
 	}
 
 	for t, v := range xyz {
@@ -36,7 +39,7 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		cNz := fpCount1(epsilon, v, xyz, zIndices)
 		hNz := continuous.Harmonic(cNz)
 
-		r[t] = hNxz + hNyz - hNz - hk
+		r[t] = (hNxz + hNyz - hNz - hk) / Tf
 
 		if eta == true {
 			bar.Increment()

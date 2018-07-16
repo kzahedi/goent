@@ -11,27 +11,29 @@ import (
 // S. Frenzel and B. Pompe.
 // Partial mutual information for coupling analysis of multivariate time series.
 // Phys. Rev. Lett., 99:204101, Nov 2007.
-func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) (r float64) {
+func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) float64 {
 
+	r := 0.0
+	T := len(xyz)
+	Tf := float64(T)
 	hk := Harmonic(k - 1)
 
 	var bar *pb.ProgressBar
 
 	if eta == true {
-		bar = pb.StartNew(len(xyz))
+		bar = pb.StartNew(T)
 	}
 
-	r = 0.0
-	for t := 0; t < len(xyz); t++ {
-		epsilon := fpGetEpsilon(k, xyz[t], xyz, xIndices, yIndices, zIndices)
+	for _, v := range xyz {
+		epsilon := fpGetEpsilon(k, v, xyz, xIndices, yIndices, zIndices)
 
-		cNxz := fpCount2(epsilon, xyz[t], xyz, xIndices, zIndices)
+		cNxz := fpCount2(epsilon, v, xyz, xIndices, zIndices)
 		hNxz := Harmonic(cNxz)
 
-		cNyz := fpCount2(epsilon, xyz[t], xyz, yIndices, zIndices)
+		cNyz := fpCount2(epsilon, v, xyz, yIndices, zIndices)
 		hNyz := Harmonic(cNyz)
 
-		cNz := fpCount1(epsilon, xyz[t], xyz, zIndices)
+		cNz := fpCount1(epsilon, v, xyz, zIndices)
 		hNz := Harmonic(cNz)
 
 		r += hNxz + hNyz - hNz
@@ -45,11 +47,9 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		bar.Finish()
 	}
 
-	r /= float64(len(xyz))
+	r = r/Tf - hk
 
-	r -= hk
-
-	return
+	return r
 }
 
 // fpMaxNorm3 computes the max-norm of two 3-dimensional vectors
