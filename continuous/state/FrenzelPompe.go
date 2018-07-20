@@ -39,7 +39,7 @@ func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, et
 		cNz := fpCount1(epsilon, v, xyz, zIndices)
 		hNz := continuous.Harmonic(cNz)
 
-		r[t] = (hNxz + hNyz - hNz - hk) / Tf
+		r[t] = (hNxz + hNyz - hNz - hk)
 
 		if eta == true {
 			bar.Increment()

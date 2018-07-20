@@ -2,9 +2,10 @@ package discrete
 
 import "math"
 
-// ConditionalMutualInformation calculates the conditional mutual information with the given lnFunc function
-//   I(X,Y|Z) = \sum_x,y, p(x,y,z) (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
-func ConditionalMutualInformation(pxyz [][][]float64, ln lnFunc) float64 {
+// ConditionalMutualInformation calculates the conditional mutual information
+//   I(X,Y|Z) = \sum_x,y, p(x,y,z) (log2(p(x,y|z)) - log2(p(x|z)p(y|z)))
+// Results are given in nats
+func ConditionalMutualInformation(pxyz [][][]float64) float64 {
 
 	xDim := len(pxyz)
 	yDim := len(pxyz[0])
@@ -50,23 +51,11 @@ func ConditionalMutualInformation(pxyz [][][]float64, ln lnFunc) float64 {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
 				if pxyz[x][y][z] > 0.0 && pxyCz[x][y][z] > 0.0 && pxCz[x][z] > 0.0 && pyCz[y][z] > 0.0 {
-					r += pxyz[x][y][z] * (ln(pxyCz[x][y][z]) - ln(pxCz[x][z]*pyCz[y][z]))
+					r += pxyz[x][y][z] * (math.Log(pxyCz[x][y][z]) - math.Log(pxCz[x][z]*pyCz[y][z]))
 				}
 			}
 		}
 	}
 
 	return r
-}
-
-// ConditionalMutualInformationBaseE calculates the conditional mutual information with base e
-// I(X,Y|Z) = \sum_x,y, p(x,y,z) (ln(p(x,y|z)) - ln(p(x|z)p(y|z)))
-func ConditionalMutualInformationBaseE(pxyz [][][]float64) float64 {
-	return ConditionalMutualInformation(pxyz, math.Log)
-}
-
-// ConditionalMutualInformationBase2 calculates the conditional mutual information with base 2
-//   I(X,Y|Z) = \sum_x,y, p(x,y,z) (log2(p(x,y|z)) - log2(p(x|z)p(y|z)))
-func ConditionalMutualInformationBase2(pxyz [][][]float64) float64 {
-	return ConditionalMutualInformation(pxyz, math.Log2)
 }

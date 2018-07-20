@@ -6,40 +6,41 @@ import (
 	"math/rand"
 	"testing"
 
+	"github.com/gonum/matrix/mat64"
 	"github.com/kzahedi/goent/discrete"
 )
 
-func TestEntropyBase2(t *testing.T) {
+func TestEntropy(t *testing.T) {
 	t.Log("Testing Entropy")
-	p1 := []float64{0.5, 0.5, 0.5, 0.5}
+	p1 := mat64.Vector(4, []float64{0.5, 0.5, 0.5, 0.5})
 
-	if r := discrete.EntropyBase2(p1); r != 2.0 {
+	if r := discrete.Entropy(p1); r != 2.0 {
 		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 2.0 but it is %f", r))
 	}
 
-	p2 := []float64{1.0, 0.0, 0.0, 0.0}
+	p2 := mat64.Vector(4, []float64{1.0, 0.0, 0.0, 0.0})
 
-	if r := discrete.EntropyBase2(p2); r != 0.0 {
+	if r := discrete.Entropy(p2); r != 0.0 {
 		t.Errorf(fmt.Sprintf("Entropy of deterministic distribution should be 0.0 but it is %f", r))
 	}
 }
 
-func TestEntropyBaseE(t *testing.T) {
+func TestEntropy(t *testing.T) {
 	t.Log("Testing Entropy")
 	p1 := []float64{0.5, 0.5, 0.5, 0.5}
 
-	if r := discrete.EntropyBaseE(p1); math.Abs(r-1.386294) > 0.00001 {
+	if r := discrete.Entropy(p1); math.Abs(r-1.386294) > 0.00001 {
 		t.Errorf(fmt.Sprintf("Entropy of four state uniform distribution should be 1.386294 but it is %f", r))
 	}
 
 	p2 := []float64{1.0, 0.0, 0.0, 0.0}
 
-	if r := discrete.EntropyBaseE(p2); r != 0.0 {
+	if r := discrete.Entropy(p2); r != 0.0 {
 		t.Errorf(fmt.Sprintf("Entropy of deterministic distribution should be 0.0 but it is %f", r))
 	}
 }
 
-func TestEntropyChaoShenBaseE(t *testing.T) {
+func TestEntropyChaoShen(t *testing.T) {
 	t.Log("Testing Chao-Shen Entropy")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -47,7 +48,7 @@ func TestEntropyChaoShenBaseE(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyChaoShenBaseE(h)
+		r += discrete.EntropyChaoShen(h)
 	}
 
 	r /= 100.0
@@ -58,7 +59,7 @@ func TestEntropyChaoShenBaseE(t *testing.T) {
 
 }
 
-func TestEntropyChaoShenBase2(t *testing.T) {
+func TestEntropyChaoShen(t *testing.T) {
 	t.Log("Testing Chao-Shen Entropy")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -66,7 +67,7 @@ func TestEntropyChaoShenBase2(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyChaoShenBase2(h)
+		r += discrete.EntropyChaoShen(h)
 	}
 
 	r /= 100.0
@@ -77,7 +78,7 @@ func TestEntropyChaoShenBase2(t *testing.T) {
 
 }
 
-func TestEntropyMLBCBaseE(t *testing.T) {
+func TestEntropyMLBC(t *testing.T) {
 	t.Log("Testing Maximum Likelihood Bias Corrected")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -85,7 +86,7 @@ func TestEntropyMLBCBaseE(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyMLBCBaseE(h)
+		r += discrete.EntropyMLBC(h)
 	}
 
 	r /= 100.0
@@ -95,7 +96,7 @@ func TestEntropyMLBCBaseE(t *testing.T) {
 	}
 }
 
-func TestEntropyMLBCBase2(t *testing.T) {
+func TestEntropyMLBC(t *testing.T) {
 	t.Log("Testing Maximum Likelihood Bias Corrected")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -103,7 +104,7 @@ func TestEntropyMLBCBase2(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyMLBCBase2(h)
+		r += discrete.EntropyMLBC(h)
 	}
 
 	r /= 100.0
@@ -113,7 +114,7 @@ func TestEntropyMLBCBase2(t *testing.T) {
 	}
 }
 
-func TestEntropyHorvitzThompsonBase2(t *testing.T) {
+func TestEntropyHorvitzThompson(t *testing.T) {
 	t.Log("Testing Horvitz-Thompson Base 2")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -121,7 +122,7 @@ func TestEntropyHorvitzThompsonBase2(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyHorvitzThompsonBase2(h)
+		r += discrete.EntropyHorvitzThompson(h)
 	}
 
 	r /= 100.0
@@ -131,7 +132,7 @@ func TestEntropyHorvitzThompsonBase2(t *testing.T) {
 	}
 }
 
-func TestEntropyHorvitzThompsonBaseE(t *testing.T) {
+func TestEntropyHorvitzThompson(t *testing.T) {
 	t.Log("Testing Horvitz-Thompson Base 2")
 	r := 0.0
 	for i := 0; i < 100; i++ {
@@ -139,7 +140,7 @@ func TestEntropyHorvitzThompsonBaseE(t *testing.T) {
 		for j := 0; j < 5000; j++ {
 			h[j] = int(rand.Int63n(100))
 		}
-		r += discrete.EntropyHorvitzThompsonBaseE(h)
+		r += discrete.EntropyHorvitzThompson(h)
 	}
 
 	r /= 100.0
