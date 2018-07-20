@@ -15,8 +15,6 @@ import (
 func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) []float64 {
 
 	T := len(xyz)
-	Tf := float64(T)
-
 	r := make([]float64, T, T)
 
 	hk := continuous.Harmonic(k - 1)
