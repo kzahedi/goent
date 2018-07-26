@@ -1,10 +1,12 @@
 package discrete
 
-import "github.com/gonum/matrix/mat64"
+import (
+	"gonum.org/v1/gonum/mat"
+)
 
 // Emperical1D is an empirical estimator for a one-dimensional
 // probability distribution
-func Emperical1D(d []int) mat64.Vector {
+func Emperical1D(d []int) mat.Vector {
 	max := 0
 	for _, v := range d {
 		if v > max {
@@ -14,15 +16,18 @@ func Emperical1D(d []int) mat64.Vector {
 
 	max++
 
-	p := mat64.NewVector(max, nil)
-
-	for _, v := range d {
-		p.SetVec(v, p.At(v)+1.0)
-	}
-
+	c := make([]float64, max, max)
 	l := float64(len(d))
 
-	p.ScaleVec(l, nil)
+	for _, v := range d {
+		c[v] += 1.0
+	}
+
+	for i, _ := range c {
+		c[i] /= l
+	}
+
+	p := mat.NewVecDense(max, c)
 
 	return p
 }

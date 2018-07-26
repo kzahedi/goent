@@ -7,44 +7,43 @@ import (
 )
 
 // Entropy calculates the entropy of a probability distribution.
-// It takes the log function as an additional parameter, so that the base
-// can be chosen:
-//   H(X) = -\sum_x p(x) log2(p(x))
+//   H(X) = -\sum_x p(x) log(p(x))
 func Entropy(p mat.Vector) float64 {
 	var r float64
-	for _, px := range p.mat.Data {
-		if px > 0 {
-			r -= px * math.Log(px)
+	for i := 0; i < p.Len(); i++ {
+		v := p.AtVec(i)
+		if v > 0.0 {
+			r -= v * math.Log(v)
 		}
 	}
 	return r
 }
 
 // EntropyMLBC is maximum likelihood estimator with bias correction
-// It takes discretised data and the log
-// function as input. Implemented from
+// It takes discretised data as input.
+// Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
 func EntropyMLBC(data []int) float64 {
 	p := Emperical1D(data)
 	n := float64(len(data))
-	S := float64(len(p))
+	S := float64(p.Len())
 
 	r := 0.0
 
-	for _, v := range p.Data {
+	for i := 0; i < p.Len(); i++ {
+		v := p.AtVec(i)
 		if v > 0.0 {
 			r -= v * math.Log(v)
 		}
 	}
 
 	return r + (S-1.0)/(2.0*n)
-
 }
 
 // EntropyHorvitzThompson is the Horvitz-Thompson entropy estimator.
-// It takes discretised data and log function as input.
+// It takes discretised data as input.
 // Implemented from
 // A. Chao and T.-J. Shen. Nonparametric estimation of shannon’s
 // index of diversity when there are unseen species in sample.
@@ -54,7 +53,8 @@ func EntropyHorvitzThompson(data []int) float64 {
 	n := float64(len(data))
 	r := 0.0
 
-	for _, v := range p.Data {
+	for i := 0; i < p.Len(); i++ {
+		v := p.AtVec(i)
 		if v > 0.0 {
 			N := v * math.Log(v)
 			D := 1.0 - math.Pow(1.0-v, n)
