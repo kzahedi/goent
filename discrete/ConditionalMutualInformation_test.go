@@ -20,9 +20,9 @@ func TestMIasEntropies(t *testing.T) {
 
 	px := []float64{1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0}
 
-	mi1 := discrete.MutualInformationBase2(p1)
-	ch1 := discrete.ConditionalEntropyBase2(p1)
-	h1 := discrete.EntropyBase2(px)
+	mi1 := discrete.MutualInformation(p1)
+	ch1 := discrete.ConditionalEntropy(p1)
+	h1 := discrete.Entropy(px)
 	diff1 := mi1 - (h1 - ch1)
 
 	if math.Abs(diff1) > 0.0001 {
@@ -35,9 +35,9 @@ func TestMIasEntropies(t *testing.T) {
 		{0.0, 0.0, 1.0 / 4.0, 0.0},
 		{0.0, 0.0, 0.0, 1.0 / 4.0}}
 
-	mi2 := discrete.MutualInformationBase2(p2)  // I(X;Y) = H(X) - H(X|Y)
-	ch2 := discrete.ConditionalEntropyBase2(p2) // H(X|Y)
-	h2 := discrete.EntropyBase2(px)             // H(X)
+	mi2 := discrete.MutualInformation(p2)  // I(X;Y) = H(X) - H(X|Y)
+	ch2 := discrete.ConditionalEntropy(p2) // H(X|Y)
+	h2 := discrete.Entropy(px)             // H(X)
 	diff2 := mi2 - (h2 - ch2)
 
 	if math.Abs(diff2) > 0.0001 {
@@ -93,21 +93,12 @@ func TestCMIasMI(t *testing.T) {
 		}
 	}
 
-	cmi := discrete.ConditionalMutualInformationBase2(pxyz)
-	multi := discrete.MutualInformationBase2(px_yz)
-	mi := discrete.MutualInformationBase2(pxz)
+	cmi := discrete.ConditionalMutualInformation(pxyz)
+	multi := discrete.MutualInformation(px_yz)
+	mi := discrete.MutualInformation(pxz)
 	diff := cmi - (multi - mi)
 
 	if math.Abs(diff) > 0.0001 {
 		t.Errorf("I(X;Y|Z) = I(X;Y,Z) - I(X;Z), but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
-	}
-
-	cmiE := discrete.ConditionalMutualInformationBaseE(pxyz)
-	multiE := discrete.MutualInformationBaseE(px_yz)
-	miE := discrete.MutualInformationBaseE(pxz)
-	diffE := cmiE - (multiE - miE)
-
-	if math.Abs(diffE) > 0.0001 {
-		t.Errorf("I_e(X;Y|Z) = I_e(X;Y,Z) - I_e(X;Z), but the difference is %f, I(X;Y|Z): %f, I(X;Y,Z): %f, I(X;Z):%f", math.Abs(diff), cmi, multi, mi)
 	}
 }

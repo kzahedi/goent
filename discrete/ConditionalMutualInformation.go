@@ -12,36 +12,37 @@ func ConditionalMutualInformation(pxyz [][][]float64) float64 {
 	zDim := len(pxyz[0][0])
 
 	pxyCz := Create3D(xDim, yDim, zDim)
-	pxCz := Create2D(xDim, zDim)
-	pyCz := Create2D(yDim, zDim)
-	pz := make([]float64, zDim)
+	pxCz := mat64.NewMatrix(xDim, zDim, nil)
+	pyCz := mat64.NewMatrix(yDim, zDim, nil)
+
+	pz := mat.NewVecDense(zDim, [])
 
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				pz[z] += pxyz[x][y][z]
-				pxCz[x][z] += pxyz[x][y][z]
-				pyCz[y][z] += pxyz[x][y][z]
+				pz.Set(z, pz.At(z) + pxyz[x][y][z])
+				pxCz.Set(x, z, pxCz.At(x, z)+pxyz[x][y][z])
+				pyCz.Set(y, z, pyCz.At(y, z)+pxyz[x][y][z])
 			}
 		}
 	}
 
 	for x := 0; x < xDim; x++ {
 		for z := 0; z < zDim; z++ {
-			pxCz[x][z] /= pz[z]
+			pxCz.Set(x, z, pxCz.At(x, z)/pz[z])
 		}
 	}
 
 	for y := 0; y < yDim; y++ {
 		for z := 0; z < zDim; z++ {
-			pyCz[y][z] /= pz[z]
+			pyCz.Set(y, z, pyCz.At(y, z)/pz[z])
 		}
 	}
 
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				pxyCz[x][y][z] = pxyz[x][y][z] / pz[z]
+				pxyCz[x][y][z] = pxyz[x][y][z] / pz.At(z)
 			}
 		}
 	}
@@ -50,12 +51,11 @@ func ConditionalMutualInformation(pxyz [][][]float64) float64 {
 	for x := 0; x < xDim; x++ {
 		for y := 0; y < yDim; y++ {
 			for z := 0; z < zDim; z++ {
-				if pxyz[x][y][z] > 0.0 && pxyCz[x][y][z] > 0.0 && pxCz[x][z] > 0.0 && pyCz[y][z] > 0.0 {
-					r += pxyz[x][y][z] * (math.Log(pxyCz[x][y][z]) - math.Log(pxCz[x][z]*pyCz[y][z]))
+				if pxyz[x][y][z] > 0.0 && pxyCz[x][y][z] > 0.0 && pxCz.At(x,z) > 0.0 && pyCz.At(y,z) > 0.0 {
+					r += pxyz[x][y][z] * (math.Log(pxyCz[x][y][z]) - math.Log(pxCz.At(x,z)*pyCz.At(y,z)))
 				}
 			}
 		}
 	}
-
 	return r
 }
