@@ -1,8 +1,8 @@
 package discrete
 
-// Emperical1D is an empirical estimator for a one-dimensional
+// Empirical1D is an empirical estimator for a one-dimensional
 // probability distribution
-func Emperical1D(d []int) []float64 {
+func Empirical1D(d []int) []float64 {
 	max := 0
 	for _, v := range d {
 		if v > max {
@@ -26,9 +26,9 @@ func Emperical1D(d []int) []float64 {
 	return p
 }
 
-// Emperical2D is an empirical estimator for a two-dimensional
+// Empirical2D is an empirical estimator for a two-dimensional
 // probability distribution
-func Emperical2D(d [][]int) [][]float64 {
+func Empirical2D(d [][]int) [][]float64 {
 	max := make([]int, 2, 2)
 	rows := len(d)
 	for r := 0; r < rows; r++ {
@@ -61,9 +61,9 @@ func Emperical2D(d [][]int) [][]float64 {
 	return p
 }
 
-// Emperical3D is an empirical estimator for a three-dimensional
+// Empirical3D is an empirical estimator for a three-dimensional
 // probability distribution
-func Emperical3D(d [][]int) [][][]float64 {
+func Empirical3D(d [][]int) [][][]float64 {
 	max := make([]int, 3, 3)
 	rows := len(d)
 	for r := 0; r < rows; r++ {
@@ -102,9 +102,9 @@ func Emperical3D(d [][]int) [][][]float64 {
 	return p
 }
 
-// Emperical4D is an empirical estimator for a three-dimensional
+// Empirical4D is an empirical estimator for a three-dimensional
 // probability distribution
-func Emperical4D(d [][]int) [][][][]float64 {
+func Empirical4D(d [][]int) [][][][]float64 {
 	max := make([]int, 4, 4)
 	rows := len(d)
 	for r := 0; r < rows; r++ {

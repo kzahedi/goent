@@ -7,13 +7,13 @@ import (
 	"github.com/kzahedi/goent/discrete"
 )
 
-func TestEmperical1D(t *testing.T) {
-	t.Log("Testing Emperical1D")
+func TestEmpirical1D(t *testing.T) {
+	t.Log("Testing Empirical1D")
 	d := []int{0, 0, 1, 1, 2, 2, 3, 3}
-	p := discrete.Emperical1D(d)
+	p := discrete.Empirical1D(d)
 
 	if len(p) != 4 {
-		t.Errorf("Emperical1D should return a slice of length 4 and not %d", len(p))
+		t.Errorf("Empirical1D should return a slice of length 4 and not %d", len(p))
 	}
 
 	for i := range p {
@@ -23,8 +23,8 @@ func TestEmperical1D(t *testing.T) {
 	}
 }
 
-func TestEmperical2D(t *testing.T) {
-	t.Log("Testing Emperical2D")
+func TestEmpirical2D(t *testing.T) {
+	t.Log("Testing Empirical2D")
 
 	d := [][]int{
 		{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4},
@@ -32,13 +32,13 @@ func TestEmperical2D(t *testing.T) {
 		{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4},
 		{3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}}
 
-	p := discrete.Emperical2D(d)
+	p := discrete.Empirical2D(d)
 
 	if len(p) != 4 {
-		t.Errorf("Emperical2D number of rows should be 4 but it is %d", len(p))
+		t.Errorf("Empirical2D number of rows should be 4 but it is %d", len(p))
 	}
 	if len(p[0]) != 5 {
-		t.Errorf("Emperical2D number of columns should be 5 but it is %d", len(p[0]))
+		t.Errorf("Empirical2D number of columns should be 5 but it is %d", len(p[0]))
 	}
 
 	for r := 0; r < 4; r++ {
@@ -50,8 +50,8 @@ func TestEmperical2D(t *testing.T) {
 	}
 }
 
-func TestEmperical3D(t *testing.T) {
-	t.Log("Testing Emperical2D")
+func TestEmpirical3D(t *testing.T) {
+	t.Log("Testing Empirical2D")
 
 	d := [][]int{
 		{0, 0, 0}, {0, 0, 1}, {0, 0, 2}, {0, 0, 3},
@@ -61,16 +61,16 @@ func TestEmperical3D(t *testing.T) {
 		{1, 1, 0}, {1, 1, 1}, {1, 1, 2}, {1, 1, 3},
 		{1, 2, 0}, {1, 2, 1}, {1, 2, 2}, {1, 2, 3}}
 
-	p := discrete.Emperical3D(d)
+	p := discrete.Empirical3D(d)
 
 	if len(p) != 2 {
-		t.Errorf("Emperical3D 1st dimension should be 2 but it is %d", len(p))
+		t.Errorf("Empirical3D 1st dimension should be 2 but it is %d", len(p))
 	}
 	if len(p[0]) != 3 {
-		t.Errorf("Emperical3D 2nd dimension should be 3 but it is %d", len(p[0]))
+		t.Errorf("Empirical3D 2nd dimension should be 3 but it is %d", len(p[0]))
 	}
 	if len(p[0][0]) != 4 {
-		t.Errorf("Emperical3D 3rd dimension should be 4 but it is %d", len(p[0][0]))
+		t.Errorf("Empirical3D 3rd dimension should be 4 but it is %d", len(p[0][0]))
 	}
 
 	for a := 0; a < 2; a++ {
@@ -84,8 +84,8 @@ func TestEmperical3D(t *testing.T) {
 	}
 }
 
-func TestEmperical4D(t *testing.T) {
-	t.Log("Testing Emperical4D")
+func TestEmpirical4D(t *testing.T) {
+	t.Log("Testing Empirical4D")
 
 	d := make([][]int, 2*3*4*2, 2*3*4*2)
 	for i := 0; i < 2*3*4*2; i++ {
@@ -107,19 +107,19 @@ func TestEmperical4D(t *testing.T) {
 		}
 	}
 
-	p := discrete.Emperical4D(d)
+	p := discrete.Empirical4D(d)
 
 	if len(p) != 2 {
-		t.Errorf("Emperical4D 1st dimension should be 2 but it is %d", len(p))
+		t.Errorf("Empirical4D 1st dimension should be 2 but it is %d", len(p))
 	}
 	if len(p[0]) != 3 {
-		t.Errorf("Emperical4D 2nd dimension should be 3 but it is %d", len(p[0]))
+		t.Errorf("Empirical4D 2nd dimension should be 3 but it is %d", len(p[0]))
 	}
 	if len(p[0][0]) != 4 {
-		t.Errorf("Emperical4D 3rd dimension should be 4 but it is %d", len(p[0][0]))
+		t.Errorf("Empirical4D 3rd dimension should be 4 but it is %d", len(p[0][0]))
 	}
 	if len(p[0][0][0]) != 2 {
-		t.Errorf("Emperical4D 4th dimension should be 4 but it is %d", len(p[0][0][0]))
+		t.Errorf("Empirical4D 4th dimension should be 4 but it is %d", len(p[0][0][0]))
 	}
 
 	for a := 0; a < 2; a++ {

@@ -37,7 +37,7 @@ func EntropyBase2(p []float64) float64 {
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
 func EntropyMLBC(data []int, ln lnFunc) float64 {
-	p := Emperical1D(data)
+	p := Empirical1D(data)
 	n := float64(len(data))
 	S := float64(len(p))
 
@@ -82,7 +82,7 @@ func EntropyMLBCBase2(data []int) float64 {
 // index of diversity when there are unseen species in sample.
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
 func EntropyHorvitzThompson(data []int, ln lnFunc) float64 {
-	p := Emperical1D(data)
+	p := Empirical1D(data)
 	n := float64(len(data))
 	r := 0.0
 
