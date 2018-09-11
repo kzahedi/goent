@@ -21,7 +21,7 @@ func TestConditionalMutualInformationBaseE(t *testing.T) {
 		}
 
 		r := state.ConditionalMutualInformationBaseE(data)
-		p := discrete.Emperical3D(data)
+		p := discrete.Empirical3D(data)
 		mi := discrete.ConditionalMutualInformationBaseE(p)
 
 		s := 0.0
@@ -49,7 +49,7 @@ func TestConditionalMutualInformationBase2(t *testing.T) {
 		}
 
 		r := state.ConditionalMutualInformationBase2(data)
-		p := discrete.Emperical3D(data)
+		p := discrete.Empirical3D(data)
 		mi := discrete.ConditionalMutualInformationBase2(p)
 
 		s := 0.0

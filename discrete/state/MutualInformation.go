@@ -9,7 +9,7 @@ import (
 // MutualInformation calculates the mutual information for each state with the given lnFunc function
 //   I(X,Y) = \sum_x,y p(x,y) (lnFunc(p(x,y)) - lnFunc(p(x)p(y)))
 func MutualInformation(data [][]int, log lnFunc) []float64 {
-	pxy := discrete.Emperical2D(data)
+	pxy := discrete.Empirical2D(data)
 	r := make([]float64, len(data), len(data))
 
 	xDim := len(pxy)

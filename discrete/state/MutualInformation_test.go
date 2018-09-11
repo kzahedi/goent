@@ -20,7 +20,7 @@ func TestMutualInformation(t *testing.T) {
 		}
 
 		r := state.MutualInformationBase2(data)
-		p := discrete.Emperical2D(data)
+		p := discrete.Empirical2D(data)
 		mi := discrete.MutualInformationBase2(p)
 
 		s := 0.0
@@ -47,7 +47,7 @@ func TestMutualInformationBaseE(t *testing.T) {
 		}
 
 		r := state.MutualInformationBaseE(data)
-		p := discrete.Emperical2D(data)
+		p := discrete.Empirical2D(data)
 		mi := discrete.MutualInformationBaseE(p)
 
 		s := 0.0

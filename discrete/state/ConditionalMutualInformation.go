@@ -11,7 +11,7 @@ import (
 //   I(X_t,Y_t|Z_t) = (lnFunc(p(x,y|z)) - lnFunc(p(x|z)p(y|z)))
 func ConditionalMutualInformation(xyz [][]int, ln lnFunc) []float64 {
 
-	pxyz := discrete.Emperical3D(xyz)
+	pxyz := discrete.Empirical3D(xyz)
 	r := make([]float64, len(xyz), len(xyz))
 
 	xDim := len(pxyz)

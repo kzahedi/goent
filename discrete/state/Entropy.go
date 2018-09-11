@@ -12,7 +12,7 @@ import (
 //   H(X) = -\sum_x p(x) lnFunc(p(x))
 func Entropy(data []int, ln lnFunc) []float64 {
 	r := make([]float64, len(data), len(data))
-	p := discrete.Emperical1D(data)
+	p := discrete.Empirical1D(data)
 	for i := 0; i < len(data); i++ {
 		x := data[i]
 		if p[x] > 0 {

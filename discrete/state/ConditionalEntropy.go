@@ -11,7 +11,7 @@ import (
 // can be chosen
 //   H(X|Y) = -\sum_x p(x,y) lnFunc(p(x,y)/p(y))
 func ConditionalEntropy(data [][]int, log lnFunc) []float64 {
-	pxy := discrete.Emperical2D(data)
+	pxy := discrete.Empirical2D(data)
 	xDim := len(pxy)
 	yDim := len(pxy[0])
 
