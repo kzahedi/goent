@@ -12,6 +12,7 @@ import (
 // S. Frenzel and B. Pompe.
 // Partial mutual information for coupling analysis of multivariate time series.
 // Phys. Rev. Lett., 99:204101, Nov 2007.
+// The function assumes that the data xyz is normalised column-wise
 func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) []float64 {
 
 	T := len(xyz)

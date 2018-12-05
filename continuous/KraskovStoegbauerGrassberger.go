@@ -11,6 +11,7 @@ import (
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
+// The function assumes that the data xyz is normalised column-wise
 func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k int, eta bool) (r float64) {
 
 	r = 0.0
@@ -54,6 +55,7 @@ func KraskovStoegbauerGrassberger1(xy [][]float64, xIndices, yIndices []int, k i
 // algorithm presented in
 // A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
+// The function assumes that the data xyz is normalised column-wise
 func KraskovStoegbauerGrassberger2(xy [][]float64, xIndices, yIndices []int, k int, eta bool) (r float64) {
 
 	r = 0.0

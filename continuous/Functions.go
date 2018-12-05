@@ -33,13 +33,12 @@ func Harmonic(n int) (r float64) {
 }
 
 // Normalise can be used to normalise the data before passing it
-// to FrenzelPompe or KraskovStoegbauerGrassberger1/2
+// to FrenzelPompe or KraskovStoegbauerGrassberger1/2.
+// This function calles NormaliseByDomain
 func Normalise(data [][]float64) [][]float64 {
 
 	min := make([]float64, len(data[0]), len(data[0]))
 	max := make([]float64, len(data[0]), len(data[0]))
-
-	r := make([][]float64, len(data), len(data))
 
 	for column := range data[0] {
 		min[column] = data[0][column]
@@ -56,6 +55,16 @@ func Normalise(data [][]float64) [][]float64 {
 			}
 		}
 	}
+
+	return NormaliseByDomain(data, min, max)
+}
+
+// NormaliseByDomain can be used to normalise the data before passing it
+// to FrenzelPompe or KraskovStoegbauerGrassberger1/2
+// It takes the data and the minimum and maximum values per column
+func NormaliseByDomain(data [][]float64, min, max []float64) [][]float64 {
+
+	r := make([][]float64, len(data), len(data))
 
 	for row := range data {
 		r[row] = make([]float64, len(data[0]), len(data[0]))

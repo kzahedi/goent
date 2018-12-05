@@ -1,7 +1,9 @@
 package continuous
 
 import (
+	"fmt"
 	"math"
+	"os"
 	"sort"
 
 	pb "gopkg.in/cheggaaa/pb.v1"
@@ -11,7 +13,26 @@ import (
 // S. Frenzel and B. Pompe.
 // Partial mutual information for coupling analysis of multivariate time series.
 // Phys. Rev. Lett., 99:204101, Nov 2007.
+// The function assumes that the data xyz is normalised column-wise
 func FrenzelPompe(xyz [][]float64, xIndices, yIndices, zIndices []int, k int, eta bool) float64 {
+
+	err := ""
+	if len(xyz) == 0 || len(xyz[0]) == 0 {
+		err = fmt.Sprintf("%sPlease provide xyx data.\n", err)
+	}
+	if len(xIndices) == 0 {
+		err = fmt.Sprintf("%sPlease provide x indices.\n", err)
+	}
+	if len(yIndices) == 0 {
+		err = fmt.Sprintf("%sPlease provide y indices.\n", err)
+	}
+	if len(zIndices) == 0 {
+		err = fmt.Sprintf("%sPlease provide z indices.\n", err)
+	}
+	if len(err) > 0 {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
 
 	r := 0.0
 	T := len(xyz)
@@ -66,15 +87,19 @@ func fpMaxNorm3(a, b []float64, xIndices, yIndices, zIndices []int) float64 {
 // takes k, the point from which the Distance is calculated (xyz), and the
 // data from which the k-th nearest neighbour should be determined
 func fpGetEpsilon(k int, xyz []float64, data [][]float64, xIndices, yIndices, zIndices []int) float64 {
-	Distances := make([]float64, len(data), len(data))
+	distances := make([]float64, len(data), len(data))
 
 	for t := 0; t < len(data); t++ {
-		Distances[t] = fpMaxNorm3(xyz, data[t], xIndices, yIndices, zIndices)
+		distances[t] = fpMaxNorm3(xyz, data[t], xIndices, yIndices, zIndices)
 	}
 
-	sort.Float64s(Distances)
+	sort.Float64s(distances)
 
-	return Distances[k] // we start to count at zero, but the first one is xyz[t] vs. xyz[t]
+	if k > len(distances) {
+		return distances[len(distances)-1]
+	}
+
+	return distances[k] // we start to count at zero, but the first one is xyz[t] vs. xyz[t]
 }
 
 // fpCount2 count the number of points for which the x and y coordinate is
