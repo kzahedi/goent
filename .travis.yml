@@ -10,7 +10,6 @@ cache:
     - ${GOPATH}/src/github.com/mattn
 
 go:
-  - 1.8.x
   - 1.9.x
   - 1.10.x
 sudo: false
