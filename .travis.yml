@@ -8,10 +8,10 @@ cache:
     - ${GOPATH}/src/github.com/gordonklaus
     - ${GOPATH}/src/github.com/h12w
     - ${GOPATH}/src/github.com/mattn
-go:
-  - 1.9.x
-  - 1.10.x
 
+go:
+  - tip
+  - 1.10.x
 sudo: false
 
 env:

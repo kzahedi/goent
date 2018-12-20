@@ -43,6 +43,7 @@ func TestFrenzelPompe(t *testing.T) {
 	for _, v := range s {
 		q += v
 	}
+	q /= float64(len(s))
 
 	if d := math.Abs(q - rr); d > 0.0001 {
 		t.Errorf(fmt.Sprintf("Sum over states should be equal to averaged, but the difference is %f (c:%f s:%f)", d, q, rr))

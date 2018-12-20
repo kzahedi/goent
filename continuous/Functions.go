@@ -1,6 +1,7 @@
 package continuous
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -15,7 +16,7 @@ func Distance(a, b []float64, indices []int) float64 {
 }
 
 // Harmonic calculates the harmonic according to
-// A. Kraskov, H. Stoeogbauer, and P. Grassberger.
+// A. Kraskov, H. Stoegbauer, and P. Grassberger.
 // Estimating mutual information. Phys. Rev. E, 69:066138, Jun 2004.
 func Harmonic(n int) (r float64) {
 	if n == 0 {
@@ -34,8 +35,8 @@ func Harmonic(n int) (r float64) {
 
 // Normalise can be used to normalise the data before passing it
 // to FrenzelPompe or KraskovStoegbauerGrassberger1/2.
-// This function calles NormaliseByDomain
-func Normalise(data [][]float64) [][]float64 {
+// This function calls NormaliseByDomain
+func Normalise(data [][]float64, verbose bool) ([][]float64, []float64, []float64) {
 
 	min := make([]float64, len(data[0]), len(data[0]))
 	max := make([]float64, len(data[0]), len(data[0]))
@@ -56,13 +57,22 @@ func Normalise(data [][]float64) [][]float64 {
 		}
 	}
 
-	return NormaliseByDomain(data, min, max)
+	return NormaliseByDomain(data, min, max, verbose), min, max
 }
 
 // NormaliseByDomain can be used to normalise the data before passing it
 // to FrenzelPompe or KraskovStoegbauerGrassberger1/2
 // It takes the data and the minimum and maximum values per column
-func NormaliseByDomain(data [][]float64, min, max []float64) [][]float64 {
+func NormaliseByDomain(data [][]float64, min, max []float64, verbose bool) [][]float64 {
+
+	if verbose == true {
+		minStr := ""
+		maxStr := ""
+		for i := range min {
+			minStr = fmt.Sprintf("%s %f", minStr, min[i])
+			maxStr = fmt.Sprintf("%s %f", maxStr, max[i])
+		}
+	}
 
 	r := make([][]float64, len(data), len(data))
 
@@ -70,7 +80,14 @@ func NormaliseByDomain(data [][]float64, min, max []float64) [][]float64 {
 		r[row] = make([]float64, len(data[0]), len(data[0]))
 		for column := range data[0] {
 			if math.Abs(min[column]-max[column]) > 0.000001 {
-				r[row][column] = (data[row][column] - min[column]) / (max[column] - min[column])
+				value := data[row][column]
+				if value > max[column] {
+					value = max[column]
+				}
+				if value < min[column] {
+					value = min[column]
+				}
+				r[row][column] = (value - min[column]) / (max[column] - min[column])
 			}
 		}
 	}

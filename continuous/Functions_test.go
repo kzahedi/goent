@@ -65,19 +65,19 @@ func TestHarmonic5(t *testing.T) {
 func TestNormaliseZero(t *testing.T) {
 	data := discrete.Create2D(10, 5)
 
-	ndata := Normalise(data)
+	nData, _, _ := Normalise(data, false)
 
-	if len(ndata) != len(data) {
-		t.Errorf(fmt.Sprintf("Normalise should not change the number of rows from %d to %d", len(data), len(ndata)))
+	if len(nData) != len(data) {
+		t.Errorf(fmt.Sprintf("Normalise should not change the number of rows from %d to %d", len(data), len(nData)))
 	}
 
 	for row := range data {
 		for column := range data[row] {
-			if len(ndata[row]) != 5 {
-				t.Errorf(fmt.Sprintf("Normalise should not change the number of columns from 5 to %d", len(ndata[row])))
+			if len(nData[row]) != 5 {
+				t.Errorf(fmt.Sprintf("Normalise should not change the number of columns from 5 to %d", len(nData[row])))
 			}
-			if math.Abs(ndata[row][column]) > 0.00000001 {
-				t.Errorf(fmt.Sprintf("Normalised data [%d,%d] should be zero and not %f", row, column, ndata[row][column]))
+			if math.Abs(nData[row][column]) > 0.00000001 {
+				t.Errorf(fmt.Sprintf("Normalised data [%d,%d] should be zero and not %f", row, column, nData[row][column]))
 			}
 		}
 	}
@@ -88,15 +88,15 @@ func TestNormaliseZero(t *testing.T) {
 		}
 	}
 
-	ndata = Normalise(data)
+	nData, _, _ = Normalise(data, false)
 
 	for row := range data {
 		for column := range data[row] {
-			if ndata[row][column] < 0.0 {
-				t.Errorf("Normalise should not produce values smaller than 0, but we have %f", ndata[row][column])
+			if nData[row][column] < 0.0 {
+				t.Errorf("Normalise should not produce values smaller than 0, but we have %f", nData[row][column])
 			}
-			if ndata[row][column] > 1.0 {
-				t.Errorf("Normalise should not produce values larger than 1, but we have %f", ndata[row][column])
+			if nData[row][column] > 1.0 {
+				t.Errorf("Normalise should not produce values larger than 1, but we have %f", nData[row][column])
 			}
 		}
 	}
@@ -117,13 +117,13 @@ func TestNormaliseRandom(t *testing.T) {
 		data[1][i] = 5.0
 	}
 
-	ndata := Normalise(data)
+	nData, _, _ := Normalise(data, false)
 
 	for row := range data {
 		for column := range data[row] {
-			if math.Abs(ndata[row][column]-(data[row][column]/10.0+0.5)) > 0.00000001 {
+			if math.Abs(nData[row][column]-(data[row][column]/10.0+0.5)) > 0.00000001 {
 				t.Errorf(fmt.Sprintf("Normalised data [%d,%d] should be %f and not %f",
-					row, column, (data[row][column]/10.0 + 0.5), ndata[row][column]))
+					row, column, (data[row][column]/10.0 + 0.5), nData[row][column]))
 			}
 		}
 	}
