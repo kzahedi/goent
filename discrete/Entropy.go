@@ -2,6 +2,8 @@ package discrete
 
 import (
 	"math"
+
+	"github.com/kzahedi/goent/sm"
 )
 
 // Entropy calculates the entropy of a probability distribution.
@@ -189,4 +191,30 @@ func EntropyChaoShenBaseE(data []int) float64 {
 // Environmental and Ecological Statistics, 10(4):429–443, 2003.
 func EntropyChaoShenBase2(data []int) float64 {
 	return EntropyChaoShen(data, math.Log2)
+}
+
+// EntropySparse calculates the entropy of a probability distribution.
+// It takes the log function as an additional parameter, so that the base
+// can be chosen:
+//   H(X) = -\sum_x p(x) lnFunc(p(x))
+func EntropySparse(p sm.SparseMatrix, ln lnFunc) float64 {
+	var r float64
+	for _, x := range p.Values {
+		if x > 0 {
+			r -= x * ln(x)
+		}
+	}
+	return r
+}
+
+// EntropyBaseESparse calculates the entropy of a probability distribution with base e
+//   H(X) = -\sum_x p(x) ln(p(x))
+func EntropyBaseESparse(p sm.SparseMatrix) float64 {
+	return EntropySparse(p, math.Log)
+}
+
+// EntropyBase2Sparse calculates the entropy of a probability distribution with base 2
+//   H(X) = -\sum_x p(x) log2(p(x))
+func EntropyBase2Sparse(p sm.SparseMatrix) float64 {
+	return EntropySparse(p, math.Log2)
 }
