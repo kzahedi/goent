@@ -1,5 +1,9 @@
 package discrete
 
+import (
+	"github.com/kzahedi/goent/sm"
+)
+
 // Empirical1D is an empirical estimator for a one-dimensional
 // probability distribution
 func Empirical1D(d []int) []float64 {
@@ -61,6 +65,26 @@ func Empirical2D(d [][]int) [][]float64 {
 	return p
 }
 
+// Empirical2DSparse is an empirical estimator for a two-dimensional
+// probability distribution
+func Empirical2DSparse(d [][]int) sm.SparseMatrix {
+	rows := len(d)
+
+	p := sm.CreateSparseMatrix()
+
+	for r := 0; r < rows; r++ {
+		index := sm.SparseMatrixIndex{d[r][0], d[r][1]}
+		p.Add(index, 1.0)
+	}
+
+	l := float64(len(d))
+	for _, index := range p.Indices {
+		p.Mul(index, 1/l)
+	}
+
+	return p
+}
+
 // Empirical3D is an empirical estimator for a three-dimensional
 // probability distribution
 func Empirical3D(d [][]int) [][][]float64 {
@@ -97,6 +121,24 @@ func Empirical3D(d [][]int) [][][]float64 {
 				p[a][b][c] /= l
 			}
 		}
+	}
+
+	return p
+}
+
+// Empirical3DSparse is an empirical estimator for a three-dimensional
+// probability distribution
+func Empirical3DSparse(d [][]int) sm.SparseMatrix {
+	rows := len(d)
+	p := sm.CreateSparseMatrix()
+	for r := 0; r < rows; r++ {
+		index := sm.SparseMatrixIndex{d[r][0], d[r][1], d[r][2]}
+		p.Add(index, 1.0)
+	}
+
+	l := float64(rows)
+	for _, index := range p.Indices {
+		p.Mul(index, 1.0/l)
 	}
 
 	return p
