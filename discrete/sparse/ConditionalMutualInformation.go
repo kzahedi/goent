@@ -34,19 +34,19 @@ func ConditionalMutualInformation(pxyz sm.SparseMatrix, ln lnFunc) float64 {
 	for _, index := range pxyCz.Indices {
 		zi := sm.SparseMatrixIndex{index[2]}
 		v, _ := pz.Get(zi)
-		pxyCz.Mul(zi, 1.0/v)
+		pxyCz.Mul(index, 1.0/v)
 	}
 
 	for _, index := range pxCz.Indices {
 		zi := sm.SparseMatrixIndex{index[1]}
 		v, _ := pz.Get(zi)
-		pxCz.Mul(zi, 1.0/v)
+		pxCz.Mul(index, 1.0/v)
 	}
 
 	for _, index := range pyCz.Indices {
 		zi := sm.SparseMatrixIndex{index[1]}
 		v, _ := pz.Get(zi)
-		pyCz.Mul(zi, 1.0/v)
+		pyCz.Mul(index, 1.0/v)
 	}
 
 	r := 0.0

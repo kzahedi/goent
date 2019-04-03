@@ -1,6 +1,8 @@
 package discrete
 
 import (
+	"math"
+
 	"github.com/kzahedi/goent/sm"
 )
 
@@ -137,8 +139,15 @@ func Empirical3DSparse(d [][]int) sm.SparseMatrix {
 	}
 
 	l := float64(rows)
+	var sum float64
 	for _, index := range p.Indices {
 		p.Mul(index, 1.0/l)
+		v, _ := p.Get(index)
+		sum += v
+	}
+
+	if math.Abs(sum-1.0) > 0.00001 {
+		panic("P does not sum up to one")
 	}
 
 	return p
