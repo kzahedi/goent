@@ -38,13 +38,13 @@ func ConditionalMutualInformation(pxyz sm.SparseMatrix, ln lnFunc) float64 {
 	}
 
 	for _, index := range pxCz.Indices {
-		zi := sm.SparseMatrixIndex{index[2]}
+		zi := sm.SparseMatrixIndex{index[1]}
 		v, _ := pz.Get(zi)
 		pxCz.Mul(zi, 1.0/v)
 	}
 
 	for _, index := range pyCz.Indices {
-		zi := sm.SparseMatrixIndex{index[2]}
+		zi := sm.SparseMatrixIndex{index[1]}
 		v, _ := pz.Get(zi)
 		pyCz.Mul(zi, 1.0/v)
 	}
@@ -58,7 +58,7 @@ func ConditionalMutualInformation(pxyz sm.SparseMatrix, ln lnFunc) float64 {
 		xyz, _ := pxyz.Get(index)
 		xyCz, _ := pxyCz.Get(index)
 		xCz, _ := pxCz.Get(sm.SparseMatrixIndex{xi, zi})
-		yCz, _ := pxCz.Get(sm.SparseMatrixIndex{yi, zi})
+		yCz, _ := pyCz.Get(sm.SparseMatrixIndex{yi, zi})
 
 		if xyz > 0.0 && xyCz > 0.0 && xCz > 0.0 && yCz > 0.0 {
 			r += xyz * (ln(xyCz) - ln(xCz*yCz))

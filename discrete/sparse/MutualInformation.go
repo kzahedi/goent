@@ -24,7 +24,7 @@ func MutualInformation(pxy sm.SparseMatrix, log lnFunc) float64 {
 		py.Add(y, v)
 	}
 
-	mi := 0.0
+	var r float64
 
 	for _, index := range pxy.Indices {
 		x := sm.SparseMatrixIndex{index[0]}
@@ -34,11 +34,11 @@ func MutualInformation(pxy sm.SparseMatrix, log lnFunc) float64 {
 		yv, _ := py.Get(y)
 
 		if xyv > 0.0 && xv > 0.0 && yv > 0.0 {
-			mi += xyv * (log(xyv) - log(xv*yv))
+			r += xyv * (log(xyv) - log(xv*yv))
 		}
 	}
 
-	return mi
+	return r
 }
 
 // MutualInformationBaseE calculates the mutual information with base e
